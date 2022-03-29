@@ -1,0 +1,5 @@
+unity.admin_config:
+  title: 'Unity'
+  description: 'Manage Unity module settings'
+  parent: system.admin_config
+  route_name: unity.admin_config

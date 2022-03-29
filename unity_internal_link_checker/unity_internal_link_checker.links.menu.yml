@@ -1,0 +1,6 @@
+link_checker.link_checker_form:
+  title: 'Unity Internal Link Checker'
+  route_name: unity_internal_link_checker.link_checker_form
+  description: 'Configure internal link checking and correction'
+  parent: unity.admin_config
+  weight: 99

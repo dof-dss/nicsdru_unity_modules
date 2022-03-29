@@ -1,0 +1,9 @@
+services:
+  unity_common.update_config_from_environment:
+    class: Drupal\unity_common\UpdateConfigFromEnvironment
+    arguments: ['@config.factory']
+  unity_common.event_subscriber:
+    class: Drupal\unity_common\EventSubscriber\UpdateConfigAfterImport
+    arguments: [ '@unity_common.update_config_from_environment' ]
+    tags:
+      - { name: event_subscriber }

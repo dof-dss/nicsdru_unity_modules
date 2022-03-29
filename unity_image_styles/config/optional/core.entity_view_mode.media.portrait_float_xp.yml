@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.portrait_float_xp
+label: 'Portrait float XP'
+targetEntityType: media
+cache: true

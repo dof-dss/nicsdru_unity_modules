@@ -1,0 +1,172 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_common.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Site\Settings;
+use Drupal\file\FileInterface;
+use Drupal\media\MediaInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function unity_common_preprocess_page(&$variables) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    return;
+  }
+  // Apply link manager library to all non-admin pages.
+  $variables['#attached']['library'][] = 'unity_common/link_manager';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Form alter hook for the LinkIt dialogue box
+ * presented in the WYSIWYG editor.
+ */
+function unity_common_form_editor_link_dialog_alter(array &$form, FormStateInterface $form_state) {
+  // Hide option to open link in new window.
+  $form['linkit_attributes']['target']['#access'] = FALSE;
+
+  // Provide additional guidance information.
+  $form['attributes']['href']['#description'] .= '<p>'
+    . t('To reference an external URL type the full address, eg: https://www.nidirect.gov.uk') . '</p>'
+    . '<p>' . t('To reference an e-mail address type the full address and select the "E-mail" option from the dropdown list.')
+    . '</p>';
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (preg_match('/webform/', $form_id)) {
+    if (\Drupal::moduleHandler()->moduleExists('honeypot')) {
+      // Add in a hidden honeypot field to all webforms.
+      honeypot_add_form_protection(
+        $form,
+        $form_state,
+        ['honeypot', 'time_restriction']
+      );
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function unity_common_views_pre_render(ViewExecutable $view) {
+  // Attach origins media library styles to media library views.
+  if ($view->id() === 'media_library') {
+    $view->element['#attached']['library'][] = 'nicsdru_unity_theme/media_library_styles';
+  }
+}
+
+/**
+ * Implements hook_preprocess_media().
+ */
+function unity_common_preprocess_media(array &$variables) {
+  if ($variables['view_mode'] === 'media_library' && $variables['media']->bundle() === 'document') {
+    $media_entity = &$variables['media'];
+    $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+
+    // Get the underlying file associated with this document entity.
+    $file = $file_storage->load($media_entity->field_media_file->target_id);
+
+    if ($file instanceof FileInterface === FALSE) {
+      return;
+    }
+
+    $mimetype = $file->getMimeType();
+
+    // There shouldn't be an image file here, but just in case, screen for it as if
+    // it's genuine it likely has its own thumbnail so we would want to keep that.
+    if (preg_match('/jpeg|jpg|gif|png/', $mimetype)) {
+      return;
+    }
+
+    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
+    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
+
+    // Replace the original image_style render element with a bespoke HTML element
+    // with our custom CSS attached to render the file icon as background CSS.
+    $variables['content']['thumbnail'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'file--media-library-preview',
+          'file--ico',
+          'file--ico__' . $simple_mimetypes[$mimetype]
+        ],
+        'aria-label' => $pretty_mimetypes[$mimetype],
+      ],
+      '#attached' => [
+        'library' => 'nicsdru_unity_theme/media_library_styles',
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_preprocess_image_formatter().
+ */
+function unity_common_preprocess_image_formatter(array &$variables) {
+  if (empty($variables['url']) || $variables['image_style'] != 'thumbnail') {
+    return;
+  }
+
+  // Derive the media entity linked to from the URL.
+  $url = &$variables['url'];
+  $media_entity = $url->getOption('entity');
+
+  if ($media_entity instanceof MediaInterface && $media_entity->bundle() === 'document') {
+    $file_storage = \Drupal::entityTypeManager()->getStorage('file');
+    // Get the underlying file associated with this document entity.
+    $file = $file_storage->load($media_entity->field_media_file->target_id);
+
+    if ($file instanceof FileInterface === FALSE) {
+      return;
+    }
+
+    $mimetype = $file->getMimeType();
+    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
+    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
+
+    // Replace the original image_style render element with a bespoke HTML element
+    // with our custom CSS attached to render the file icon as background CSS.
+    $variables['image'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'file--media-library-preview',
+          'file--ico',
+          'file--ico__' . $simple_mimetypes[$mimetype]
+        ],
+        'aria-label' => $pretty_mimetypes[$mimetype],
+      ],
+      '#attached' => [
+        'library' => 'nicsdru_unity_theme/media_library_styles',
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_config_ignore_settings_alter().
+ */
+function unity_common_config_ignore_settings_alter(array &$settings) {
+  // This hook is called just before config is imported (as long as this module
+  // and the 'config ignore' module are installed) and is even invoked when there
+  // are no config changes to import.
+  // The code in UpdateConfigAfterImport will then ensure that the Google Analytics
+  // key is overwritten during config import.
+  if (Settings::get('subsite_id')) {
+    $config_update_service = \Drupal::service('unity_common.update_config_from_environment');
+    $config_update_service->updateApiKey('google_analytics.settings', 'account', Settings::get('subsite_id') . '_GOOGLE_ANALYTICS_KEY');
+  }
+}

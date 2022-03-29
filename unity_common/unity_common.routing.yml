@@ -1,0 +1,7 @@
+unity.admin_config:
+  path: '/admin/config/unity'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'Unity'
+  requirements:
+    _permission: 'access administration pages'

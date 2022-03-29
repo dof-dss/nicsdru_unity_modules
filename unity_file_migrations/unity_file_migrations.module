@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_file_migrations.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function unity_file_migrations_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the unity_file_migrations module.
+    case 'help.page.unity_file_migrations':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Unity File migrations') . '</p>';
+      return $output;
+
+    default:
+  }
+}

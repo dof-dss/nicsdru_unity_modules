@@ -1,0 +1,30 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the unity_frontpage module.
+ */
+
+/**
+ * Implements hook_install().
+ *
+ * Sets frontpage_title value as default when module installed.
+ */
+function unity_frontpage_install() {
+  $config_factory = \Drupal::configFactory();
+  $config = $config_factory->getEditable('system.site');
+  $config->set('frontpage_title', 'Welcome to ' . $config->get('name') . ' site');
+  $config->save(TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Unsets frontpage_title value when module is uninstalled.
+ */
+function unity_frontpage_uninstall() {
+  Drupal::configFactory()->getEditable('system.site')
+    ->clear('frontpage_title')
+    ->clear('frontpage_show_title')
+    ->save();
+}

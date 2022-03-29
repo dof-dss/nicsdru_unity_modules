@@ -1,0 +1,187 @@
+<?php
+
+/**
+ * @file
+ * Custom code for search pages.
+ */
+
+use Solarium\Core\Query\QueryInterface;
+use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
+use Drupal\Core\Language\Language;
+use Drupal\Component\Utility\Html;
+
+/**
+ * Implements hook_preprocess_views_view() for views_view.
+ *
+ * Adding a singular/pluralised result count in the header of the search pages.
+ *
+ * @RenderElement("html_tag");
+ */
+function unity_search_pages_preprocess_views_view(array &$variables) {
+  // Add view display ids to add result count to header of the search view.
+  $display_ids = ['publication_search_page',
+    'news_search_page',
+    'consultations_search_page',
+    'evidence_search_page',
+    'questions_search_page',
+    'search_page',
+  ];
+
+  foreach ($display_ids as $display_id) {
+    if ($variables['display_id'] == $display_id) {
+      // Ensure the search has items in an array.
+      if (!empty($variables['view']->total_rows)) {
+
+        // Count the number of items in the array.
+        $number_of_items = $variables['view']->total_rows;
+
+        // Singular expression if only 1, if more pluralise.
+        $header_text = \Drupal::translation()->formatPlural($number_of_items, 'result', 'results');
+
+        // Output the result.
+        $variables['header']['result'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => 'current-search-item-results-count'],
+          '#value' => t('@item_count @header_text',
+            [
+              '@item_count' => $number_of_items,
+              '@header_text' => $header_text,
+            ]),
+        ];
+      }
+      else {
+        $variables['header']['result'] = [
+          '#type' => 'html_tag',
+          '#tag' => 'h2',
+          '#attributes' => ['class' => 'current-search-item-results-count'],
+          '#value' => t('0 results'),
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_alter().
+ */
+function unity_search_pages_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  if (!empty($variables['view']->element['#display_id'])) {
+    $suggestions[] = 'views_view__' . $variables['view']->element['#display_id'];
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_views_view_unformatted_alter().
+ */
+function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+
+  $search_pages = [
+    'consultations_search_page',
+    'publication_search_page',
+    'news_search_page',
+    'evidence_search_page',
+    'questions_search_page',
+    'search_page',
+  ];
+
+  foreach ($search_pages as $search_page) {
+    if ($variables['view']->element['#display_id'] == $search_page) {
+      $suggestions[] = 'views_view_unformatted__search_result_page';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_form().
+ */
+function unity_search_pages_preprocess_form(array &$variables) {
+  switch ($variables['element']['#id']) {
+    case "views-exposed-form-publications-search-publication-search-page":
+    case "views-exposed-form-news-search-news-search-page":
+    case "views-exposed-form-consultations-search-consultations-search-page":
+    case "views-exposed-form-questions-search-questions-search-page":
+    case "views-exposed-form-evidence-search-evidence-search-page":
+      $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
+      $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function unity_search_pages_preprocess_page(&$variables) {
+  // A list of search page titles on the Unity codebase.
+  $search_pages = [
+    'News',
+    'Publications',
+    'Consultations',
+    'Questions to the Chief Constable',
+    'Evidence',
+    'Search',
+  ];
+
+  $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
+
+  // If evidence search page, set variable to TRUE.
+  $variables['evidence_search'] = $variables['page']['#title'] === 'Evidence';
+}
+
+/**
+ * Implements hook_preprocess_block().
+ *
+ */
+function unity_search_pages_preprocess_block(&$variables) {
+  // Check if the block is an exposed filter block.
+  if ($variables['base_plugin_id'] == 'views_exposed_filter_block') {
+    // Add search page name ensuring they are in the exposed block machine name.
+    $search_pages = [
+      'news',
+      'publications',
+      'consultations',
+      'questions',
+      'evidence',
+    ];
+
+    $plugin_id = $variables['plugin_id'];
+
+    foreach ($search_pages as $search_page) {
+      // Search the machine name for search page name and set variable to this.
+      if (preg_match("/{$search_page}/i", $plugin_id)) {
+        $variables['search_page_name'] = $search_page;
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ *
+ * Replaces search results title with a title and subtitle to enable styling.
+ */
+function unity_search_pages_preprocess_page_title(&$variables) {
+  $current_route = \Drupal::routeMatch()->getRouteName();
+  $title = $variables['title'];
+  $pattern = '/view.\w*search.\w*search_page/';
+
+  if (preg_match($pattern, $current_route)) {
+    if (preg_match('/\w*\b\s- search results/', $title)) {
+      $new_title = strtok($title, ' -');
+      $variables['title'] = t($new_title);
+      $variables['title_subtitle'] = t('search results');
+    }
+  }
+}
+
+/**
+ * Implements hook_search_api_solr_query_alter().
+ *
+ * Added here because the dictionary reference is not added correctly
+ * by contrib Solr modules. We set to 'und' (LANGCODE_NOT_SPECIFIED)
+ * because it's the same as 'en' in search_api config.
+ */
+function unity_search_pages_search_api_solr_query_alter(QueryInterface $solarium_query, SearchApiQueryInterface $query) {
+  // Maps to <str name="name">spelling_und</str> in solrconfig_extra.xml.
+  $solarium_query->getSpellcheck()->setDictionary(Language::LANGCODE_NOT_SPECIFIED);
+}

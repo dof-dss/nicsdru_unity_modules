@@ -1,0 +1,10 @@
+system.site.unity_frontpage:
+  type: config_object
+  label: 'Site information'
+  mapping:
+    frontpage_title:
+      type: label
+      label: 'Front page title'
+    frontpage_show_title:
+      type: boolean
+      label: 'Show front page title'

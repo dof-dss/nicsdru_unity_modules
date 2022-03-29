@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_internal_link_checker.module.
+ */
+
+use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\migrate\MigrateException;
+use Drupal\views\Entity\View;
+
+/**
+ * Implements hook_entity_presave().
+ */
+function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
+  // If this hook has been invoked from a migration, bail out.
+  $page = \Drupal::request()->getRequestUri();
+  if (preg_match('|^\/batch|', $page) || ($page == '/')) {
+    return;
+  }
+  if ($entity instanceof ContentEntityInterface) {
+    if ($entity->hasField('body')) {
+      $body = $entity->get('body')->value;
+      $format = $entity->get('body')->format;
+
+      $matches = [];
+      // Look for all anchors in the body field.
+      if (preg_match_all('|href\=[\'"]+([^ >"\']*)[\'"]+[^>]*>|', $body, $matches)) {
+        if (count($matches) > 1) {
+          foreach ($matches[1] as $original_link) {
+            // So we have an anchor, does it look like a relative link
+            // or an absolute?
+            $matches2 = [];
+            if (preg_match('|http://(.*)|', $original_link, $matches2) ||
+              preg_match('|https://(.*)|', $original_link, $matches2)) {
+              // This is an absolute URL does it match one of the domain names specified
+              // at /admin/config/unity_internal_link_checker/link_checker_form ?
+              $body = _convert_absolute_link($body, $original_link);
+            }
+          }
+          $entity->body->setValue(['value' => $body, 'format' => $format]);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Utility function to convert internal link to relative.
+ */
+function _convert_absolute_link(&$body_text, $original_link) {
+  // Get list of urls to replace
+  // (these have been added at
+  // /admin/config/unity_internal_link_checker/link_checker_form )
+  $config = \Drupal::config('unity_internal_link_checker.linksettings');
+  $replace_url_list = $config->get('site_url_list');
+  if (strlen($replace_url_list) == 0) {
+    \Drupal::messenger()->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
+    return $body_text;
+  }
+  $replace_url_list = explode(PHP_EOL, $replace_url_list);
+  foreach ($replace_url_list as $replace_url) {
+    // Make sure url is 'clean'.
+    $replace_url = str_replace(["\n", "\t", "\r"], '', $replace_url);
+    // Make sure that there is a trailing slash.
+    if (!preg_match('|\/$|', $replace_url)) {
+      $replace_url .= '/';
+    }
+    // Does the start of this link match one of the
+    // urls that we are looking for ?
+    if (strpos($original_link, $replace_url) !== FALSE) {
+      // We have a match, change this absolute link
+      // to a relative link.
+      $body_text = str_replace($replace_url, '/', $body_text);
+    }
+  }
+  return $body_text;
+}

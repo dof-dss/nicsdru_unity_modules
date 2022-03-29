@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.article_full_expandable
+label: 'Article full expandable'
+targetEntityType: media
+cache: true

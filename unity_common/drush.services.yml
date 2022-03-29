@@ -1,0 +1,6 @@
+services:
+  unity_common.commands:
+    class: \Drupal\unity_common\Commands\UnityDrushCommands
+    tags:
+      - { name: drush.command }
+

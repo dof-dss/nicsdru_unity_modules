@@ -1,0 +1,5 @@
+services:
+  unity_search_pages.route_subscriber:
+    class: Drupal\unity_search_pages\Routing\SearchPagesRouteSubscriber
+    tags:
+      - { name: event_subscriber }

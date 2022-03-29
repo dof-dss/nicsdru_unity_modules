@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.banner_deep
+label: 'Banner deep'
+targetEntityType: media
+cache: true

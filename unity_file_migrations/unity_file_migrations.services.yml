@@ -1,0 +1,5 @@
+services:
+  unity_file_migrations.migrationprocessors:
+    class: 'Drupal\unity_file_migrations\MigrationProcessors'
+    arguments: ['@module_handler', '@entity_type.manager']
+

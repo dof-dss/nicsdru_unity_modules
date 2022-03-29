@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.unity_3_col_images
+label: 'Unity 3 col images'
+targetEntityType: media
+cache: true

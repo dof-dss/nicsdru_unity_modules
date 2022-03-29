@@ -1,0 +1,12 @@
+name: 'Migrate UNITY'
+type: module
+description: 'Unity Document, audio and image migrations and other tools'
+core_version_requirement: ^8.8 || ^9
+package: 'Custom'
+migration_dependencies:
+ required: { }
+dependencies:
+  - drupal:migrate
+  - drupal:migrate_plus
+  - drupal:migrate_tools
+  - drupal:migrate_drupal

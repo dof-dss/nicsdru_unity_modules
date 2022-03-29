@@ -1,0 +1,16 @@
+name: 'Unity map embed'
+type: module
+description: 'Configures a map embed button in ckeditor'
+core_version_requirement: ^8.8 || ^9
+package: 'Unity'
+dependencies:
+  - drupal:geocoder
+  - drupal:geocoder_address
+  - drupal:geocoder_field
+  - drupal:geolocation
+  - drupal:geolocation_google_maps
+  - drupal:geolocation_google_static_maps
+  - drupal:paragraphs
+  - drupal:entity_browser_entity_form
+  - drupal:layout_builder
+  - drupal:entity_embed

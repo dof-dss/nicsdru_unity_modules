@@ -1,0 +1,9 @@
+name: 'Unity image styles'
+type: module
+description: 'Configures generic image styles in unity sites'
+core_version_requirement: ^8.8 || ^9
+package: 'Unity'
+dependencies:
+  - drupal:image
+  - drupal:responsive_image
+  - drupal:media
