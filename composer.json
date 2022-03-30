@@ -1,0 +1,9 @@
+{
+  "name": "dof-dss/nicsdru_unity_modules",
+  "description": "Custom modules available to all Unity sites.",
+  "type": "drupal-module",
+  "license": "MIT",
+  "require": {
+    "composer/installers": "^1.6"
+  }
+}
