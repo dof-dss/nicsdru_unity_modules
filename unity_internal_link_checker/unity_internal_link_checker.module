@@ -80,8 +80,6 @@ function _convert_absolute_link(&$body_text, $original_link) {
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $host = \Drupal::request()->getHost();
-  $x = 1;
   $replace_url_list = $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
