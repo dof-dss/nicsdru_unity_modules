@@ -16,7 +16,7 @@ use Drupal\views\Entity\View;
 function unity_internal_link_checker_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'link_checker_form') {
     $host = \Drupal::request()->getHost();
-    if (preg_match('/\S*(uk)/', $host, $matches)) {
+    if (preg_match('/\S*(uk|org|com)/', $host, $matches)) {
       $host = $matches[0];
     }
     $prefixes = ['http://', 'http://www.', 'https://', 'https://www.'];
