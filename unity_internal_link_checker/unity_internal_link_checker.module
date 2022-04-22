@@ -10,34 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\migrate\MigrateException;
 use Drupal\views\Entity\View;
 
-///**
-// * Implements hook_form_alter().
-// */
-//function unity_internal_link_checker_form_alter(&$form, &$form_state, $form_id) {
-//  if ($form_id == 'link_checker_form') {
-//    $host = \Drupal::request()->getHost();
-//    if (preg_match('/\S*(uk|org|com|net|eu)/', $host, $matches)) {
-//      $host = $matches[0];
-//    }
-//    $prefixes = ['http://', 'http://www.', 'https://', 'https://www.'];
-//    $postfixes = [
-//      '.lndo.site/',
-//      '.d8un-edge-xerfxyi-6tlkpwbr6tndk.uk-1.platformsh.site/',
-//      '.d8un-uat-qhl74ni-6tlkpwbr6tndk.uk-1.platformsh.site/',
-//      '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
-//      '/',
-//    ];
-//    foreach ($prefixes as $prefix) {
-//      foreach ($postfixes as $postfix) {
-//        $urls_to_replace = $prefix . $host . $postfix;
-//        if (!str_contains($form['site_url_list']['#default_value'], $urls_to_replace)) {
-//          $form['site_url_list']['#default_value'] .= $urls_to_replace . "\r\n";
-//        }
-//      }
-//    }
-//  }
-//}
-
 /**
  * Implements hook_entity_presave().
  */
