@@ -92,7 +92,7 @@ function _urls_to_replace(): string {
 //  $site_url = Url::fromRoute('<front>', [], $url_options)->toString();
 //  $parsed_url = parse_url($site_url);
   $host = \Drupal::request()->getHost();
-  \Drupal::logger('unity_link_checker')->notice('host is'  . $host);
+  \Drupal::logger('unity_link_checker')->notice('host is '  . $host);
   if (preg_match('/\S*(uk|org|com|net|eu)/', $host, $matches)) {
     $host = $matches[0];
   }
