@@ -7,8 +7,6 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\migrate\MigrateException;
-use Drupal\views\Entity\View;
 
 /**
  * Implements hook_entity_presave().
@@ -85,7 +83,7 @@ function _convert_absolute_link(&$body_text, $original_link) {
 function _urls_to_replace(): string {
   // Get the host name of the site and remove the domain extension.
   $host = \Drupal::request()->getHost();
-  if (preg_match('/\S*(uk|org|com|net|eu)/', $host, $matches)) {
+  if (preg_match('/\S*?(uk|org|com|net|eu)/', $host, $matches)) {
     $host = $matches[0];
   }
   // List all domain protocols and extensions for our platform and local environments.
