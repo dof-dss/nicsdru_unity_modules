@@ -93,7 +93,7 @@ function _urls_to_replace(): string {
 //  $parsed_url = parse_url($site_url);
   $host = \Drupal::request()->getHost();
   \Drupal::logger('unity_link_checker')->notice('host is '  . $host);
-  if (preg_match('/\S*(uk|org|com|net|eu)/', $host, $matches)) {
+  if (preg_match('/\S*?(uk|org|com|net|eu)/', $host, $matches)) {
     $host = $matches[0];
   }
   // List all domain protocols and extensions for our platform and local environments.
