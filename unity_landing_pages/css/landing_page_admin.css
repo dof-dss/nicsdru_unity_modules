@@ -39,10 +39,12 @@
   display: none;
 }
 
-.layout-builder-add-block .field--type-link .field-multiple-table th {
+.layout-builder-add-block .field--type-link .field-multiple-table th,
+.layout-builder-add-block .field--type-block-field th {
   background: #dbdbdb;
 }
-.layout-builder-add-block .field--type-link .field-multiple-table th h4 {
+.layout-builder-add-block .field--type-link .field-multiple-table th h4,
+.layout-builder-add-block .field--type-block-field th h4 {
   color: white;
   margin: 0;
 }
