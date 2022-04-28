@@ -38,3 +38,11 @@
 .layout-builder-add-block .form-item-settings-admin-label label {
   display: none;
 }
+
+.layout-builder-add-block .field--type-link .field-multiple-table th {
+  background: #dbdbdb;
+}
+.layout-builder-add-block .field--type-link .field-multiple-table th h4 {
+  color: white;
+  margin: 0;
+}
