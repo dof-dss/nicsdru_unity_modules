@@ -34,3 +34,7 @@
   text-decoration: none;
   background-color: #0a78cd;
 }
+
+.layout-builder-add-block .form-item-settings-admin-label label {
+  display: none;
+}
