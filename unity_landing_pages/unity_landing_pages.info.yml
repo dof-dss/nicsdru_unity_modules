@@ -1,0 +1,8 @@
+name: 'Unity Landing Pages'
+type: module
+description: 'Unity Landing Page functions and overrides'
+core_version_requirement: ^8.8 || ^9
+package: 'Unity'
+dependencies:
+  - drupal:layout_builder
+  - drupal:block
