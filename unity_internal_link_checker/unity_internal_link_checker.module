@@ -7,8 +7,6 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\migrate\MigrateException;
-use Drupal\views\Entity\View;
 
 /**
  * Implements hook_entity_presave().
@@ -54,9 +52,10 @@ function _convert_absolute_link(&$body_text, $original_link) {
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $replace_url_list = $config->get('site_url_list');
+  $replace_url_list = _urls_to_replace() . $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
-    \Drupal::messenger()->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
+    \Drupal::messenger()
+      ->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
     return $body_text;
   }
   $replace_url_list = explode(PHP_EOL, $replace_url_list);
@@ -76,4 +75,32 @@ function _convert_absolute_link(&$body_text, $original_link) {
     }
   }
   return $body_text;
+}
+
+/**
+ * Utility function to add all domains and extensions for the current site.
+ */
+function _urls_to_replace(): string {
+  // Get the host name of the site and remove the domain extension.
+  $host = \Drupal::request()->getHost();
+  if (preg_match('/\S*?(uk|org|com|net|eu)/', $host, $matches)) {
+    $host = $matches[0];
+  }
+  // List all domain protocols and extensions for our platform and local environments.
+  $protocols = ['http://', 'http://www.', 'https://', 'https://www.'];
+  $extensions = [
+    '.lndo.site/',
+    '.d8un-edge-xerfxyi-6tlkpwbr6tndk.uk-1.platformsh.site/',
+    '.d8un-uat-qhl74ni-6tlkpwbr6tndk.uk-1.platformsh.site/',
+    '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
+    '/',
+  ];
+  $urls_to_replace = '';
+  // Loop through and add all protocols and extensions to the current site.
+  foreach ($protocols as $protocol) {
+    foreach ($extensions as $extension) {
+      $urls_to_replace .= $protocol . $host . $extension . "\r\n";
+    }
+  }
+  return $urls_to_replace;
 }
