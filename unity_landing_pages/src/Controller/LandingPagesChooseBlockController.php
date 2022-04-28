@@ -102,7 +102,7 @@ class LandingPagesChooseBlockController extends ChooseBlockController {
             '#children' => $title,
           ],
         ];
-      $link['attributes']['class'][] = 'nidirect-landing-pages--add-block';
+      $link['attributes']['class'][] = 'unity-landing-pages--add-block';
     }
 
     // Additional styling for the back link.
@@ -113,7 +113,7 @@ class LandingPagesChooseBlockController extends ChooseBlockController {
 
     $build['links']['#attributes']['class'][] = 'unity-landing-pages';
 
-    //$build['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
+    $build['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
 
     return $build;
   }

@@ -36,7 +36,7 @@ class LandingPagesChooseSectionController extends ChooseSectionController {
 
     $build['layouts']['#attributes']['class'][] = 'unity-landing-pages';
 
-    //$build['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
+    $build['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
 
     return $build;
   }
