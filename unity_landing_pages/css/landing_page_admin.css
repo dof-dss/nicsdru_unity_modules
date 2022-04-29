@@ -54,3 +54,7 @@
   color: white;
   margin: 0;
 }
+
+#layout-builder .layout-builder__link--add {
+  padding-left: 25px !important;
+}
