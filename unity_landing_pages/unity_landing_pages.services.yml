@@ -1,0 +1,5 @@
+services:
+  unity_landing_pages.route_subscriber:
+    class: Drupal\unity_landing_pages\Routing\LandingPagesRouteSubscriber
+    tags:
+      - { name: event_subscriber }

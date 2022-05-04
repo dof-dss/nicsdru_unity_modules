@@ -1,0 +1,60 @@
+#drupal-off-canvas ul.unity-landing-pages li {
+  padding-bottom: 0;
+}
+
+#drupal-off-canvas a.unity-landing-page--button-back {
+  border: 1px solid #fff;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 0 10px 0;
+  padding: 10px 16px;
+  color: white;
+}
+
+#drupal-off-canvas li a.unity-landing-pages--add-section,
+#drupal-off-canvas li a.unity-landing-pages--add-block {
+  padding: 20px 0;
+  width: 100%;
+  text-align: center;
+  margin: 10px 0 0 0;
+  background-color: #555;
+  color: white;
+  text-decoration: none;
+}
+
+#drupal-off-canvas li a.unity-landing-pages--add-section > *,
+#drupal-off-canvas li a.unity-landing-pages--add-block > * {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+#drupal-off-canvas a.unity-landing-pages--add-section:hover,
+#drupal-off-canvas a.unity-landing-pages--add-block:hover {
+  text-decoration: none;
+  background-color: #0a78cd;
+}
+
+.layout-builder-add-block .form-item-settings-admin-label label {
+  display: none;
+}
+
+.layout-builder-add-block .form-item-settings-admin-label {
+  font-size: 1.5em;
+}
+
+.layout-builder-add-block .field--type-link .field-multiple-table th,
+.layout-builder-add-block .field--type-block-field th {
+  background: #dbdbdb;
+}
+
+.layout-builder-add-block .field--type-link .field-multiple-table th h4,
+.layout-builder-add-block .field--type-entity-reference-revisions .field-multiple-table th h4,
+.layout-builder-add-block .field--type-block-field th h4 {
+  color: white;
+  margin: 0;
+}
+
+#layout-builder .layout-builder__link--add {
+  padding-left: 25px !important;
+}
