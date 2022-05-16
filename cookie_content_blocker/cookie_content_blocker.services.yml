@@ -1,0 +1,23 @@
+services:
+  cookie_content_blocker.library.manager:
+    class: Drupal\cookie_content_blocker\BlockedLibraryManager
+  cookie_content_blocker.element.processor:
+    class: Drupal\cookie_content_blocker\ElementProcessor\ElementProcessor
+    tags:
+      - { name: service_collector, call: addProcessor, tag: cookie_content_blocker_element_processor }
+  cookie_content_blocker.element.processor.default:
+    class: Drupal\cookie_content_blocker\ElementProcessor\DefaultProcessor
+    arguments: ['@config.factory']
+    tags:
+      - { name: cookie_content_blocker_element_processor }
+  cookie_content_blocker.element.processor.attached:
+    class: Drupal\cookie_content_blocker\ElementProcessor\AttachedProcessor
+    arguments: ['@cookie_content_blocker.library.manager']
+    tags:
+      - { name: cookie_content_blocker_element_processor }
+  html_response.attachments_processor.cookie_content_blocker:
+    public: false
+    class: Drupal\cookie_content_blocker\Render\HtmlResponseAttachmentsProcessor
+    decorates: html_response.attachments_processor
+    decoration_priority: 100
+    arguments: ['@cookie_content_blocker.library.manager', '@asset.resolver', '@config.factory', '@asset.css.collection_renderer', '@asset.js.collection_renderer', '@request_stack', '@renderer', '@module_handler']

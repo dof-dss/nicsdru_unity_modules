@@ -1,0 +1,10 @@
+cookie_content_blocker.admin_config:
+  title: 'Cookie Content Blocker'
+  description: 'Configure cookie content blocker.'
+  route_name: cookie_content_blocker.admin_config
+  parent: system.admin_config_ui
+cookie_content_blocker.settings:
+  title: 'General settings'
+  description: 'Manage general settings related to Cookie Content Blocker.'
+  route_name: cookie_content_blocker.settings
+  parent: cookie_content_blocker.admin_config

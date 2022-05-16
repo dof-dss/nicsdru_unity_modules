@@ -1,0 +1,69 @@
+# Schema for the configuration files of the Cookie Content Blocker module.
+
+cookie_content_blocker.settings:
+  type: config_object
+  label: 'Cookie Content Blocker'
+  mapping:
+    blocked_message:
+      type: text
+      label: 'Default message for blocked content'
+    button_text:
+      type: label
+      label: 'The change cookie consent button text'
+    enable_click_consent_change:
+      type: boolean
+      label: 'Enable changing consent by clicking on the blocked content'
+    show_button:
+      type: boolean
+      label: 'Show a button to change cookie consent below the message for blocked content'
+    consent_awareness:
+      type: mapping
+      label: 'Consent aware settings'
+      mapping:
+        accepted:
+          type: mapping
+          label: 'Consent given'
+          mapping:
+            event:
+              type: cookie_content_blocker.consent.event
+            cookie:
+              type: cookie_content_blocker.consent.cookie
+        declined:
+          type: mapping
+          label: 'Consent refused'
+          mapping:
+            event:
+              type: cookie_content_blocker.consent.event
+            cookie:
+              type: cookie_content_blocker.consent.cookie
+        change:
+          type: mapping
+          label: 'Consent changed'
+          mapping:
+            event:
+              type: cookie_content_blocker.consent.event
+
+cookie_content_blocker.consent.event:
+  type: mapping
+  label: 'Event'
+  mapping:
+    name:
+      type: string
+      label: 'Name'
+    selector:
+      type: string
+      label: 'Selector'
+
+cookie_content_blocker.consent.cookie:
+  type: mapping
+  label: 'Cookie'
+  mapping:
+    operator:
+      type: string
+      label: 'Operator'
+    name:
+      type: string
+      label: 'Name'
+    value:
+      type: string
+      label: 'Value'

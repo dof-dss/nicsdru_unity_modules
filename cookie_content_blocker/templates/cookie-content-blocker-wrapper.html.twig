@@ -1,0 +1,67 @@
+{#
+/**
+ * @file
+ * Default theme implementation for the Cookie content blocker wrapper.
+ *
+ * The original content is wrapped in a <script> tag with type "text/plain" to
+ * prevent browsers from loading content like image pixels.
+ *
+ * Available variables:
+ * - attributes: HTML attributes to be added to the element..
+ * - show_placeholder: Wheter or not a placeholder is visible to the end user.
+ * - button_classes: The classes for the button.
+ * - button_text: The cookie consent change button text.
+ * - blocked_message: The message to show when content is blocked.
+ * - original_content: The original content which is not rendered until
+ *   consent has been given. Note that <script> tags are replaced by a place-
+ *   holder tag in order to not break the 'text/plain' outer <script> tag.
+ *
+ * @see template_preprocess()
+ * @see template_process()
+ */
+#}
+
+{%
+  set blocker_classes = [
+    'js-cookie-content-blocker',
+    'cookie-content-blocker',
+    enable_click and not show_button ? 'js-cookie-content-blocker-click-consent-change cookie-content-blocker--click-consent-change',
+  ]
+%}
+{%
+  set button_classes = [
+  'button',
+  'cookie-content-blocker__button',
+  'js-cookie-content-blocker-consent-change-button',
+  ]
+%}
+
+{% if show_placeholder %}
+  <div{{ attributes.addClass(blocker_classes)}}>
+  <div class="cookie-content-blocker__message-wrapper">
+    {% if preview %}
+      <div class="cookie-content-blocker__preview">
+        {{ preview }}
+      </div>
+    {% endif %}
+    <div class="cookie-content-blocker__message">
+      {{ blocked_message }}
+    </div>
+   {% if show_button %}
+     <button{{ attributes.addClass(button_classes)}}>{{ button_text }}</button>
+   {% endif %}
+  </div>
+{% endif %}
+    <!-- Begin blocked content -->
+    {#
+     Always keep this 'text/plain' <script> wrapper around your original
+     content. When you are manually wrapping this logic around some content
+     make sure that your original content does not contain <script> tags,
+     but <scriptfake> tags instead. They will be swapped automatically when
+     the necessary cookies are accepted.
+    #}
+    <script class="js-cookie-content-blocker-content" type="text/plain">{{ original_content }}</script>
+    <!-- End blocked content -->
+{% if show_placeholder %}
+  </div>
+{% endif %}
