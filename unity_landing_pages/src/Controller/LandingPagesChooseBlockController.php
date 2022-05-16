@@ -2,6 +2,10 @@
 
 namespace Drupal\unity_landing_pages\Controller;
 
+use Drupal\Core\Block\BlockManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\layout_builder\Controller\ChooseBlockController;
 use Drupal\layout_builder\SectionStorageInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -23,6 +27,30 @@ class LandingPagesChooseBlockController extends ChooseBlockController {
    * @var \Drupal\Core\File\FileSystem
    */
   protected $fileSystem;
+
+  /**
+   * The module extension list.
+   *
+   * @var \Drupal\Core\Extension\ModuleExtensionList
+   */
+  protected $moduleExtensionList;
+
+  /**
+   * ChooseBlockController constructor.
+   *
+   * @param \Drupal\Core\Block\BlockManagerInterface $block_manager
+   *   The block manager.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
+   * @param \Drupal\Core\Session\AccountInterface $current_user
+   *   The current user.
+   * @param \Drupal\Core\Extension\ModuleExtensionList $extension_list_module
+   *   The module extension list.
+   */
+  public function __construct(BlockManagerInterface $block_manager, EntityTypeManagerInterface $entity_type_manager, AccountInterface $current_user, ModuleExtensionList $extension_list_module) {
+    parent::__construct($block_manager, $entity_type_manager, $current_user);
+    $this->moduleExtensionList = $extension_list_module;
+  }
 
   /**
    * {@inheritdoc}
@@ -52,7 +80,8 @@ class LandingPagesChooseBlockController extends ChooseBlockController {
    */
   public function inlineBlockList(SectionStorageInterface $section_storage, $delta, $region) {
     $build = parent::inlineBlockList($section_storage, $delta, $region);
-    $module_path_rel = drupal_get_path('module', 'unity_landing_pages');
+    //$module_path_rel = drupal_get_path('module', 'unity_landing_pages');
+    $module_path_rel = $this->moduleExtensionList('unity_landing_pages');
     $module_path_abs = $this->fileSystem->realpath($module_path_rel);
 
     // Support for Layout Builder Restrictions.
