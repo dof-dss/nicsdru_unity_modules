@@ -1,0 +1,126 @@
+<?php
+
+/**
+ * @file
+ * Contains the main module code for Cookie content blocker.
+ */
+
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cookie_content_blocker_help(string $route_name, RouteMatchInterface $route_match): string {
+  if ($route_name !== 'help.page.cookie_content_blocker') {
+    return '';
+  }
+
+  return '<pre>' . file_get_contents(__DIR__ . '/README.md') . '</pre>';
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function cookie_content_blocker_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'cookie_content_blocker/cookie-content-blocker';
+  $attachments['#attached']['drupalSettings']['cookieContentBlocker']['consentAwareness'] = Drupal::config('cookie_content_blocker.settings')->get('consent_awareness');
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Adds our pre render callback to elements (render arrays with a '#type') in
+ * order to provide our own defaults that don't overwrite hook_element_info()
+ * defaults of given element types.
+ *
+ * Add a '#cookie_content_blocker' property with a non empty value to your
+ * element to prevent loading of that elements content until consent has been
+ * given.
+ *
+ * @code
+ * [
+ *   '#cookie_content_blocker' => TRUE,
+ * ];
+ *
+ * // You can also use an array value with additional settings. Like a
+ * // message to show the visitor when content is blocked.
+ *
+ * [
+ *   '#cookie_content_blocker' => [
+ *     'blocked_message' => t('Your custom message'),
+ *   ],
+ * ];
+ * @endcode
+ *
+ * @see ElementProcessor::processElement()
+ */
+function cookie_content_blocker_element_info_alter(array &$info): void {
+  foreach ($info as $element_type => $element_info) {
+    $element_info['#pre_render'] = $element_info['#pre_render'] ?? [];
+    $element_info['#pre_render'][] = 'cookie_content_blocker.element.processor:processElement';
+    $info[$element_type] = $element_info;
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cookie_content_blocker_theme(): array {
+  return [
+    'cookie_content_blocker_wrapper' => [
+      'render element' => 'element',
+      'template' => 'cookie-content-blocker-wrapper',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for cookie_content_blocker_wrapper().
+ *
+ * @throws \Exception
+ */
+function cookie_content_blocker_preprocess_cookie_content_blocker_wrapper(array &$variables): void {
+  $element = &$variables['element'];
+  $options = $element['#cookie_content_blocker'];
+
+  /** @var \Drupal\Core\Render\RendererInterface $renderer */
+  $renderer = Drupal::service('renderer');
+
+  $blocked_message_raw = is_array($options['blocked_message']) ? $renderer->render($options['blocked_message']) : $options['blocked_message'];
+  $preview = is_array($options['preview']) ? $renderer->render($options['preview']) : $options['preview'];
+
+  $variables['blocked_message'] = ['#markup' => $blocked_message_raw];
+  $variables['original_content'] = ['#markup' => cookie_content_blocker_element_original_content($element)];
+  $variables['button_text'] = ['#plain_text' => $options['button_text']];
+  $variables['show_button'] = $options['show_button'];
+  $variables['show_placeholder'] = $options['show_placeholder'];
+  $variables['preview'] = ['#markup' => $preview];
+}
+
+/**
+ * Retrieves the original content for a render element.
+ *
+ * @param array $element
+ *   The element.
+ *
+ * @return \Drupal\Component\Render\MarkupInterface|string
+ *   The markup content.
+ *
+ * @throws \Exception
+ */
+function cookie_content_blocker_element_original_content(array $element) {
+  if (isset($element['#cookie_content_blocker']['original_content'])) {
+
+    /** @var \Drupal\Core\Render\RendererInterface $renderer */
+    $renderer = Drupal::service('renderer');
+
+    return Markup::create(preg_replace('/(<[\/]?script)/', '$1fake',
+      is_array($element['#cookie_content_blocker']['original_content']) ?
+        (string) $renderer->render($element['#cookie_content_blocker']['original_content']) :
+        $element['#cookie_content_blocker']['original_content']
+    ));
+  }
+
+  return Markup::create(preg_replace('/(<[\/]?script)/', '$1fake', $element['#children']));
+}

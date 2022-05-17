@@ -1,0 +1,14 @@
+name: Cookie Content Blocker
+type: module
+description: 'Prevent loading of content with a privacy impact until consent is given. This module needs a separate cookie consent manager.'
+core_version_requirement: ^8.8 || ^9
+php: '7.1'
+package: Cookie Content Blocker
+configure: cookie_content_blocker.settings
+dependencies:
+  - drupal:system (>=8.8)
+
+# Information added by Drupal.org packaging script on 2020-12-11
+version: '8.x-1.7'
+project: 'cookie_content_blocker'
+datestamp: 1607681414
