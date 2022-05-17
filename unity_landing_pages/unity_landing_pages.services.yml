@@ -3,4 +3,3 @@ services:
     class: Drupal\unity_landing_pages\Routing\LandingPagesRouteSubscriber
     tags:
       - { name: event_subscriber }
-    arguments: ['@extension.list.module']
