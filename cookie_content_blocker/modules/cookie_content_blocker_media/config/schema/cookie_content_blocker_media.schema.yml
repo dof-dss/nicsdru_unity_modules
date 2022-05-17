@@ -1,0 +1,28 @@
+# Schema for the configuration files of the Cookie Content Blocker - Media module.
+
+cookie_content_blocker_media.settings:
+  type: config_object
+  label: 'Cookie Content Blocker'
+  mapping:
+    providers:
+      type: sequence
+      label: 'Providers'
+      sequence:
+        type: cookie_content_blocker_media.provider.[%key]
+
+cookie_content_blocker_media.provider.*:
+  type: mapping
+  label: 'Provider'
+  mapping:
+    blocked:
+      type: boolean
+      label: 'Block media provided by this provider'
+    show_preview:
+      type: boolean
+      label: 'Show a preview for blocked content'
+    preview_style:
+      type: string
+      label: 'Preview style'
+    blocked_message:
+      type: text_format
+      label: 'Message for blocked media from this provider'

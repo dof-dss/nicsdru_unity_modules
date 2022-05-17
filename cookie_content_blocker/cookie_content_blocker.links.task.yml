@@ -1,0 +1,4 @@
+cookie_content_blocker.settings:
+  route_name: cookie_content_blocker.settings
+  title: General
+  base_route: cookie_content_blocker.settings
