@@ -38,7 +38,12 @@ class CookieContentBlocker extends CKEditorPluginBase implements CKEditorPluginC
    */
   public function __construct(array $configuration, $plugin_id, $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->modulePath = drupal_get_path('module', 'cookie_content_blocker');
+    // Remove this deprecated code ('drupal_get_path')
+    //$this->modulePath = drupal_get_path('module', 'cookie_content_blocker');
+    // Replace with a call to a Drupal service, which is not done in the correct way
+    // using Dependency Injection, but that would involve a lot of work and this is just
+    // a quick fix to this contrib module in order to get it through our CI checks.
+    $this->modulePath = \Drupal::service('extension.path.resolver')->getPath('module', 'cookie_content_blocker');
   }
 
   /**
