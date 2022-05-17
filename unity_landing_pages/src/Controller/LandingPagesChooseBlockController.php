@@ -24,7 +24,7 @@ class LandingPagesChooseBlockController extends ChooseBlockController {
    */
   protected $fileSystem;
 
-    /**
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
