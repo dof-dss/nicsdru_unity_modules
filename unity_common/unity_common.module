@@ -53,6 +53,12 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
       );
     }
   }
+
+  if ($form['#id'] == 'views-exposed-form-search-site-search' || $form['#id'] == 'views-exposed-form-search-search-page') {
+    if (\Drupal::moduleHandler()->moduleExists('inline_form_errors')) {
+      $form['#attached']['library'][] = 'unity_common/unity_common_validation.ife';
+    }
+  }
 }
 
 /**
