@@ -4,3 +4,9 @@ link_manager:
   dependencies:
     - core/jquery
     - core/drupal
+unity_common_validation.ife:
+  version: VERSION
+  js:
+    js/unity-common-validation.ife.js: { weight: -1 }
+  dependencies:
+    - clientside_validation_jquery/cv.jquery.validate.ife
