@@ -9,6 +9,7 @@ use Solarium\Core\Query\QueryInterface;
 use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
 use Drupal\Core\Language\Language;
 use Drupal\Component\Utility\Html;
+use \Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Implements hook_preprocess_views_view() for views_view.
@@ -162,12 +163,19 @@ function unity_search_pages_preprocess_block(&$variables) {
  */
 function unity_search_pages_preprocess_page_title(&$variables) {
   $current_route = \Drupal::routeMatch()->getRouteName();
-  $title = $variables['title'];
+  $title_raw = $variables['title'];
   $pattern = '/view.\w*search.\w*search_page/';
 
   if (preg_match($pattern, $current_route)) {
-    if (preg_match('/\w*\b\s- search results/', $title)) {
-      $new_title = strtok($title, ' -');
+    if ($title_raw instanceof TranslatableMarkup) {
+      $title_text = $title_raw->render();
+    } elseif (is_array($title_raw) && isset($title_raw['#markup'])) {
+      $title_text = $title_raw['#markup'];
+    } else {
+      $title_text = $title_raw;
+    }
+    if (preg_match('/\w*\b\s- search results/', $title_text)) {
+      $new_title = strtok($title_text, ' -');
       $variables['title'] = t($new_title);
       $variables['title_subtitle'] = t('search results');
     }
