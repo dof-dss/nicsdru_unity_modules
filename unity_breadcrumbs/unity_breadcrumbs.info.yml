@@ -1,0 +1,5 @@
+name: 'Unity Breadcrumbs'
+type: module
+description: 'Custom code to provide Unity sites with a breadcrumb'
+core_version_requirement: 8.x || ^9
+package: 'Unity'
