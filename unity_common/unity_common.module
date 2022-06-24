@@ -137,6 +137,7 @@ function unity_common_preprocess_image_formatter(array &$variables) {
     if ($file instanceof FileInterface === FALSE) {
       return;
     }
+    
 
     $mimetype = $file->getMimeType();
     $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
