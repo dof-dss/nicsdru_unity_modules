@@ -1,6 +1,6 @@
 [![CircleCI](https://circleci.com/gh/dof-dss/nicsdru_origins_modules.svg?style=svg)](https://circleci.com/gh/dof-dss/nicsdru_origins_modules)
 
-# DOF-DSS Unity Modules  
+# DOF-DSS Unity Modules
 
 A collection of modules for use across all Unity Drupal sites
 
