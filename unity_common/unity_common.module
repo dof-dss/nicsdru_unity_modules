@@ -142,7 +142,7 @@ function unity_common_preprocess_image_formatter(array &$variables) {
     $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
     $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
 
-    // Replace the original image_style render element with a bespoke HTML element
+    // Replace the original image_style render element with a bespoke HTML   element
     // with our custom CSS attached to render the file icon as background CSS.
     $variables['image'] = [
       '#type' => 'html_tag',
