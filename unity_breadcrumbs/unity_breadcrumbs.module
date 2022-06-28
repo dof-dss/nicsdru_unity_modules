@@ -15,11 +15,10 @@ use Drupal\Core\Link;
  *
  * Altering the search view page breadcrumbs, when facets are selected the breadcrumb trail is overwritten.
  */
-function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array
-$context) {
+function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
   $links = $breadcrumb->getLinks();
 
-  if ($links) {
+  if (!empty($links)) {
     // Loop through the links for links that have facet queries added to them and unset the link of the last breadcrumb.
     // The facets module breadcrumb links them all by default.
     foreach ($links as $link) {

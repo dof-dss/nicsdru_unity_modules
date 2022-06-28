@@ -93,21 +93,21 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
    *   The page title.
    */
   public function getTitleFromRoute($route = NULL) {
-    // For example, route
-    // view.publications_search.publication_search_page
+    // For example, route view.publications_search.publication_search_page
     // gives the title 'Publications'.
-    $title = "";
+    $title = '';
     $route_parts = explode('.', $route);
-    if ((count($route_parts) > 2) && isset($route_parts[2])) {
+    if ((count($route_parts) > 2) && !empty($route_parts[2])) {
       $title = $route_parts[2];
-      $title = str_replace(['search_page','_'],'',$title);
+      $title = str_replace(['search_page', '_'], '', $title);
       if (strlen($title) == 0) {
         // This must be the site search page.
         $title = 'Search';
-      } else {
+      }
+      else {
         // Capitalise the first letter and pluralise.
         $title = ucfirst($title);
-        if ((substr($title, -1) != 's') && ($title !== 'Evidence') ) {
+        if ((substr($title, -1) != 's') && ($title !== 'Evidence')) {
           $title .= 's';
         }
       }

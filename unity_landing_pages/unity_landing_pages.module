@@ -87,4 +87,3 @@ function unity_landing_pages_preprocess_page(&$variables) {
     $variables['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
   }
 }
-
