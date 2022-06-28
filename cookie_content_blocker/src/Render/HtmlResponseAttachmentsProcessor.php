@@ -13,7 +13,6 @@ use function defined;
 use function in_array;
 use function is_callable;
 use function uasort;
-use Drupal;
 use Drupal\Component\Utility\Crypt;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
@@ -105,7 +104,9 @@ class HtmlResponseAttachmentsProcessor extends CoreHtmlResponseAttachmentsProces
    *   The settings to merge.
    */
   protected function mergeSettings(array $settings): void {
-    self::$drupalSettings = NestedArray::mergeDeepArray([self::$drupalSettings, $settings], TRUE);
+    self::$drupalSettings = NestedArray::mergeDeepArray([
+        self::$drupalSettings, $settings
+    ], TRUE);
   }
 
   /**
@@ -182,7 +183,10 @@ class HtmlResponseAttachmentsProcessor extends CoreHtmlResponseAttachmentsProces
 
     // Merge attached settings back into the original assets.
     $placeholder_asset = AttachedAssets::createFromRenderArray($attached);
-    $this->allowedAssets->setSettings(NestedArray::mergeDeepArray([$placeholder_asset->getSettings(), $this->allowedAssets->getSettings()], TRUE));
+    $this->allowedAssets->setSettings(NestedArray::mergeDeepArray([
+        $placeholder_asset->getSettings(),
+        $this->allowedAssets->getSettings()
+    ], TRUE));
     $this->mergeSettings(['data' => $this->allowedAssets->getSettings()]);
     return $placeholder;
   }
@@ -195,7 +199,9 @@ class HtmlResponseAttachmentsProcessor extends CoreHtmlResponseAttachmentsProces
    */
   private function getCssAssetCollection(): array {
     $optimize_css = !defined('MAINTENANCE_MODE') && $this->config->get('css.preprocess');
-    return $this->getMergedAndSortedAssets(...$this->resolveAssets([$this->assetResolver, 'getCssAssets'], $optimize_css));
+    return $this->getMergedAndSortedAssets(...$this->resolveAssets([
+        $this->assetResolver, 'getCssAssets'
+        ], $optimize_css));
   }
 
   /**
