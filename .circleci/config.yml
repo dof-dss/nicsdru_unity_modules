@@ -14,7 +14,6 @@ jobs:
           name: Fetch phpcs and dependencies
           command: |
             composer require drupal/coder --prefer-stable --no-interaction --optimize-autoloader
-            composer require slevomat/coding-standard --prefer-stable --no-interaction --optimize-autoloader
             # Move vendor directory up a level as we don't want to code-check all of that.
             mv vendor ../
       - run:
@@ -36,6 +35,7 @@ jobs:
           name: Add OS and PHP extensions/config
           command: |
             sudo cp /home/circleci/origins_modules/.circleci/docker-php-circleci.ini /usr/local/etc/php/conf.d/
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt --allow-releaseinfo-change update
             sudo apt install -y libpng-dev
             sudo docker-php-ext-install gd
