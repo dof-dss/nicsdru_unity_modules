@@ -46,7 +46,7 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
   if (preg_match('/webform/', $form_id)) {
     if (\Drupal::moduleHandler()->moduleExists('honeypot')) {
       // Add in a hidden honeypot field to all webforms.
-      honeypot_add_form_protection(
+      \Drupal::service('honeypot')->addFormProtection(
         $form,
         $form_state,
         ['honeypot', 'time_restriction']

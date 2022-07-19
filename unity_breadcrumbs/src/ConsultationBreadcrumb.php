@@ -52,9 +52,9 @@ class ConsultationBreadcrumb implements BreadcrumbBuilderInterface {
   protected $titleResolver;
 
   /**
-   * Symfony\Component\HttpFoundation\RequestStack definition.
+   * RequestStack service object.
    *
-   * @var Symfony\Component\HttpFoundation\RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $request;
 

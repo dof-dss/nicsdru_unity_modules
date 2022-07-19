@@ -146,7 +146,7 @@ class UnityDrushCommands extends DrushCommands {
     // Ask user to confirm.
     if ($this->io()->confirm("Are you sure you want to delete all $content_type content", TRUE)) {
       $storage->delete($entities);
-      $this->io()->write("<comment>$bundle content deleted</comment>", TRUE);
+      $this->io()->write("<comment>$content_type content deleted</comment>", TRUE);
     }
   }
 

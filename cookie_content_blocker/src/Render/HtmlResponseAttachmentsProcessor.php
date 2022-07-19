@@ -220,7 +220,7 @@ class HtmlResponseAttachmentsProcessor extends CoreHtmlResponseAttachmentsProces
       return $$region ?? [];
     }
 
-    $optimize_js = !defined('MAINTENANCE_MODE') && !Drupal::state()->get('system.maintenance_mode') && $this->config->get('js.preprocess');
+    $optimize_js = !defined('MAINTENANCE_MODE') && !\Drupal::state()->get('system.maintenance_mode') && $this->config->get('js.preprocess');
     [
       [$allowed_js_assets_header, $allowed_js_assets_footer],
       [$allowed_js_assets_header_raw, $allowed_js_assets_footer_raw],

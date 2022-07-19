@@ -5,6 +5,7 @@
  * Custom code for search pages.
  */
 
+use Drupal\Core\Language\LanguageInterface;
 use Solarium\Core\Query\QueryInterface;
 use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
 use Drupal\Core\Language\Language;
@@ -194,5 +195,6 @@ function unity_search_pages_preprocess_page_title(&$variables) {
  */
 function unity_search_pages_search_api_solr_query_alter(QueryInterface $solarium_query, SearchApiQueryInterface $query) {
   // Maps to <str name="name">spelling_und</str> in solrconfig_extra.xml.
-  $solarium_query->getSpellcheck()->setDictionary(Language::LANGCODE_NOT_SPECIFIED);
+  /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+  $solarium_query->getSpellcheck()->setDictionary(LanguageInterface::LANGCODE_NOT_SPECIFIED);
 }

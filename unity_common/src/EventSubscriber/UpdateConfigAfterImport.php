@@ -19,14 +19,14 @@ class UpdateConfigAfterImport implements EventSubscriberInterface {
   /**
    * The upadte config from env service.
    *
-   * @var Drupal\unity_common\UpdateConfigFromEnvironment
+   * @var \Drupal\unity_common\UpdateConfigFromEnvironment
    */
   protected $updateEnvService;
 
   /**
    * Constructs a new UpdateConfigAfterImport instance.
    *
-   * @param Drupal\unity_common\UpdateConfigFromEnvironment $update_service
+   * @param \Drupal\unity_common\UpdateConfigFromEnvironment $update_service
    *   The entity type manager.
    */
   public function __construct(UpdateConfigFromEnvironment $update_service) {
