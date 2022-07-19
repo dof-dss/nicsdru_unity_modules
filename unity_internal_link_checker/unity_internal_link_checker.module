@@ -19,8 +19,8 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
   }
   if ($entity instanceof ContentEntityInterface) {
     if ($entity->hasField('body')) {
-      $body = $entity->get('body')->value;
-      $format = $entity->get('body')->format;
+      $body = $entity->get('body')->value ?? '';
+      $format = $entity->get('body')->format ?? '';
 
       $matches = [];
       // Look for all anchors in the body field.
@@ -37,7 +37,8 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
               $body = _convert_absolute_link($body, $original_link);
             }
           }
-          $entity->body->setValue(['value' => $body, 'format' => $format]);
+
+          $entity->set('body', ['value' => $body, 'format' => $format]);
         }
       }
     }

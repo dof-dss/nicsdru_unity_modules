@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Core\Database\Driver\mysql\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Console\Core\Style\DrupalStyle;
+use Drupal\node\NodeInterface;
 use Drush\Commands\DrushCommands;
 
 /**
@@ -123,9 +124,11 @@ class MigrationProcessors extends DrushCommands {
     // Make the revision current and publish if necessary.
     $revision = $this->nodeStorage->loadRevision($vid);
     if (!empty($revision)) {
+      /** @var \Drupal\Core\Entity\EditorialContentEntityBase $revision */
       $revision->isDefaultRevision(TRUE);
+
       if ($status == 1) {
-        $revision->setpublished();
+        $revision->setPublished();
       }
       $revision->save();
     }
@@ -134,7 +137,7 @@ class MigrationProcessors extends DrushCommands {
     if ($status == 1) {
       // If node was published on D7, make sure that it is published on D8.
       $node = $this->nodeStorage->load($nid);
-      if (!empty($node)) {
+      if ($node instanceof NodeInterface) {
         $node->status = 1;
         $node->set('moderation_state', 'published');
         $node->save();
@@ -146,9 +149,11 @@ class MigrationProcessors extends DrushCommands {
         select state from {workbench_moderation_node_history}
         where hid = (select max(hid) from {workbench_moderation_node_history} where nid = :nid)
           ", [':nid' => $nid])->fetchField();
+
       if ($moderation_status == 'needs_review') {
         // Make sure state is 'needs review' on D8.
         $node = $this->nodeStorage->load($nid);
+        /** @var \Drupal\node\NodeInterface $node */
         $node->set('moderation_state', 'needs_review');
         $node->save();
       }
