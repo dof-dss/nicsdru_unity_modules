@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Drupal\Core\Database\Connection;
+use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 /**
  * Processes [[{"type":"media","fid":"1234",...}]] tokens in content.
