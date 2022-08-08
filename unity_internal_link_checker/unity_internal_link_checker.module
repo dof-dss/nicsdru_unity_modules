@@ -19,8 +19,8 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
   }
   if ($entity instanceof ContentEntityInterface) {
     if ($entity->hasField('body')) {
-      $body = $entity->get('body')->value ?? '';
-      $format = $entity->get('body')->format ?? '';
+      $body = $entity->get('body')->value;
+      $format = $entity->get('body')->format;
 
       $matches = [];
       // Look for all anchors in the body field.
@@ -37,8 +37,7 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
               $body = _convert_absolute_link($body, $original_link);
             }
           }
-
-          $entity->set('body', ['value' => $body, 'format' => $format]);
+          $entity->body->setValue(['value' => $body, 'format' => $format]);
         }
       }
     }
@@ -84,8 +83,13 @@ function _convert_absolute_link(&$body_text, $original_link) {
 function _urls_to_replace(): string {
   // Get the host name of the site and remove the domain extension.
   $host = \Drupal::request()->getHost();
-  if (preg_match('/\S*?(uk|org|com|net|eu)/', $host, $matches)) {
+  if (preg_match('/\S*?\.(uk|com|net|eu)/', $host, $matches)) {
     $host = $matches[0];
+  }
+  else {
+    if (preg_match('/\S*?\.(org)/', $host, $matches)) {
+      $host = $matches[0];
+    }
   }
   // List all domain protocols and extensions for our platform and local environments.
   $protocols = ['http://', 'http://www.', 'https://', 'https://www.'];
