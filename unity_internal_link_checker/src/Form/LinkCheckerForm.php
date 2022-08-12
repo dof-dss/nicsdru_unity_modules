@@ -41,7 +41,6 @@ class LinkCheckerForm extends ConfigFormBase {
     $message_exclude .= "<br/>For example adding https://employmenttribunalsni.co.uk/OITFET_IWS/Login.aspx will keep this link as it is.";
     $message_exclude .= "<br/>You may add as many domain names as you like, along with the appropriate 'http' or 'https' protocol.";
 
-
     $form['site_url_list'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Site URLs'),
