@@ -76,7 +76,7 @@ class LinkCheckerForm extends ConfigFormBase {
             $pass = TRUE;
           }
           if (!$pass) {
-            $form_state->setErrorByName('site_url_list', $this->t("URLs must start with 'http' or 'https'"));
+            $form_state->setErrorByName($form_key, $this->t("URLs must start with 'http' or 'https'"));
           }
         }
       }
