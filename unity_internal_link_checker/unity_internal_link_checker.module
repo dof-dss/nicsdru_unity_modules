@@ -52,6 +52,8 @@ function _convert_absolute_link(&$body_text, $original_link) {
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
+  $urls_to_exclude = explode(PHP_EOL, $config->get('site_url_list_exclude'));
+
   $replace_url_list = _urls_to_replace() . $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
@@ -62,6 +64,14 @@ function _convert_absolute_link(&$body_text, $original_link) {
   foreach ($replace_url_list as $replace_url) {
     // Make sure url is 'clean'.
     $replace_url = str_replace(["\n", "\t", "\r"], '', $replace_url);
+    // We have some url's to exclude so check those first.
+    foreach ($urls_to_exclude as $exclude_url) {
+      $exclude_url = str_replace(["\n", "\t", "\r"], '', $exclude_url);
+    }
+    // If we have some excluded urls's then don't convert to a relative url and break here.
+    if ($original_link == $exclude_url) {
+      break;
+    }
     // Make sure that there is a trailing slash.
     if (!preg_match('|\/$|', $replace_url)) {
       $replace_url .= '/';
