@@ -21,20 +21,26 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
     if ($entity->hasField('body')) {
       $body = $entity->get('body')->value;
       $format = $entity->get('body')->format;
-
+      // Get list of urls to exclude (these have been added at /admin/config/unity_internal_link_checker/link_checker_form).
+      $config = \Drupal::config('unity_internal_link_checker.linksettings');
+      // Make sure the array items are clean.
+      $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
       $matches = [];
       // Look for all anchors in the body field.
       if (preg_match_all('|href\=[\'"]+([^ >"\']*)[\'"]+[^>]*>|', $body, $matches)) {
         if (count($matches) > 1) {
           foreach ($matches[1] as $original_link) {
-            // So we have an anchor, does it look like a relative link
-            // or an absolute?
-            $matches2 = [];
-            if (preg_match('|http://(.*)|', $original_link, $matches2) ||
-              preg_match('|https://(.*)|', $original_link, $matches2)) {
-              // This is an absolute URL does it match one of the domain names specified
-              // at /admin/config/unity_internal_link_checker/link_checker_form ?
-              $body = _convert_absolute_link($body, $original_link);
+            // If we have any URL's to exclude then don't convert to a relative URL.
+            if (!in_array($original_link, $exclude_url_list)) {
+              // So we have an anchor, does it look like a relative link
+              // or an absolute?
+              $matches2 = [];
+              if (preg_match('|http://(.*)|', $original_link, $matches2) ||
+                preg_match('|https://(.*)|', $original_link, $matches2)) {
+                // This is an absolute URL does it match one of the domain names specified
+                // at /admin/config/unity_internal_link_checker/link_checker_form ?
+                $body = _convert_absolute_link($body, $original_link);
+              }
             }
           }
           $entity->body->setValue(['value' => $body, 'format' => $format]);
@@ -52,8 +58,6 @@ function _convert_absolute_link(&$body_text, $original_link) {
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $urls_to_exclude = explode(PHP_EOL, $config->get('site_url_list_exclude'));
-
   $replace_url_list = _urls_to_replace() . $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
@@ -64,24 +68,18 @@ function _convert_absolute_link(&$body_text, $original_link) {
   foreach ($replace_url_list as $replace_url) {
     // Make sure url is 'clean'.
     $replace_url = str_replace(["\n", "\t", "\r"], '', $replace_url);
-    // We have some url's to exclude so check those first.
-    foreach ($urls_to_exclude as $exclude_url) {
-      $exclude_url = str_replace(["\n", "\t", "\r"], '', $exclude_url);
-    }
-    // If we have some excluded urls's then don't convert to a relative url and break here.
-    if ($original_link == $exclude_url) {
-      break;
-    }
     // Make sure that there is a trailing slash.
     if (!preg_match('|\/$|', $replace_url)) {
       $replace_url .= '/';
     }
+    // Parse the original link as we need the path from it to replace in the body text.
+    $original_link_parsed = parse_url($original_link);
     // Does the start of this link match one of the
     // urls that we are looking for ?
-    if (strpos($original_link, $replace_url) !== FALSE) {
+    if (str_contains($original_link, $replace_url)) {
       // We have a match, change this absolute link
       // to a relative link.
-      $body_text = str_replace($replace_url, '/', $body_text);
+      $body_text = preg_replace('~' . $original_link . '~', $original_link_parsed['path'], $body_text, '1');
     }
   }
   return $body_text;
