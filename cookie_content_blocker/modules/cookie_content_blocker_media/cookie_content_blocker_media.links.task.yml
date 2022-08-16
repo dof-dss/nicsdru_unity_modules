@@ -1,4 +1,0 @@
-cookie_content_blocker_media.settings:
-  title: Media settings
-  route_name: cookie_content_blocker_media.settings
-  base_route: cookie_content_blocker_media.settings

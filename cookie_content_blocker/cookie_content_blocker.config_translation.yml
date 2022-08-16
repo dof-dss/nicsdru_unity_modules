@@ -1,5 +1,0 @@
-cookie_content_blocker.settings:
-  title: 'Cookie Content Blocker'
-  base_route_name: cookie_content_blocker.settings
-  names:
-    - cookie_content_blocker.settings
