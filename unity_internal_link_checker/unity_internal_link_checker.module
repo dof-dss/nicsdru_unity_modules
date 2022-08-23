@@ -39,7 +39,7 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
                 preg_match('|https://(.*)|', $original_link, $matches2)) {
                 // This is an absolute URL does it match one of the domain names specified
                 // at /admin/config/unity_internal_link_checker/link_checker_form ?
-                $body = _convert_absolute_link($body, $original_link);
+                $body = unity_internal_link_checker__convert_absolute_link($body, $original_link);
               }
             }
           }
@@ -53,12 +53,12 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
 /**
  * Utility function to convert internal link to relative.
  */
-function _convert_absolute_link(&$body_text, $original_link) {
+function unity_internal_link_checker__convert_absolute_link(&$body_text, $original_link) {
   // Get list of urls to replace
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $replace_url_list = _urls_to_replace() . $config->get('site_url_list');
+  $replace_url_list = unity_internal_link_checker__urls_to_replace() . $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
       ->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
@@ -87,7 +87,7 @@ function _convert_absolute_link(&$body_text, $original_link) {
 /**
  * Utility function to add all domains and extensions for the current site.
  */
-function _urls_to_replace(): string {
+function unity_internal_link_checker__urls_to_replace(): string {
   // Get the host name of the site and remove the domain extension.
   $host = \Drupal::request()->getHost();
   if (preg_match('/\S*?\.(uk|com|net|eu)/', $host, $matches)) {
