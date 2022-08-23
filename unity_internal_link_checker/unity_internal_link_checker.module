@@ -74,13 +74,13 @@ function _convert_absolute_link(&$body_text, $original_link) {
     if (!preg_match('|\/$|', $replace_url)) {
       $replace_url .= '/';
     }
-      // Does the start of this link match one of the
-      // urls that we are looking for ?
-      if (str_contains($original_link, $replace_url)) {
-        // We have a match, change this absolute link to a relative link. Only target href values.
-        $body_text = preg_replace('~href\=[\'"]+' . $replace_url . '~', 'href="/', $body_text, 1);
-      }
+    // Does the start of this link match one of the
+    // urls that we are looking for ?
+    if (str_contains($original_link, $replace_url)) {
+      // We have a match, change this absolute link to a relative link. Only target href values.
+      $body_text = preg_replace('~href\=[\'"]+' . $replace_url . '~', 'href="/', $body_text, 1);
     }
+  }
   return $body_text;
 }
 
