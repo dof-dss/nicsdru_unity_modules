@@ -65,6 +65,7 @@ function _convert_absolute_link(&$body_text, $original_link) {
     return $body_text;
   }
   $replace_url_list = explode(PHP_EOL, $replace_url_list);
+  // Remove empty array items.
   $replace_url_list = array_filter($replace_url_list);
   foreach ($replace_url_list as $replace_url) {
     // Make sure url is 'clean'.
@@ -76,8 +77,7 @@ function _convert_absolute_link(&$body_text, $original_link) {
       // Does the start of this link match one of the
       // urls that we are looking for ?
       if (str_contains($original_link, $replace_url)) {
-        // We have a match, change this absolute link
-        // to a relative link.
+        // We have a match, change this absolute link to a relative link. Only target href values.
         $body_text = preg_replace('~href\=[\'"]+' . $replace_url . '~', 'href="/', $body_text, 1);
       }
     }
