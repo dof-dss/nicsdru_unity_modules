@@ -33,7 +33,7 @@ jobs:
     <<: *docker_image
     steps:
       - checkout:
-          path: ~/origins_modules
+          path: ~/nicsdru_unity_modules
       - run:
           name: Fetch latest Drupal version
           command: |
@@ -43,15 +43,18 @@ jobs:
           name: Download dependent contrib modules.
           command: |
             cd $PROJECT_ROOT
-            composer require drupal/entity_embed mglaman/drupal-check composer/xdebug-handler:2.0.1 --no-interaction
+            composer require --no-interaction drupal/core-dev drupal/entity_embed mglaman/drupal-check \
+              drupal/search_api_solr drupal/structure_sync
       - run:
           name: Move custom code into position
-          command: mv ~/origins_modules $PROJECT_ROOT/web/modules/origins
+          command: |
+            mkdir -p $PROJECT_ROOT/web/modules/custom
+            mv ~/nicsdru_unity_modules $PROJECT_ROOT/web/modules/custom/
       - run:
           name: Deprecated code check
           command: |
             cd $PROJECT_ROOT/web
-            ../vendor/bin/drupal-check modules/origins
+            ../vendor/bin/drupal-check modules/custom
 
 workflows:
   version: 2
