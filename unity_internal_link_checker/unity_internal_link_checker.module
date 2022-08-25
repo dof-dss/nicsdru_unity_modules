@@ -21,20 +21,26 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
     if ($entity->hasField('body')) {
       $body = $entity->get('body')->value;
       $format = $entity->get('body')->format;
-
+      // Get list of urls to exclude (these have been added at /admin/config/unity_internal_link_checker/link_checker_form).
+      $config = \Drupal::config('unity_internal_link_checker.linksettings');
+      // Make sure the array items are clean.
+      $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
       $matches = [];
       // Look for all anchors in the body field.
       if (preg_match_all('|href\=[\'"]+([^ >"\']*)[\'"]+[^>]*>|', $body, $matches)) {
         if (count($matches) > 1) {
           foreach ($matches[1] as $original_link) {
-            // So we have an anchor, does it look like a relative link
-            // or an absolute?
-            $matches2 = [];
-            if (preg_match('|http://(.*)|', $original_link, $matches2) ||
-              preg_match('|https://(.*)|', $original_link, $matches2)) {
-              // This is an absolute URL does it match one of the domain names specified
-              // at /admin/config/unity_internal_link_checker/link_checker_form ?
-              $body = _convert_absolute_link($body, $original_link);
+            // If we have any URL's to exclude then don't convert to a relative URL.
+            if (!in_array($original_link, $exclude_url_list)) {
+              // So we have an anchor, does it look like a relative link
+              // or an absolute?
+              $matches2 = [];
+              if (preg_match('|http://(.*)|', $original_link, $matches2) ||
+                preg_match('|https://(.*)|', $original_link, $matches2)) {
+                // This is an absolute URL does it match one of the domain names specified
+                // at /admin/config/unity_internal_link_checker/link_checker_form ?
+                $body = unity_internal_link_checker__convert_absolute_link($body, $original_link);
+              }
             }
           }
           $entity->body->setValue(['value' => $body, 'format' => $format]);
@@ -47,18 +53,20 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
 /**
  * Utility function to convert internal link to relative.
  */
-function _convert_absolute_link(&$body_text, $original_link) {
+function unity_internal_link_checker__convert_absolute_link(&$body_text, $original_link) {
   // Get list of urls to replace
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $replace_url_list = _urls_to_replace() . $config->get('site_url_list');
+  $replace_url_list = unity_internal_link_checker__urls_to_replace() . $config->get('site_url_list');
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
       ->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
     return $body_text;
   }
   $replace_url_list = explode(PHP_EOL, $replace_url_list);
+  // Remove empty array items.
+  $replace_url_list = array_filter($replace_url_list);
   foreach ($replace_url_list as $replace_url) {
     // Make sure url is 'clean'.
     $replace_url = str_replace(["\n", "\t", "\r"], '', $replace_url);
@@ -68,10 +76,9 @@ function _convert_absolute_link(&$body_text, $original_link) {
     }
     // Does the start of this link match one of the
     // urls that we are looking for ?
-    if (strpos($original_link, $replace_url) !== FALSE) {
-      // We have a match, change this absolute link
-      // to a relative link.
-      $body_text = str_replace($replace_url, '/', $body_text);
+    if (str_contains($original_link, $replace_url)) {
+      // We have a match, change this absolute link to a relative link. Only target href values.
+      $body_text = preg_replace('~href\=[\'"]+' . $replace_url . '~', 'href="/', $body_text, 1);
     }
   }
   return $body_text;
@@ -80,7 +87,7 @@ function _convert_absolute_link(&$body_text, $original_link) {
 /**
  * Utility function to add all domains and extensions for the current site.
  */
-function _urls_to_replace(): string {
+function unity_internal_link_checker__urls_to_replace(): string {
   // Get the host name of the site and remove the domain extension.
   $host = \Drupal::request()->getHost();
   if (preg_match('/\S*?\.(uk|com|net|eu)/', $host, $matches)) {
