@@ -98,7 +98,7 @@ function unity_internal_link_checker__urls_to_replace(): string {
       $host = $matches[0];
     }
   }
-  // Strip 'www' from hostname
+  // Strip 'www' from hostname.
   $host = str_replace('www.', '', $host);
   // List all domain protocols and extensions for our platform and local environments.
   $protocols = ['http://', 'http://www.', 'https://', 'https://www.'];
