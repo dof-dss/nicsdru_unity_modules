@@ -7,6 +7,7 @@
 
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 
 /**
  * Implements hook_entity_presave().
@@ -19,8 +20,8 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
   }
   if ($entity instanceof ContentEntityInterface) {
     if ($entity->hasField('body')) {
-      $body = $entity->get('body')->value;
-      $format = $entity->get('body')->format;
+      $body = $entity->get('body')->value ?? '';
+      $format = $entity->get('body')->format ?? '';
       // Get list of urls to exclude (these have been added at /admin/config/unity_internal_link_checker/link_checker_form).
       $config = \Drupal::config('unity_internal_link_checker.linksettings');
       // Make sure the array items are clean.
@@ -43,7 +44,7 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
               }
             }
           }
-          $entity->body->setValue(['value' => $body, 'format' => $format]);
+          $entity->set('body', ['value' => $body, 'format' => $format]);
         }
       }
     }
