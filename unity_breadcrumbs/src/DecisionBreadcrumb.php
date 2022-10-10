@@ -93,14 +93,12 @@ class DecisionBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node');
-      }
+    if ($this->node instanceof NodeInterface == FALSE) {
+      $this->node = $this->entityTypeManager->getStorage('node');
+    }
 
-      if ($this->node->bundle() == 'decision') {
-        $match = TRUE;
-      }
+    if ($this->node->bundle() == 'decision') {
+      $match = TRUE;
     }
 
     return $match;

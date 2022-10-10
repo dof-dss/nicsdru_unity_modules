@@ -90,14 +90,12 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node')->load($this->node);
-      }
+    if ($this->node instanceof NodeInterface == FALSE) {
+      $this->node = $this->entityTypeManager->getStorage('node')->load($this->node);
+    }
 
-      if ($this->node->bundle() == 'webform') {
-        $match = TRUE;
-      }
+    if ($this->node->bundle() == 'webform') {
+      $match = TRUE;
     }
 
     return $match;
