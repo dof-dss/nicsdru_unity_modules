@@ -16,6 +16,7 @@ namespace Drupal\unity_breadcrumbs;
  * > /evidence
  * > /current-page-title
  */
+
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
@@ -93,14 +94,12 @@ class EvidenceBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node');
-      }
+    if ($this->node instanceof NodeInterface == FALSE) {
+      $this->node = $this->entityTypeManager->getStorage('node');
+    }
 
-      if ($this->node->bundle() == 'evidence') {
-        $match = TRUE;
-      }
+    if ($this->node->bundle() == 'evidence') {
+      $match = TRUE;
     }
 
     return $match;

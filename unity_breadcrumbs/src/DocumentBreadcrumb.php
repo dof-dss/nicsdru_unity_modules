@@ -5,21 +5,25 @@ namespace Drupal\unity_breadcrumbs;
 /**
  * @file
  * Generates the breadcrumb trail for content including:
- * - Webform
+ * - Decision
  *
  * In the format:
  * > Home
+ * > Documents
  * > current-page-title
  *
  * > <front>
+ * > /documents
  * > /current-page-title
  */
+
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -27,7 +31,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * {@inheritdoc}
  */
-class WebformBreadcrumb implements BreadcrumbBuilderInterface {
+class DocumentBreadcrumb implements BreadcrumbBuilderInterface {
 
   /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -49,7 +53,7 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
   protected $titleResolver;
 
   /**
-   * Symfony\Component\HttpFoundation\RequestStack definition.
+   * RequestStack service object.
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
    */
@@ -62,6 +66,7 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->titleResolver = $title_resolver;
     $this->request = $request;
+
   }
 
   /**
@@ -81,7 +86,6 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
   public function applies(RouteMatchInterface $route_match) {
     $match = FALSE;
     $route_name = $route_match->getRouteName();
-
     if ($route_name == 'entity.node.canonical') {
       $this->node = $route_match->getParameter('node');
     }
@@ -91,10 +95,10 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
     }
 
     if ($this->node instanceof NodeInterface == FALSE) {
-      $this->node = $this->entityTypeManager->getStorage('node')->load($this->node);
+      $this->node = $this->entityTypeManager->getStorage('node');
     }
 
-    if ($this->node->bundle() == 'webform') {
+    if ($this->node->bundle() == 'document') {
       $match = TRUE;
     }
 
@@ -108,6 +112,7 @@ class WebformBreadcrumb implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
     $title_resolver = $this->titleResolver->getTitle($this->request->getCurrentRequest(), $route_match->getRouteObject());
     $links[] = Link::createFromRoute(t('Home'), '<front>');
+    $links[] = Link::fromTextandUrl(t('Documents'), Url::fromRoute('view.documents_search.documents_search_page'));
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
     $breadcrumb->addCacheContexts(['url.path']);

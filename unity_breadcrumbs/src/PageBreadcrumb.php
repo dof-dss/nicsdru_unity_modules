@@ -89,14 +89,12 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node');
-      }
+    if ($this->node instanceof NodeInterface == FALSE) {
+      $this->node = $this->entityTypeManager->getStorage('node');
+    }
 
-      if (($this->node->bundle() == 'basic_page') || ($this->node->bundle() == 'page')) {
-        $match = TRUE;
-      }
+    if (($this->node->bundle() == 'basic_page') || ($this->node->bundle() == 'page')) {
+      $match = TRUE;
     }
 
     return $match;
