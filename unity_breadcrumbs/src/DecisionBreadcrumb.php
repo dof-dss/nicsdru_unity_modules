@@ -4,34 +4,45 @@ namespace Drupal\unity_breadcrumbs;
 
 /**
  * @file
- * Generates the breadcrumb trail for search page(s)
+ * Generates the breadcrumb trail for content including:
+ * - Decision
  *
  * In the format:
  * > Home
+ * > Decisions
  * > current-page-title
  *
  * > <front>
+ * > /decisions
  * > /current-page-title
  */
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * {@inheritdoc}
  */
-class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
+class DecisionBreadcrumb implements BreadcrumbBuilderInterface {
 
   /**
-   * RequestStack service object.
-   *
-   * @var \Symfony\Component\HttpFoundation\RequestStack
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $request;
+  protected $entityTypeManager;
+
+  /**
+   * Node object, or null if on a non-node page.
+   *
+   * @var \Drupal\node\Entity\Node
+   */
+  protected $node;
 
   /**
    * The title resolver.
@@ -41,11 +52,20 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
   protected $titleResolver;
 
   /**
+   * RequestStack service object.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $request;
+
+  /**
    * Class constructor.
    */
-  public function __construct(RequestStack $request, TitleResolverInterface $title_resolver) {
-    $this->request = $request;
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $request) {
+    $this->entityTypeManager = $entity_type_manager;
     $this->titleResolver = $title_resolver;
+    $this->request = $request;
+
   }
 
   /**
@@ -53,8 +73,9 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('request_stack'),
-      $container->get('title_resolver')
+      $container->get('entity_type.manager'),
+      $container->get('title_resolver'),
+      $container->get('request_stack')
     );
   }
 
@@ -64,23 +85,25 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
   public function applies(RouteMatchInterface $route_match) {
     $match = FALSE;
     $route_name = $route_match->getRouteName();
-    $view_names = [
-      'view.news_search.news_search_page',
-      'view.publications_search.publication_search_page',
-      'view.evidence_search.evidence_search_page',
-      'view.consultations_search.consultations_search_page',
-      'view.search.search_page',
-      'view.documents_search.documents_search_page',
-      'view.decision_search.decision_search_page',
-    ];
+    if ($route_name == 'entity.node.canonical') {
+      $this->node = $route_match->getParameter('node');
+    }
 
-    foreach ($view_names as $view_name) {
-      if ($route_name == $view_name) {
+    if ($route_name == 'entity.node.preview') {
+      $this->node = $route_match->getParameter('node_preview');
+    }
+
+    if (!empty($this->node)) {
+      if ($this->node instanceof NodeInterface == FALSE) {
+        $this->node = $this->entityTypeManager->getStorage('node');
+      }
+
+      if ($this->node->bundle() == 'decision') {
         $match = TRUE;
       }
     }
-    return $match;
 
+    return $match;
   }
 
   /**
@@ -90,10 +113,10 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
     $title_resolver = $this->titleResolver->getTitle($this->request->getCurrentRequest(), $route_match->getRouteObject());
     $links[] = Link::createFromRoute(t('Home'), '<front>');
+    $links[] = Link::fromTextandUrl(t('Decisions'), Url::fromRoute('view.decision_search.decision_search_page'));
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
     $breadcrumb->addCacheContexts(['url.path']);
-
     return $breadcrumb;
   }
 
