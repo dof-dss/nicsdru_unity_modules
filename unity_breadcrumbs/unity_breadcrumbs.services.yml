@@ -34,3 +34,13 @@ services:
     arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
+  unity_breadcrumbs.breadcrumb.decision:
+    class: Drupal\unity_breadcrumbs\DecisionBreadcrumb
+    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    tags:
+      - { name: breadcrumb_builder, priority: 100 }
+  unity_breadcrumbs.breadcrumb.document:
+    class: Drupal\unity_breadcrumbs\DocumentBreadcrumb
+    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    tags:
+      - { name: breadcrumb_builder, priority: 100 }
