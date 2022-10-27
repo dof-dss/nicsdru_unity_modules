@@ -1,7 +1,0 @@
-cookie_content_blocker_media.settings:
-  path: '/admin/config/user-interface/cookie-content-blocker/media'
-  defaults:
-    _form: '\Drupal\cookie_content_blocker_media\Form\MediaSettingsForm'
-    _title: 'Media settings'
-  requirements:
-    _permission: 'administer cookie content blocker'

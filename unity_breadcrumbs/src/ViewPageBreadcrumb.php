@@ -18,7 +18,6 @@ use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -28,9 +27,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
 
   /**
-   * Symfony\Component\HttpFoundation\RequestStack definition.
+   * RequestStack service object.
    *
-   * @var Symfony\Component\HttpFoundation\RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $request;
 
@@ -71,6 +70,8 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
       'view.evidence_search.evidence_search_page',
       'view.consultations_search.consultations_search_page',
       'view.search.search_page',
+      'view.documents_search.documents_search_page',
+      'view.decision_search.decision_search_page',
     ];
 
     foreach ($view_names as $view_name) {

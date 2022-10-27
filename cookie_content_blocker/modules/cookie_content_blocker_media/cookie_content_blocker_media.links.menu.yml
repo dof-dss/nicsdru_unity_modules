@@ -1,5 +1,0 @@
-cookie_content_blocker_media.settings:
-  title: Media settings
-  description: Manage settings related to Cookie content blocker - Media.
-  route_name: cookie_content_blocker_media.settings
-  parent: cookie_content_blocker.admin_config
