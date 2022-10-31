@@ -9,6 +9,8 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Controller\TitleResolverInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Generates the breadcrumb trail for HTML publications.
@@ -35,10 +37,26 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
   protected $node;
 
   /**
+   * The title resolver.
+   *
+   * @var \Drupal\Core\Controller\TitleResolverInterface
+   */
+  protected $titleResolver;
+
+  /**
+   * Symfony\Component\HttpFoundation\RequestStack definition.
+   *
+   * @var Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $request;
+
+  /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $request) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->titleResolver = $title_resolver;
+    $this->request = $request;
   }
 
   /**
@@ -46,7 +64,10 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('title_resolver'),
+      $container->get('request_stack')
+
     );
   }
 
@@ -87,7 +108,7 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public function build(RouteMatchInterface $route_match) {
     $breadcrumb = new Breadcrumb();
-
+    $title_resolver = $this->titleResolver->getTitle($this->request->getCurrentRequest(), $route_match->getRouteObject());
     $links = [];
 
     if ($this->node instanceof NodeInterface) {
@@ -98,6 +119,7 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
       if ($pub_gateway_node instanceof NodeInterface) {
         $links[] = Link::createFromRoute(t($pub_gateway_node->label()), 'entity.node.canonical', ['node' => $pub_gateway_node->id()]);
       }
+      $links[] = Link::createFromRoute($title_resolver, '<none>');
     }
 
     $breadcrumb->setLinks($links);
