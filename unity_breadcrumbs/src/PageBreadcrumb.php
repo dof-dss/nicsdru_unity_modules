@@ -20,7 +20,6 @@ use Drupal\Core\Controller\TitleResolverInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -50,9 +49,9 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
   protected $titleResolver;
 
   /**
-   * Symfony\Component\HttpFoundation\RequestStack definition.
+   * RequestStack service object.
    *
-   * @var Symfony\Component\HttpFoundation\RequestStack
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
   protected $request;
 

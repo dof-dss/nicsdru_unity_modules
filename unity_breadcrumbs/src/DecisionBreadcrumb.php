@@ -5,15 +5,15 @@ namespace Drupal\unity_breadcrumbs;
 /**
  * @file
  * Generates the breadcrumb trail for content including:
- * - News
+ * - Decision
  *
  * In the format:
  * > Home
- * > News
+ * > Decisions
  * > current-page-title
  *
  * > <front>
- * > /news
+ * > /decisions
  * > /current-page-title
  */
 use Drupal\Core\Breadcrumb\Breadcrumb;
@@ -30,7 +30,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * {@inheritdoc}
  */
-class NewsBreadcrumb implements BreadcrumbBuilderInterface {
+class DecisionBreadcrumb implements BreadcrumbBuilderInterface {
 
   /**
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
@@ -65,6 +65,7 @@ class NewsBreadcrumb implements BreadcrumbBuilderInterface {
     $this->entityTypeManager = $entity_type_manager;
     $this->titleResolver = $title_resolver;
     $this->request = $request;
+
   }
 
   /**
@@ -97,7 +98,7 @@ class NewsBreadcrumb implements BreadcrumbBuilderInterface {
         $this->node = $this->entityTypeManager->getStorage('node');
       }
 
-      if ($this->node->bundle() == 'news') {
+      if ($this->node->bundle() == 'decision') {
         $match = TRUE;
       }
     }
@@ -112,7 +113,7 @@ class NewsBreadcrumb implements BreadcrumbBuilderInterface {
     $breadcrumb = new Breadcrumb();
     $title_resolver = $this->titleResolver->getTitle($this->request->getCurrentRequest(), $route_match->getRouteObject());
     $links[] = Link::createFromRoute(t('Home'), '<front>');
-    $links[] = Link::fromTextandUrl(t('News'), Url::fromRoute('view.news_search.news_search_page'));
+    $links[] = Link::fromTextandUrl(t('Decisions'), Url::fromRoute('view.decision_search.decision_search_page'));
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
     $breadcrumb->addCacheContexts(['url.path']);

@@ -5,6 +5,7 @@
  * Custom code for search pages.
  */
 
+use Drupal\Core\Language\LanguageInterface;
 use Solarium\Core\Query\QueryInterface;
 use Drupal\search_api\Query\QueryInterface as SearchApiQueryInterface;
 use Drupal\Core\Language\Language;
@@ -26,6 +27,8 @@ function unity_search_pages_preprocess_views_view(array &$variables) {
     'evidence_search_page',
     'questions_search_page',
     'search_page',
+    'decision_search_page',
+    'documents_search_page',
   ];
 
   foreach ($display_ids as $display_id) {
@@ -84,6 +87,8 @@ function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array
     'evidence_search_page',
     'questions_search_page',
     'search_page',
+    'decision_search_page',
+    'documents_search_page',
   ];
 
   foreach ($search_pages as $search_page) {
@@ -103,6 +108,8 @@ function unity_search_pages_preprocess_form(array &$variables) {
     case "views-exposed-form-consultations-search-consultations-search-page":
     case "views-exposed-form-questions-search-questions-search-page":
     case "views-exposed-form-evidence-search-evidence-search-page":
+    case "views-exposed-form-decision-search-decision-search-page":
+    case "views-exposed-form-documents-search-documents-search-page":
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
       break;
@@ -121,6 +128,8 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Questions to the Chief Constable',
     'Evidence',
     'Search',
+    'Decision',
+    'Documents',
   ];
 
   $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
@@ -143,6 +152,8 @@ function unity_search_pages_preprocess_block(&$variables) {
       'consultations',
       'questions',
       'evidence',
+      'decision',
+      'documents',
     ];
 
     $plugin_id = $variables['plugin_id'];
@@ -194,5 +205,6 @@ function unity_search_pages_preprocess_page_title(&$variables) {
  */
 function unity_search_pages_search_api_solr_query_alter(QueryInterface $solarium_query, SearchApiQueryInterface $query) {
   // Maps to <str name="name">spelling_und</str> in solrconfig_extra.xml.
-  $solarium_query->getSpellcheck()->setDictionary(Language::LANGCODE_NOT_SPECIFIED);
+  /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+  $solarium_query->getSpellcheck()->setDictionary(LanguageInterface::LANGCODE_NOT_SPECIFIED);
 }
