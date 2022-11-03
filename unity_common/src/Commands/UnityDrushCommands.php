@@ -28,12 +28,10 @@ class UnityDrushCommands extends DrushCommands {
   /**
    * Drush command import blocks and taxonomies using structure_sync.
    *
-   * @param string $option
-   *   Argument to select 'safe', 'full' or 'force'.
    *
-   * @command import-all-if-installed
+   * @command import-blocks-taxonomies
    */
-  public function importAllIfInstalled($option = 'safe') {
+  public function importBlocksTaxonomies() {
     // Only import if the structure_sync module is installed.
     if (\Drupal::moduleHandler()->moduleExists('structure_sync')) {
       $config = \Drupal::config('structure_sync.data');
@@ -41,7 +39,7 @@ class UnityDrushCommands extends DrushCommands {
       $blocks = $config->get('blocks');
       if (!empty($blocks)) {
         StructureSyncHelper::importCustomBlocks([
-          'style' => $option,
+          'style' => 'full',
           'drush' => TRUE,
         ]);
       }
@@ -49,7 +47,7 @@ class UnityDrushCommands extends DrushCommands {
       $taxonomies = $config->get('taxonomies');
       if (!empty($taxonomies)) {
         StructureSyncHelper::importTaxonomies([
-          'style' => $option,
+          'style' => 'safe',
           'drush' => TRUE,
         ]);
       }
