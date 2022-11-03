@@ -35,7 +35,8 @@ class UnityDrushCommands extends DrushCommands {
     // Only import if the structure_sync module is installed.
     if (\Drupal::moduleHandler()->moduleExists('structure_sync')) {
       $config = \Drupal::config('structure_sync.data');
-      // Import blocks if necessary.
+      // Import blocks if necessary, always use 'full' so that any block
+      // changes in config will be reflected on the site.
       $blocks = $config->get('blocks');
       if (!empty($blocks)) {
         StructureSyncHelper::importCustomBlocks([
@@ -43,7 +44,9 @@ class UnityDrushCommands extends DrushCommands {
           'drush' => TRUE,
         ]);
       }
-      // Import taxonomies if necessary.
+      // Import taxonomies if necessary, always use 'safe' so that
+      // any terms added by content editors are not deleted, but new
+      // terms taht appear in config will be added.
       $taxonomies = $config->get('taxonomies');
       if (!empty($taxonomies)) {
         StructureSyncHelper::importTaxonomies([
