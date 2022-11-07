@@ -26,7 +26,8 @@ class UnityDrushCommands extends DrushCommands {
   }
 
   /**
-   * Drush command import blocks, taxonomies and menus  using structure_sync.
+   * Drush command import blocks and taxonomies using structure_sync
+   * (never import menus as this does not work).
    *
    * @param string $option
    *   Argument to select 'safe', 'full' or 'force'.
@@ -49,14 +50,6 @@ class UnityDrushCommands extends DrushCommands {
       $taxonomies = $config->get('taxonomies');
       if (!empty($taxonomies)) {
         StructureSyncHelper::importTaxonomies([
-          'style' => $option,
-          'drush' => TRUE,
-        ]);
-      }
-      // Import menus if necessary.
-      $menus = $config->get('menus');
-      if (!empty($menus)) {
-        StructureSyncHelper::importMenuLinks([
           'style' => $option,
           'drush' => TRUE,
         ]);
