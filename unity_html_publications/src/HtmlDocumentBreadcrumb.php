@@ -48,15 +48,15 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
    *
    * @var Symfony\Component\HttpFoundation\RequestStack
    */
-  protected $request;
+  protected $requestStack;
 
   /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $request) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $requestStack) {
     $this->entityTypeManager = $entity_type_manager;
     $this->titleResolver = $title_resolver;
-    $this->request = $request;
+    $this->requestStack = $requestStack;
   }
 
   /**
@@ -108,7 +108,7 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public function build(RouteMatchInterface $route_match) {
     $breadcrumb = new Breadcrumb();
-    $title_resolver = $this->titleResolver->getTitle($this->request->getCurrentRequest(), $route_match->getRouteObject());
+    $title_resolver = $this->titleResolver->getTitle($this->requestStack->getCurrentRequest(), $route_match->getRouteObject());
     $links = [];
 
     if ($this->node instanceof NodeInterface) {
