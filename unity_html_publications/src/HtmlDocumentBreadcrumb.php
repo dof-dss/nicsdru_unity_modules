@@ -128,6 +128,9 @@ class HtmlDocumentBreadcrumb implements BreadcrumbBuilderInterface {
     return $breadcrumb;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   protected function getPublicationGatewayNode(NodeInterface $html_document_node) {
     $references = \Drupal::service('whatlinkshere.linkmanager')->getReferenceContent($html_document_node, 1, 0);
 
