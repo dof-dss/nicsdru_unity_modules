@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_html_publications.module.
+ */
+
+use Drupal\Core\Link;
+use Drupal\node\NodeInterface;
+use Drupal\views\Render\ViewsRenderPipelineMarkup;
+
+/**
+ * Implements hook_preprocess_views_view_field().
+ *
+ * Injects the usage value of an HTML document into the entity browser table.
+ */
+function unity_html_publications_preprocess_views_view_field(&$variables) {
+  $view = &$variables['view'];
+  $field_id = $variables['field']->field;
+
+  // NB: Debug embed form at /entity-embed/dialog/full_html/node.
+  if ($view->id() === 'html_documents') {
+    if ($field_id === 'nothing') {
+      $nid = $variables['row']->nid;
+      $usage = \Drupal::service('whatlinkshere.linkmanager')
+        ->getReferenceContent(
+          $variables['row']->_entity,
+          PHP_INT_MAX,
+          0);
+
+      $ref_count = $usage['total'];
+
+      $link = Link::createFromRoute(
+        t('@count places', ['@count' => $ref_count]),
+        'whatlinkshere.references.node',
+        ['node' => $nid]
+      );
+
+      $variables['output'] = ViewsRenderPipelineMarkup::create($link->toString());
+    }
+
+    if ($field_id === 'type') {
+      // Replace content type label with image.
+      $element = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'file--media-library-preview',
+            'file--ico',
+            'file--ico__html',
+          ],
+        ],
+        // Attach the filetype icons library.
+        '#attached' => [
+          'library' => ['nicsdru_unity_theme/media_library_styles']
+        ],
+      ];
+
+      $variables['output'] = \Drupal::service('renderer')->render($element);
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_media().
+ */
+function unity_html_publications_preprocess_node(&$variables) {
+  if ($variables['node'] instanceof NodeInterface === FALSE) {
+    return;
+  }
+
+  $node = $variables['node'];
+
+  if ($node->bundle() === 'html_document' && $variables['view_mode'] === 'embed') {
+    // Inject a small preprocess variable to render a file icon.
+    $pretty_mimes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
+    $variables['file_type'] = $pretty_mimes['text/html'];
+  }
+}

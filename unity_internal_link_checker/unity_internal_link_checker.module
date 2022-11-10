@@ -106,7 +106,6 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '.d8un-uat-qhl74ni-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
     // Unity 2 platform environments.
-    '.development-q5nzhaa-kamkoebtv74zm.uk-1.platformsh.site/',
     '.edge-uhfrady-kamkoebtv74zm.uk-1.platformsh.site/',
     '.uat-nvcvooy-kamkoebtv74zm.uk-1.platformsh.site/',
   ];
