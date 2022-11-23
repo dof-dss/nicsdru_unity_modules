@@ -188,7 +188,8 @@ function unity_common_media_source_info_alter(array &$sources) {
     'label' => new TranslatableMarkup('Podcast'),
     'description' => new TranslatableMarkup('Embed a podcast.'),
     'allowed_field_types' => ['string'],
-    'default_thumbnail_filename' => 'no-thumbnail.png',
+    'default_thumbnail_filename' => 'audio.png',
+    'thumbnail_uri_metadata_attribute' => 'thumbnail_uri',
     'providers' => ['Spotify'],
     'class' => 'Drupal\media\Plugin\media\Source\OEmbed',
     'forms' => [
