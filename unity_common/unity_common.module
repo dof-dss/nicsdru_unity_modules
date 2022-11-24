@@ -7,6 +7,7 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Site\Settings;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\file\FileInterface;
 use Drupal\media\MediaInterface;
 use Drupal\views\ViewExecutable;
@@ -175,4 +176,25 @@ function unity_common_config_ignore_settings_alter(array &$settings) {
     $config_update_service = \Drupal::service('unity_common.update_config_from_environment');
     $config_update_service->updateApiKey('google_analytics.settings', 'account', Settings::get('subsite_id') . '_GOOGLE_ANALYTICS_KEY');
   }
+}
+
+/**
+ * Implements hook_media_source_info_alter().
+ */
+function unity_common_media_source_info_alter(array &$sources) {
+  // Allow podcasts to be embedded.
+  $sources['oembed:spotify'] = [
+    'id' => 'spotify',
+    'label' => new TranslatableMarkup('Podcast'),
+    'description' => new TranslatableMarkup('Embed a podcast.'),
+    'allowed_field_types' => ['string'],
+    'default_thumbnail_filename' => 'audio.png',
+    'thumbnail_uri_metadata_attribute' => 'thumbnail_uri',
+    'providers' => ['Spotify'],
+    'class' => 'Drupal\media\Plugin\media\Source\OEmbed',
+    'forms' => [
+      'media_library_add' => '\Drupal\media_library\Form\OEmbedForm',
+    ],
+    'provider' => 'unity_common',
+  ];
 }
