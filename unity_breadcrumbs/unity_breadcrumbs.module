@@ -38,14 +38,15 @@ function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, Rout
       if (preg_match('/([A-Z|a-z]+) - search results/', $link_text, $matches)) {
         $link->setText($matches[1]);
       }
-
-      $params = $link->getUrl()->getRouteParameters();
-      if (!empty($params['facets_query'])) {
-        // Remove link from the last breadcrumb link.
-        end($links)->setUrl(Url::fromRoute('<none>'));
-        $breadcrumb = new Breadcrumb();
-        $breadcrumb->setLinks($links);
-        $breadcrumb->addCacheContexts(['url.path']);
+      if ($link->getUrl()->isRouted()) {
+        $params = $link->getUrl()->getRouteParameters();
+        if (!empty($params['facets_query'])) {
+          // Remove link from the last breadcrumb link.
+          end($links)->setUrl(Url::fromRoute('<none>'));
+          $breadcrumb = new Breadcrumb();
+          $breadcrumb->setLinks($links);
+          $breadcrumb->addCacheContexts(['url.path']);
+        }
       }
     }
   }
