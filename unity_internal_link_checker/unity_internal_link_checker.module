@@ -102,12 +102,13 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '.lndo.site/',
     '/',
     // Unity 1 platform environments.
-    '.d8un-edge-xerfxyi-6tlkpwbr6tndk.uk-1.platformsh.site/',
+    '.edge-uhfrady-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.d8un-uat-qhl74ni-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
     // Unity 2 platform environments.
     '.edge-uhfrady-kamkoebtv74zm.uk-1.platformsh.site/',
     '.uat-nvcvooy-kamkoebtv74zm.uk-1.platformsh.site/',
+    '.main-bvxea6i-kamkoebtv74zm.uk-1.platformsh.site/',
   ];
   $urls_to_replace = '';
   // Loop through and add all protocols and extensions to the current site.
