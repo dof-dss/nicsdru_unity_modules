@@ -28,7 +28,8 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
       $exclude_list_bare = $config->get('site_url_list_exclude');
       if (!empty($exclude_list_bare)) {
         $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
-      } else {
+      }
+      else {
         $exclude_url_list = [];
       }
       $matches = [];
