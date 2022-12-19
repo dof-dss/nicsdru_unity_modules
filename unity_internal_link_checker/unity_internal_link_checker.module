@@ -66,6 +66,7 @@ function unity_internal_link_checker__convert_absolute_link(&$body_text, $origin
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
   $replace_url_list = unity_internal_link_checker__urls_to_replace();
   $site_url_list = $config->get('site_url_list');
+  // Allow for null config.
   if (!empty($site_url_list)) {
     $replace_url_list .= $site_url_list;
   }
