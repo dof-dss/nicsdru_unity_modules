@@ -43,7 +43,7 @@ jobs:
           name: Download dependent contrib modules.
           command: |
             cd $PROJECT_ROOT
-            composer require --no-interaction drupal/core-dev drupal/entity_embed mglaman/drupal-check \
+            composer require --no-interaction drupal/entity_embed mglaman/drupal-check \
               drupal/search_api_solr drupal/structure_sync
       - run:
           name: Move custom code into position
