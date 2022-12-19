@@ -25,7 +25,12 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
       // Get list of urls to exclude (these have been added at /admin/config/unity_internal_link_checker/link_checker_form).
       $config = \Drupal::config('unity_internal_link_checker.linksettings');
       // Make sure the array items are clean.
-      $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
+      $exclude_list_bare = $config->get('site_url_list_exclude');
+      if (!empty($exclude_list_bare)) {
+        $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
+      } else {
+        $exclude_url_list = [];
+      }
       $matches = [];
       // Look for all anchors in the body field.
       if (preg_match_all('|href\=[\'"]+([^ >"\']*)[\'"]+[^>]*>|', $body, $matches)) {
@@ -59,7 +64,11 @@ function unity_internal_link_checker__convert_absolute_link(&$body_text, $origin
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $replace_url_list = unity_internal_link_checker__urls_to_replace() . $config->get('site_url_list');
+  $replace_url_list = unity_internal_link_checker__urls_to_replace();
+  $site_url_list = $config->get('site_url_list');
+  if (!empty($site_url_list)) {
+    $replace_url_list .= $site_url_list;
+  }
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
       ->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
