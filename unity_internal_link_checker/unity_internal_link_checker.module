@@ -25,7 +25,13 @@ function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
       // Get list of urls to exclude (these have been added at /admin/config/unity_internal_link_checker/link_checker_form).
       $config = \Drupal::config('unity_internal_link_checker.linksettings');
       // Make sure the array items are clean.
-      $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
+      $exclude_list_bare = $config->get('site_url_list_exclude');
+      if (!empty($exclude_list_bare)) {
+        $exclude_url_list = preg_split('/\r\n|\r|\n/', $config->get('site_url_list_exclude'));
+      }
+      else {
+        $exclude_url_list = [];
+      }
       $matches = [];
       // Look for all anchors in the body field.
       if (preg_match_all('|href\=[\'"]+([^ >"\']*)[\'"]+[^>]*>|', $body, $matches)) {
@@ -59,7 +65,12 @@ function unity_internal_link_checker__convert_absolute_link(&$body_text, $origin
   // (these have been added at
   // /admin/config/unity_internal_link_checker/link_checker_form )
   $config = \Drupal::config('unity_internal_link_checker.linksettings');
-  $replace_url_list = unity_internal_link_checker__urls_to_replace() . $config->get('site_url_list');
+  $replace_url_list = unity_internal_link_checker__urls_to_replace();
+  $site_url_list = $config->get('site_url_list');
+  // Allow for null config.
+  if (!empty($site_url_list)) {
+    $replace_url_list .= $site_url_list;
+  }
   if (strlen($replace_url_list) == 0) {
     \Drupal::messenger()
       ->addMessage(t("Please set some URLs at /admin/config/unity_internal_link_checker/link_checker_form"), "error");
@@ -102,12 +113,13 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '.lndo.site/',
     '/',
     // Unity 1 platform environments.
-    '.d8un-edge-xerfxyi-6tlkpwbr6tndk.uk-1.platformsh.site/',
+    '.edge-uhfrady-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.d8un-uat-qhl74ni-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
     // Unity 2 platform environments.
     '.edge-uhfrady-kamkoebtv74zm.uk-1.platformsh.site/',
     '.uat-nvcvooy-kamkoebtv74zm.uk-1.platformsh.site/',
+    '.main-bvxea6i-kamkoebtv74zm.uk-1.platformsh.site/',
   ];
   $urls_to_replace = '';
   // Loop through and add all protocols and extensions to the current site.
