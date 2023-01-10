@@ -1,0 +1,11 @@
+uuid: e5a93990-cfde-45cc-a37d-1a8616bf3cc5
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_standard
+id: block_content.card_standard
+target_entity_type_id: block_content
+target_bundle: card_standard
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,8 @@
+uuid: 1f9e14f0-8660-4c48-a01d-1b91fd0cdc22
+langcode: en
+status: true
+dependencies: {  }
+id: video_and_caption
+label: 'Video and caption'
+revision: 1
+description: ''

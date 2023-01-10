@@ -1,0 +1,8 @@
+uuid: 1e4a3e8e-39e7-4d9f-b296-6400c9d4ae6b
+langcode: en
+status: true
+dependencies: {  }
+id: information_notice
+label: 'Information notice'
+revision: 1
+description: ''

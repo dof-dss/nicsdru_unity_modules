@@ -1,0 +1,19 @@
+uuid: adef964c-5319-454e-88fa-aeeb84692a32
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_nested_wide
+    - field.storage.block_content.field_card_title
+id: block_content.card_nested_wide.field_card_title
+field_name: field_card_title
+entity_type: block_content
+bundle: card_nested_wide
+label: 'Card title'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

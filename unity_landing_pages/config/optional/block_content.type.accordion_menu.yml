@@ -1,0 +1,8 @@
+uuid: 96e7ef36-890e-4532-944f-99f34948cad7
+langcode: en
+status: true
+dependencies: {  }
+id: accordion_menu
+label: 'Accordion menu'
+revision: 1
+description: ''

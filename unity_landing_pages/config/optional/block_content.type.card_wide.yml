@@ -1,0 +1,8 @@
+uuid: 4c4bc2c6-6c1c-48b8-9e58-a95e79140cb3
+langcode: en
+status: true
+dependencies: {  }
+id: card_wide
+label: 'Card - wide'
+revision: 1
+description: ''

@@ -1,0 +1,8 @@
+uuid: e3264b42-57ec-4887-a4b2-fce67e964ae2
+langcode: en
+status: true
+dependencies: {  }
+id: card_nested_standard
+label: 'Card nested - standard'
+revision: 1
+description: 'Provides a block with nested block elements.'

@@ -1,0 +1,29 @@
+uuid: b9c941b4-6fa9-4b45-8584-727a20d549e3
+langcode: en
+status: true
+dependencies:
+  module:
+    - menu_ui
+    - origins_toc
+third_party_settings:
+  menu_ui:
+    available_menus:
+      - main
+    parent: 'main:'
+  origins_toc:
+    toc_enable: 0
+    toc_title: 'Table of contents'
+    toc_location: ''
+    toc_insert: after
+    toc_source_container: ''
+    toc_element: h2
+    toc_exclusions: ''
+    toc_screen_depth: '1'
+    toc_debug: 0
+name: 'Landing page'
+type: landing_page
+description: 'Use this content type for pages with customisable layout'
+help: ''
+new_revision: true
+preview_mode: 1
+display_submitted: false

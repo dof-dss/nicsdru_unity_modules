@@ -1,0 +1,11 @@
+uuid: d05160da-5961-4187-9468-eb95d7d58d53
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.card_nested_wide
+id: block_content.card_nested_wide
+target_entity_type_id: block_content
+target_bundle: card_nested_wide
+default_langcode: site_default
+language_alterable: false

@@ -1,0 +1,8 @@
+uuid: ed15b16a-c6ae-4ba0-af2f-278215ed7a12
+langcode: en
+status: true
+dependencies: {  }
+id: plain_cards
+label: 'Plain cards'
+revision: 1
+description: ''
