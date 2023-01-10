@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: card_contact
+label: 'Card - contact'
+revision: 1
+description: ''

@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: card_standard
+label: 'Card - standard'
+revision: 1
+description: ''
