@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.html_document.field_html
+    - node.type.html_document
+  module:
+    - user
+id: node.html_document.teaser
+targetEntityType: node
+bundle: html_document
+mode: teaser
+content: {  }
+hidden:
+  content_moderation_control: true
+  field_html: true
+  langcode: true
+  links: true
+  search_api_excerpt: true

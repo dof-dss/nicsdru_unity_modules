@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: html_doument_pattern
+label: 'HTML Doument pattern'
+type: 'canonical_entities:node'
+pattern: 'publications/html-document/[node:title]'
+selection_criteria:
+  247b000e-8f86-4791-be82-89d51c64c5ae:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 247b000e-8f86-4791-be82-89d51c64c5ae
+    context_mapping:
+      node: node
+    bundles:
+      html_document: html_document
+selection_logic: and
+weight: -5
+relationships: {  }

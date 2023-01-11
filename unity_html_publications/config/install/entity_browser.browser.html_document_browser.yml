@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.html_documents
+  module:
+    - views
+name: html_document_browser
+label: 'HTML document browser'
+display: iframe
+display_configuration:
+  width: 100%
+  height: '650'
+  link_text: Select
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: single
+widget_selector_configuration: {  }
+widgets:
+  e2c52f1d-ec2e-4333-b4b8-affd6b256706:
+    id: view
+    uuid: e2c52f1d-ec2e-4333-b4b8-affd6b256706
+    label: 'HTML document browser'
+    weight: 1
+    settings:
+      submit_text: Select
+      auto_select: false
+      view: html_documents
+      view_display: entity_browser_1
