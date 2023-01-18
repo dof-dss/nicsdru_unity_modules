@@ -1,0 +1,47 @@
+<?php
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_install().
+ */
+function unity_eu_cookie_compliance_install()
+{
+  // When installing the eu_cookie_compliance module, config settings are
+  // forced by the module and any other settings that are set in the install
+  // profile config files are ignored. The purpose of this code is to
+  // overwrite the settings from the contrib module with those in the
+  // install profile or in config. Note that this module is dependent on the
+  // eu_cookie_compliance module which means that it will be installed after
+  // the eu_cookie_compliance module and the config set here will prevail.
+  $module_handler = \Drupal::service('module_handler');
+  $config_path = NULL;
+  if (\Drupal::request()->server->get('SCRIPT_NAME') == '/core/install.php') {
+    // We are running inside the install profile,
+    // retrieve module path for the Unity install profile.
+    $config_path = $module_handler->getModule('nicsdru_unity_profile')->getPath();
+    $config_path .= '/config/install';
+  } else {
+    // We are running as a stand alone module, use the config sync directory.
+    $config_path = Settings::get('config_sync_directory', FALSE);
+  }
+  if (!empty($config_path)) {
+    $source = new FileStorage($config_path);
+    // Read the EU Cookie Compliance settings from the appropriate config file.
+    $settings = $source->read('eu_cookie_compliance.settings');
+    foreach ($settings as $key => $value) {
+      // Overwrite the config that has been set by the eu_cookie_compliance
+      // module with the config from the install profile.
+      if (is_array($value)) {
+        foreach ($value as $subkey => $subvalue) {
+          $contents = $settings[$key][$subkey];
+          \Drupal::configFactory()->getEditable('eu_cookie_compliance.settings')->set($key . '.' . $subkey, $contents)->save();
+        }
+      } else {
+        $contents = $settings[$key];
+        \Drupal::configFactory()->getEditable('eu_cookie_compliance.settings')->set($key, $contents)->save();
+      }
+    }
+  }
+}
