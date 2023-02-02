@@ -44,7 +44,7 @@ jobs:
           command: |
             cd $PROJECT_ROOT
             composer require --no-interaction drupal/entity_embed mglaman/drupal-check \
-              drupal/search_api_solr drupal/structure_sync
+              drupal/search_api_solr drupal/structure_sync mglaman/phpstan-drupal:1.1.27
       - run:
           name: Move custom code into position
           command: |
