@@ -102,8 +102,10 @@ function unity_internal_link_checker__convert_absolute_link(&$body_text, $origin
 function unity_internal_link_checker__urls_to_replace(): string {
   // Get the host name of the site and remove the domain extension.
   $host = \Drupal::request()->getHost();
+  \Drupal::logger('unity_internal_link_checker')->notice('the host is ' . $host);
   if (preg_match('/\S*?\w*\W?\w*\.(gov.uk|org.uk|co.uk|com|net|eu|org|uk)/', $host, $matches)) {
     $host = $matches[0];
+    \Drupal::logger('unity_internal_link_checker')->notice('Preg matched ' . $host);
   }
   // Strip 'www' from hostname.
   $host = str_replace('www.', '', $host);
@@ -128,5 +130,6 @@ function unity_internal_link_checker__urls_to_replace(): string {
       $urls_to_replace .= $protocol . $host . $extension . "\r\n";
     }
   }
+  \Drupal::logger('unity_internal_link_checker')->notice('URLs to rplace ' . $urls_to_replace);
   return $urls_to_replace;
 }
