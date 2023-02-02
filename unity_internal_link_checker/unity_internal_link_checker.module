@@ -10,7 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 
 /**
- * Implements hook_entity_presave().
+ * Implements  hook_entity_presave().
  */
 function unity_internal_link_checker_entity_presave(EntityInterface $entity) {
   // If this hook has been invoked from a migration, bail out.
