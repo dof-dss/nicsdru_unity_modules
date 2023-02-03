@@ -1,0 +1,5 @@
+name: 'Unity Map Block'
+type: module
+description: 'Allows a map block to be created and placed on a page.'
+core_version_requirement: 8.x || ^9
+package: 'Unity'
