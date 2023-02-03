@@ -3,3 +3,6 @@ type: module
 description: 'Allows a map block to be created and placed on a page.'
 core_version_requirement: 8.x || ^9
 package: 'Unity'
+dependencies:
+  - drupal:geolocation_google_maps
+
