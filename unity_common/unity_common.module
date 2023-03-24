@@ -203,3 +203,39 @@ function unity_common_media_source_info_alter(array &$sources) {
     'provider' => 'unity_common',
   ];
 }
+
+/**
+ * Implements hook_cron().
+ */
+function unity_common_cron() {
+  // For now, this processing is only needed on the NI Cyber Security site.
+  $http_host = \Drupal::request()->getSchemeAndHttpHost();
+  if (!str_contains($http_host,'nicybersecuritycentre')) {
+    return;
+  }
+  // Retrieve all events.
+  $events = \Drupal::entityTypeManager()->getStorage('node')
+    ->loadByProperties([
+      'type' => 'events'
+    ]);
+  $time_now = time();
+  // Loop through all events checking the end date.
+  foreach ($events as $event) {
+    $event_dates = $event->get('field_event_date');
+    $event_end_date = $event_dates->getValue()[0]['end_value'];
+    if ($event_end_date < $time_now) {
+      // If end date has passed, archive the event (as long
+      // as it isn't already archived).
+      $current_state = $event->moderation_state->getString();
+      if ($current_state != 'archived') {
+        \Drupal::logger('unity_common')->notice(
+          'Archiving event @nid',
+          ['@nid' => $event->get('nid')->getString()]
+        );
+        $event->moderation_state->value = 'archived';
+        $event->save();
+      }
+    }
+  }
+}
+
