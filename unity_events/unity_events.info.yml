@@ -1,0 +1,7 @@
+name: 'Unity Events'
+type: module
+description: 'Unity automatic event archiving'
+core_version_requirement: ^8.8 || ^9
+package: 'Unity'
+
+

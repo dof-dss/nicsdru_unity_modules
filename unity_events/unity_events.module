@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_events.module.
+ */
+
+/**
+ * Implements hook_cron().
+ */
+function unity_common_cron() {
+  // Retrieve all events.
+  $events = \Drupal::entityTypeManager()->getStorage('node')
+    ->loadByProperties([
+      'type' => 'events'
+    ]);
+  // Allow a day's grace when archiving.
+  $cutoff_time = time() - (60*60*24);
+  // Loop through all events checking the end date.
+  foreach ($events as $event) {
+    // If the event is already archived, ignore it.
+    $current_state = $event->moderation_state->getString();
+    if ($current_state != 'archived') {
+      $event_dates = $event->get('field_event_date');
+      $event_end_date = $event_dates->getValue()[0]['end_value'];
+      if ($event_end_date < $cutoff_time) {
+        // If end date was more than a day ago, archive the event.
+        \Drupal::logger('unity_common')->notice(
+          'Archiving event @nid',
+          ['@nid' => $event->get('nid')->getString()]
+        );
+        $event->moderation_state->value = 'archived';
+        $event->save();
+      }
+    }
+  }
+}
+
