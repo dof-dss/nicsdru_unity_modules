@@ -25,7 +25,7 @@ function unity_events_cron() {
       $event_end_date = $event_dates->getValue()[0]['end_value'];
       if ($event_end_date < $cutoff_time) {
         // If end date was more than a day ago, archive the event.
-        \Drupal::logger('unity_common')->notice(
+        \Drupal::logger('unity_events')->notice(
           'Archiving event @nid',
           ['@nid' => $event->get('nid')->getString()]
         );
