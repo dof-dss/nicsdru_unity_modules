@@ -15,7 +15,7 @@ function unity_events_cron() {
       'type' => 'events'
     ]);
   // Allow a day's grace when archiving.
-  $cutoff_time = time() - (60*60*24);
+  $cutoff_time = time() - (60 * 60 * 24);
   // Loop through all events checking the end date.
   foreach ($events as $event) {
     // If the event is already archived, ignore it.
@@ -35,4 +35,3 @@ function unity_events_cron() {
     }
   }
 }
-
