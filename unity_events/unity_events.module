@@ -8,7 +8,7 @@
 /**
  * Implements hook_cron().
  */
-function unity_common_cron() {
+function unity_events_cron() {
   // Retrieve all events.
   $events = \Drupal::entityTypeManager()->getStorage('node')
     ->loadByProperties([
