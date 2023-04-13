@@ -66,7 +66,6 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
     }
     $facet = $this->request->get('facets_query');
 
-
     $title = $this->getTitleFromRoute($route);
     $search = $this->request->query->all();
 
@@ -78,6 +77,7 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
         return $title;
       }
     }
+    // Applying the term being viewed to Judiciary Sentencing guidelines page title.
     elseif ($route === 'view.judicial_decisions_search.sentence_guide_search_page') {
       $current_path = \Drupal::service('path.current')->getPath();
       if (preg_match_all('/.*\/type\/\D+(\d+)/', $current_path, $matches)) {
@@ -136,9 +136,6 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
       }
       if ($title == 'Judicialdecisions') {
         $title = 'Judicial decisions and directions';
-      }
-      if ($title == 'Sentenceguides') {
-        $title = 'Sentencing guidelines';
       }
     }
     return $title;
