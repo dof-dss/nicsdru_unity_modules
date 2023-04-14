@@ -4,6 +4,7 @@ namespace Drupal\unity_search_pages\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
+use Drupal\Core\Path\CurrentPathStack;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,6 +23,13 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
   protected $routeMatch;
 
   /**
+   * Current path.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPath;
+
+  /**
    * The current request stack.
    *
    * @var \Symfony\Component\HttpFoundation\Request
@@ -35,10 +43,13 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
    *   The current route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
    *   The current request.
+   * @param \Drupal\Core\Path\CurrentPathStack $current_path
+   *  The current path.
    */
-  public function __construct(CurrentRouteMatch $route_match, RequestStack $request) {
+  public function __construct(CurrentRouteMatch $route_match, RequestStack $request, CurrentPathStack $current_path) {
     $this->routeMatch = $route_match;
     $this->request = $request->getCurrentRequest();
+    $this->currentPath = $current_path;
   }
 
   /**
@@ -47,7 +58,8 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
   public static function create(ContainerInterface $container) {
     return new static(
       $container->get('current_route_match'),
-      $container->get('request_stack')
+      $container->get('request_stack'),
+      $container->get('path.current'),
     );
   }
 
@@ -79,8 +91,9 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
     }
     // Applying the term being viewed to Judiciary Sentencing guidelines page title.
     elseif ($route === 'view.judicial_decisions_search.sentence_guide_search_page') {
-      $current_path = \Drupal::service('path.current')->getPath();
-      if (preg_match_all('/.*\/type\/\D+(\d+)/', $current_path, $matches)) {
+      $current_path = $this->currentPath->getPath();
+      // Match the last number in the URL string with the type filter applied.
+      if (preg_match_all('/.*\/type\/.*-(\d+)/', $current_path, $matches)) {
         $tid = $matches[1][0];
         if (is_numeric($tid)) {
           $decision_type = Term::load($tid);
