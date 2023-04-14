@@ -44,7 +44,7 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
    * @param \Symfony\Component\HttpFoundation\RequestStack $request
    *   The current request.
    * @param \Drupal\Core\Path\CurrentPathStack $current_path
-   *  The current path.
+   *   The current path.
    */
   public function __construct(CurrentRouteMatch $route_match, RequestStack $request, CurrentPathStack $current_path) {
     $this->routeMatch = $route_match;
