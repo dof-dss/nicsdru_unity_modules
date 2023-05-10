@@ -156,6 +156,7 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Featured articles',
     'Events',
     'Judicial decisions and directions',
+    'Sentencing guidelines',
     'Members',
   ];
 
