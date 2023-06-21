@@ -2,6 +2,7 @@
 
 namespace Drupal\unity_file_migrations\Plugin\migrate\process;
 
+use Drupal\Core\Database\Connection;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\ProcessPluginBase;
@@ -9,7 +10,6 @@ use Drupal\migrate\Row;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Drupal\Core\Database\Connection;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 
 /**

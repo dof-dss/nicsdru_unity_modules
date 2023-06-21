@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
@@ -49,5 +50,14 @@ function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, Rout
         }
       }
     }
+  }
+
+  // Append the page title to the end of Book pages.
+  if ($route_match->getParameter('node')->book) {
+    $request = \Drupal::request();
+    $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+    $link = Link::createFromRoute($title, '<none>');
+    $breadcrumb->addLink($link);
+    $breadcrumb->addCacheContexts(['route.book_navigation']);
   }
 }

@@ -24,11 +24,6 @@ services:
     arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
-  unity_breadcrumbs.breadcrumb.webform:
-    class: Drupal\unity_breadcrumbs\WebformBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
-    tags:
-      - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.consultation:
     class: Drupal\unity_breadcrumbs\ConsultationBreadcrumb
     arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]

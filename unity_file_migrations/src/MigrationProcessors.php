@@ -3,9 +3,7 @@
 namespace Drupal\unity_file_migrations;
 
 use Drupal\Core\Database\Database;
-use Drupal\Core\Database\Driver\mysql\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Console\Core\Style\DrupalStyle;
 use Drupal\node\NodeInterface;
 use Drush\Commands\DrushCommands;
 
