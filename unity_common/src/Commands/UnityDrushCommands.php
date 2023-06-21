@@ -2,8 +2,8 @@
 
 namespace Drupal\unity_common\Commands;
 
-use Drush\Commands\DrushCommands;
 use Drupal\structure_sync\StructureSyncHelper;
+use Drush\Commands\DrushCommands;
 
 /**
  * Drush custom commands.
