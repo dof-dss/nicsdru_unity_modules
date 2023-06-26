@@ -119,6 +119,10 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '.edge-uhfrady-kamkoebtv74zm.uk-1.platformsh.site/',
     '.uat-nvcvooy-kamkoebtv74zm.uk-1.platformsh.site/',
     '.main-bvxea6i-kamkoebtv74zm.uk-1.platformsh.site/',
+    // Unity 3 platform environments.
+    '.edge-uhfrady-vnetibjd44moa.uk-1.platformsh.site/',
+    '.uat-nvcvooy-vnetibjd44moa.uk-1.platformsh.site/',
+    'main-bvxea6i-vnetibjd44moa.uk-1.platformsh.site/',
   ];
   $urls_to_replace = '';
   // Loop through and add all protocols and extensions to the current site.
