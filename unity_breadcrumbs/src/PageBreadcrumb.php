@@ -18,8 +18,8 @@ use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -94,7 +94,7 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
         $this->node = $this->entityTypeManager->getStorage('node');
       }
 
-      if (($this->node->bundle() == 'basic_page') || ($this->node->bundle() == 'page')) {
+      if (($this->node->bundle() == 'basic_page') || ($this->node->bundle() == 'page' || $this->node->bundle() == 'webform')) {
         $match = TRUE;
       }
     }
