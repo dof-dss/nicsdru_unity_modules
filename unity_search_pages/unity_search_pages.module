@@ -33,6 +33,7 @@ function unity_search_pages_preprocess_views_view(array &$variables) {
     'events_search_page',
     'judicial_decisions_search_page',
     'sentence_guide_search_page',
+    'members_search_page',
   ];
 
   foreach ($display_ids as $display_id) {
@@ -104,6 +105,7 @@ function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array
     'events_search_page',
     'judicial_decisions_search_page',
     'sentence_guide_search_page',
+    'members_search_page',
   ];
 
   foreach ($search_pages as $search_page) {
@@ -129,6 +131,7 @@ function unity_search_pages_preprocess_form(array &$variables) {
     case "views-exposed-form-events-search-events-search-page":
     case "views-exposed-form-judicial-decisions-search-judicial-decisions-search-page":
     case "views-exposed-form-judicial-decisions-search-sentence-guide-search-page":
+    case "views-exposed-form-managers-search-members-search-page":
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
       break;
@@ -153,6 +156,7 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Events',
     'Judicial decisions and directions',
     'Sentencing guidelines',
+    'Members',
   ];
 
   $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
@@ -180,6 +184,7 @@ function unity_search_pages_preprocess_block(&$variables) {
       'articles',
       'events',
       'judicial-decisions',
+      'members',
     ];
 
     $plugin_id = $variables['plugin_id'];
