@@ -1,7 +1,7 @@
 name: 'Unity Common'
 type: module
 description: 'Unity common functions and overrides'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: 'Unity'
 dependencies:
   - drupal:config_ignore

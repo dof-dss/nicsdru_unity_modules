@@ -1,7 +1,7 @@
 name: 'Unity HTML publications'
 type: module
 description: 'Defines a new content type to safely house HTML intended to provide accessible versions of existing publication page PDFs'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: 'Unity'
 dependencies:
   - whatlinkshere
