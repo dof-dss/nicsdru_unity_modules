@@ -75,6 +75,7 @@ class ViewPageBreadcrumb implements BreadcrumbBuilderInterface {
       'view.featured_search.articles_search_page',
       'view.events_search.events_search_page',
       'view.judicial_decisions_search.sentence_guide_search_page',
+      'view.managers_search.members_search_page',
     ];
 
     foreach ($view_names as $view_name) {
