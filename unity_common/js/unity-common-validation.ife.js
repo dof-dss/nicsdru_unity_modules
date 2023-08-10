@@ -20,13 +20,12 @@
    */
   Drupal.behaviors.errorMessageFixAjax = {
     attach: function (context) {
-      $('form.search-form--site .form-actions .js-form-submit')
-        .once('error-message-fix-ajax')
+      $(once('error-message-fix-ajax', 'form.search-form--site .form-actions .js-form-submit'))
         .addClass('cv-validate-before-ajax');
     }
   };
 
-  $(document).once('errormessage-fix').on('cv-jquery-validate-options-update', function (event, options) {
+  $(once('errormessage-fix', $(document))).on('cv-jquery-validate-options-update', function (event, options) {
     options.errorElement = 'p';
     options.showErrors = function (errorMap, errorList) {
       // Show errors using defaultShowErrors().
