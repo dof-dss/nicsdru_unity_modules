@@ -1,7 +1,7 @@
 name: 'Unity EU Cookie Compliance'
 type: module
 description: 'Unity overrides for the eu_cookie_compliance contrib module'
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 package: 'Unity'
 dependencies:
   - drupal:eu_cookie_compliance
