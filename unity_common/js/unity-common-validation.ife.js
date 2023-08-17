@@ -25,7 +25,7 @@
     }
   };
 
-  $(once('errormessage-fix', $(document))).on('cv-jquery-validate-options-update', function (event, options) {
+  $(once('errormessage-fix', document)).on('cv-jquery-validate-options-update', function (event, options) {
     options.errorElement = 'p';
     options.showErrors = function (errorMap, errorList) {
       // Show errors using defaultShowErrors().
