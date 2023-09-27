@@ -207,7 +207,7 @@ function unity_common_media_source_info_alter(array &$sources) {
  * Implements hook_preprocess_book_navigation().
  */
 function unity_common_preprocess_book_navigation(&$variables) {
-  //$variables['#cache']['max-age'] = 0;
+  $variables['#cache']['max-age'] = 0;
 
   // Setting max-age on cache currently has no effect on a block for anonymous user
   // https://drupal.stackexchange.com/questions/237777/setting-cache-max-age-to-0-has-no-effect-on-block-built-using-blockbase
