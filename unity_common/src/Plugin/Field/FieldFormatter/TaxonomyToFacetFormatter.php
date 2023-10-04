@@ -2,8 +2,8 @@
 
 namespace Drupal\unity_common\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\facets\Entity\Facet;
 
@@ -38,8 +38,7 @@ class TaxonomyToFacetFormatter extends FormatterBase {
 
     // TODO: There is no form validator call for plugin settings forms,
     // possibly look at using an ajax callback to validate CSS classes.
-
-    /** @var \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager */
+    
     $facet_manager = \Drupal::service('facets.manager');
 
     // Get all the enabled facets.
