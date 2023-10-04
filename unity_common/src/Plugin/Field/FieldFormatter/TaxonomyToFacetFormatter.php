@@ -42,6 +42,20 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
   /**
    * Constructs a new instance of the DefaultFacetManager.
    *
+   * @param string $plugin_id
+   *   Plugin id.
+   * @param mixed $plugin_definition
+   *   Plugin definition.
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $field_definition
+   *   Field definition.
+   * @param array $settings
+   *   Field settings.
+   * @param string $label
+   *   The formatter label display setting.
+   * @param string $view_mode
+   *   The view mode.
+   * @param array $third_party_settings
+   *   Third party settings.
    * @param \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager
    *   The facet manager service.
    */
@@ -75,7 +89,7 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
     return [
       'search_page_url' => '',
       'facets' => '',
-      ] + parent::defaultSettings();
+    ] + parent::defaultSettings();
   }
 
   /**
