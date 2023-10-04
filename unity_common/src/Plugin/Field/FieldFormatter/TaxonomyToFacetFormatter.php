@@ -82,10 +82,10 @@ class TaxonomyToFacetFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     $settings = $this->getSettings();
-    $facet_id = $settings['facets'];
+    $id = $settings['facets'];
 
     // Load the facet and get the URL alias.
-    $facet = Facet::load($facet_id);
+    $facet = Facet::load($id);
     $facet_pretty_path_url = $facet->get('url_alias');
 
     foreach ($items as $delta => $item) {
