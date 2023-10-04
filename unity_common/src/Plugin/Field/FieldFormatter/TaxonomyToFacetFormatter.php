@@ -82,8 +82,8 @@ class TaxonomyToFacetFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     $settings = $this->getSettings();
+    // Get the facets ID from the form selection.
     $id = $settings['facets'];
-
     // Load the facet and get the URL alias.
     $facet = Facet::load($id);
     $facet_pretty_path_url = $facet->get('url_alias');
