@@ -7,6 +7,7 @@ use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\facets\FacetManager\DefaultFacetManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -22,7 +23,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *   },
  * )
  */
-class TaxonomyToFacetFormatter extends FormatterBase {
+class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactoryPluginInterface {
 
   /**
    * The entity type manager service.
@@ -72,8 +73,8 @@ class TaxonomyToFacetFormatter extends FormatterBase {
    */
   public static function defaultSettings() {
     return [
-        'search_page_url' => '',
-        'facets' => '',
+      'search_page_url' => '',
+      'facets' => '',
       ] + parent::defaultSettings();
   }
 
