@@ -2,10 +2,14 @@
 
 namespace Drupal\unity_common\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\facets\Entity\Facet;
+use Drupal\Core\Url;
+use Drupal\facets\FacetManager\DefaultFacetManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Plugin implementation of the 'Taxonomy term to facet' formatter.
@@ -21,12 +25,55 @@ use Drupal\facets\Entity\Facet;
 class TaxonomyToFacetFormatter extends FormatterBase {
 
   /**
+   * The entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * The Facet Manager.
+   *
+   * @var \Drupal\facets\FacetManager\DefaultFacetManager
+   */
+  protected $facetManager;
+
+  /**
+   * Constructs a new instance of the DefaultFacetManager.
+   *
+   * @param \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager
+   *   The facet manager service.
+   */
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, DefaultFacetManager $facet_manager) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->entityTypeManager = $entity_type_manager;
+    $this->facetManager = $facet_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $plugin_id,
+      $plugin_definition,
+      $configuration['field_definition'],
+      $configuration['settings'],
+      $configuration['label'],
+      $configuration['view_mode'],
+      $configuration['third_party_settings'],
+      $container->get('entity_type.manager'),
+      $container->get('facets.manager')
+    );
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function defaultSettings() {
     return [
         'search_page_url' => '',
-        'facets' => ''
+        'facets' => '',
       ] + parent::defaultSettings();
   }
 
@@ -38,16 +85,16 @@ class TaxonomyToFacetFormatter extends FormatterBase {
 
     // TODO: There is no form validator call for plugin settings forms,
     // possibly look at using an ajax callback to validate CSS classes.
-    $facet_manager = \Drupal::service('facets.manager');
 
     // Get all the enabled facets.
-    $facets = $facet_manager->getEnabledFacets();
+    $facets = $this->facetManager->getEnabledFacets();
 
     // Store the facet names for use in the form.
     $active_facet_names = [];
     foreach ($facets as $facet_name => $info) {
-      $active_facet_names[$facet_name] .= $info->get('name');
+      $active_facet_names[$facet_name] = $info->get('name');
     }
+
     $elements['search_page_url'] = [
       '#title' => $this->t('Search page URL ending'),
       '#type' => 'textfield',
@@ -85,7 +132,9 @@ class TaxonomyToFacetFormatter extends FormatterBase {
     // Get the facets ID from the form selection.
     $id = $settings['facets'];
     // Load the facet and get the URL alias.
-    $facet = Facet::load($id);
+    $facet = $this->entityTypeManager
+      ->getStorage('facets_facet')
+      ->load($id);
     $facet_pretty_path_url = $facet->get('url_alias');
 
     foreach ($items as $delta => $item) {
@@ -93,11 +142,15 @@ class TaxonomyToFacetFormatter extends FormatterBase {
       $tid = $item->target_id;
       if (!empty($tid)) {
         // Load up the taxonomy term so that we can get the name.
-        $term = \Drupal::entityTypeManager()
+        $term = $this->entityTypeManager
           ->getStorage('taxonomy_term')
           ->load($tid);
         // Build the link to return to the search page with this term selected.
-        $element[$delta] = ['#markup' => '<a href="/' . $settings['search_page_url'] . '/' . $facet_pretty_path_url . '/' . $tid . '">' . $term->label() . '</a>'];
+        $element[$delta] = [
+          '#title' => t($term->label()),
+          '#type' => 'link',
+          '#url' => Url::fromUserInput('/' . $settings['search_page_url'] . '/' . $facet_pretty_path_url . '/' . $tid),
+        ];
       }
     }
 
