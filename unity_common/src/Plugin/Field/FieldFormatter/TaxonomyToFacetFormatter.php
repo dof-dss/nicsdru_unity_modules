@@ -38,7 +38,6 @@ class TaxonomyToFacetFormatter extends FormatterBase {
 
     // TODO: There is no form validator call for plugin settings forms,
     // possibly look at using an ajax callback to validate CSS classes.
-    
     $facet_manager = \Drupal::service('facets.manager');
 
     // Get all the enabled facets.
@@ -83,9 +82,10 @@ class TaxonomyToFacetFormatter extends FormatterBase {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
     $settings = $this->getSettings();
+    $facet_id = $settings['facets'];
 
     // Load the facet and get the URL alias.
-    $facet = Facet::load($settings['facets']);
+    $facet = Facet::load($facet_id);
     $facet_pretty_path_url = $facet->get('url_alias');
 
     foreach ($items as $delta => $item) {
