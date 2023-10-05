@@ -66,6 +66,7 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
    * @param \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager
    *   The facet manager service.
    */
+  // @phpstan-ignore-next-line.
   public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, DefaultFacetManager $facet_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->entityTypeManager = $entity_type_manager;
