@@ -35,7 +35,6 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
   /**
    * The Facet Manager.
    *
-   * @phpstan-ignore-next-line.
    * @var \Drupal\facets\FacetManager\DefaultFacetManager
    * @phpstan-ignore-next-line.
    */
