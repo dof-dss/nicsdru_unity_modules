@@ -2,6 +2,7 @@
 
 namespace Drupal\unity_common\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Entity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -10,8 +11,6 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
 use Drupal\facets\FacetManager\DefaultFacetManager;
-use Drupal\facets\FacetSource\FacetSourcePluginManager;
-use Drupal\facets_summary\Processor\ProcessorPluginManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -33,20 +32,6 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
    * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * The facet source plugin manager.
-   *
-   * @var \Drupal\facets\FacetSource\FacetSourcePluginManager
-   */
-  protected $facetSourcePluginManager;
-
-  /**
-   * The processor plugin manager.
-   *
-   * @var \Drupal\facets_summary\Processor\ProcessorPluginManager
-   */
-  protected $processorPluginManager;
 
   /**
    * The Facet Manager.
@@ -79,15 +64,12 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
    *   Third party settings.
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
-   * @param \Drupal\facets\FacetSource\FacetSourcePluginManager $facet_source_manager
-   *   The facet source plugin manager.
    * @param \Drupal\facets\FacetManager\DefaultFacetManager $facet_manager
    *   The facet manager service.
    */
-  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, FacetSourcePluginManager $facet_source_manager, DefaultFacetManager $facet_manager) {
+  public function __construct($plugin_id, $plugin_definition, FieldDefinitionInterface $field_definition, array $settings, $label, $view_mode, array $third_party_settings, EntityTypeManagerInterface $entity_type_manager, DefaultFacetManager $facet_manager) {
     parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
     $this->entityTypeManager = $entity_type_manager;
-    $this->facetSourcePluginManager = $facet_source_manager;
     $this->facetManager = $facet_manager;
   }
 
@@ -104,7 +86,6 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
       $configuration['view_mode'],
       $configuration['third_party_settings'],
       $container->get('entity_type.manager'),
-      $container->get('plugin.manager.facets.facet_source'),
       $container->get('facets.manager')
     );
   }
@@ -129,6 +110,7 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
     // possibly look at using an ajax callback to validate CSS classes.
 
     // Get all the enabled facets.
+    /** @var \Drupal\facets\FacetInterface[] $facets */
     $facets = $this->facetManager->getEnabledFacets();
 
     // Store the facet names for use in the form.
