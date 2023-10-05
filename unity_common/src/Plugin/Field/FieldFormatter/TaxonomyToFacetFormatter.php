@@ -2,7 +2,6 @@
 
 namespace Drupal\unity_common\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Entity;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -110,7 +109,7 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
     // possibly look at using an ajax callback to validate CSS classes.
 
     // Get all the enabled facets.
-    /** @var \Drupal\facets\FacetInterface[] $facets */
+    // @phpstan-ignore-next-line.
     $facets = $this->facetManager->getEnabledFacets();
 
     // Store the facet names for use in the form.
@@ -159,6 +158,7 @@ class TaxonomyToFacetFormatter extends FormatterBase implements ContainerFactory
     $facet = $this->entityTypeManager
       ->getStorage('facets_facet')
       ->load($id);
+    // @phpstan-ignore-next-line.
     $facet_pretty_path_url = $facet->get('url_alias');
 
     foreach ($items as $delta => $item) {
