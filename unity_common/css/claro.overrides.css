@@ -2,3 +2,6 @@
 .entity-subqueue-slideshow-edit-form .js-form-item-items-add-more-new-item-target-id {
   margin-top: 0;
 }
+.ck .ck-content .table td {
+  position: static;
+}

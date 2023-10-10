@@ -61,7 +61,7 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
     }
   }
 
-  if ($form['#id'] == 'entity-subqueue-slideshow-edit-form') {
+  if (($form['#id'] == 'entity-subqueue-slideshow-edit-form') || (preg_match('/-edit-form$/', $form['#id']))) {
     $form['#attached']['library'][] = 'unity_common/unity_common_claro_fixes';
   }
 }
