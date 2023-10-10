@@ -60,6 +60,10 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['#attached']['library'][] = 'unity_common/unity_common_validation.ife';
     }
   }
+
+  if ($form['#id'] == 'entity-subqueue-slideshow-edit-form') {
+    $form['#attached']['library'][] = 'unity_common/unity_common_claro_fixes';
+  }
 }
 
 /**
