@@ -92,7 +92,7 @@ class MediaWysiwygFilter extends ProcessPluginBase implements ContainerFactoryPl
     $messenger = $this->messenger();
     $nid = $row->getSourceProperty('nid');
     $value['value'] = preg_replace_callback($pattern, function ($matches) use ($messenger, $nid) {
-      $decoder = new JsonDecode(TRUE);
+      $decoder = new JsonDecode([JsonDecode::ASSOCIATIVE => TRUE]);
 
       try {
         // Extract the D7 embedded media data.

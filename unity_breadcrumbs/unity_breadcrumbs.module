@@ -10,11 +10,13 @@ use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\Core\Url;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_system_breadcrumb_alter().
  *
- * Altering the search view page breadcrumbs, when facets are selected the breadcrumb trail is overwritten.
+ * Altering the search view page breadcrumbs, when facets are selected the
+ * breadcrumb trail is overwritten.
  */
 function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
   $links = $breadcrumb->getLinks();
@@ -52,12 +54,17 @@ function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, Rout
     }
   }
 
-  // Append the page title to the end of Book pages.
-  if ($route_match->getParameter('node')->book) {
-    $request = \Drupal::request();
-    $title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-    $link = Link::createFromRoute($title, '<none>');
-    $breadcrumb->addLink($link);
-    $breadcrumb->addCacheContexts(['route.book_navigation']);
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  if ($node instanceof NodeInterface) {
+    // Append the page title to the end of Book pages.
+    if ($node->book) {
+      $request = \Drupal::request();
+      $title = \Drupal::service('title_resolver')
+        ->getTitle($request, $route_match->getRouteObject());
+      $link = Link::createFromRoute($title, '<none>');
+      $breadcrumb->addLink($link);
+      $breadcrumb->addCacheContexts(['route.book_navigation']);
+    }
   }
 }
