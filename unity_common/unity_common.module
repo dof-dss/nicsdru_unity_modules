@@ -210,3 +210,15 @@ function unity_common_media_source_info_alter(array &$sources) {
 function unity_common_preprocess_book_navigation(&$variables) {
   $variables['#cache']['max-age'] = 0;
 }
+
+/**
+ * Implements hook_editor_js_settings_alter().
+ */
+function unity_common_editor_js_settings_alter(array &$settings) {
+  // Remove the 'merge cells' option from the CKEditor 5 table options menu.
+  foreach ($settings['editor']['formats'] as &$format) {
+    if (isset($format['editorSettings']['config']['table'])) {
+      $format['editorSettings']['config']['table']['contentToolbar'] = ['tableColumn', 'tableRow', 'toggleTableCaption'];
+    }
+  }
+}
