@@ -218,7 +218,13 @@ function unity_common_editor_js_settings_alter(array &$settings) {
   // Remove the 'merge cells' option from the CKEditor 5 table options menu.
   foreach ($settings['editor']['formats'] as &$format) {
     if (isset($format['editorSettings']['config']['table'])) {
-      $format['editorSettings']['config']['table']['contentToolbar'] = ['tableColumn', 'tableRow', 'toggleTableCaption'];
+      foreach ($format['editorSettings']['config']['table']['contentToolbar'] as $idx => $option) {
+        // Check for 'mergeTableCells' option.
+        if ($option == 'mergeTableCells') {
+          // Remove this option and re-index array.
+          array_splice($format['editorSettings']['config']['table']['contentToolbar'],$idx,1);
+        }
+      }
     }
   }
 }
