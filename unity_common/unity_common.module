@@ -222,7 +222,7 @@ function unity_common_editor_js_settings_alter(array &$settings) {
         // Check for 'mergeTableCells' option.
         if ($option == 'mergeTableCells') {
           // Remove this option and re-index array.
-          array_splice($format['editorSettings']['config']['table']['contentToolbar'],$idx,1);
+          array_splice($format['editorSettings']['config']['table']['contentToolbar'], $idx, 1);
         }
       }
     }
