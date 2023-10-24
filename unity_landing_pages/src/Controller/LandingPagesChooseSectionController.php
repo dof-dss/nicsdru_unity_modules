@@ -8,6 +8,7 @@ use Drupal\layout_builder\SectionStorageInterface;
 /**
  * Controller to alter display of Layout builder Sections form.
  */
+// @phpstan-ignore-next-line
 class LandingPagesChooseSectionController extends ChooseSectionController {
 
   /**

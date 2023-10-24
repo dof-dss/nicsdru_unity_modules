@@ -10,6 +10,7 @@ use Drupal\system\Form\SiteInformationForm;
  *
  * @package Drupal\unity_frontpage\Form
  */
+// @phpstan-ignore-next-line
 class ExtendedSiteInformationForm extends SiteInformationForm {
 
   /**
