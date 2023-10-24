@@ -120,6 +120,7 @@ class MigrationProcessors extends DrushCommands {
     }
 
     // Make the revision current and publish if necessary.
+    // @phpstan-ignore-next-line
     $revision = $this->nodeStorage->loadRevision($vid);
     if (!empty($revision)) {
       /** @var \Drupal\Core\Entity\EditorialContentEntityBase $revision */

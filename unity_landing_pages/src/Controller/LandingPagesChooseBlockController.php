@@ -9,6 +9,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  * Controller to alter display of Layout builder Block form.
  */
+// @phpstan-ignore-next-line
 class LandingPagesChooseBlockController extends ChooseBlockController {
   /**
    * The module handler service.
