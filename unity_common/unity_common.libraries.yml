@@ -10,7 +10,3 @@ unity_common_validation.ife:
     js/unity-common-validation.ife.js: { weight: -1 }
   dependencies:
     - clientside_validation_jquery/cv.jquery.validate.ife
-unity_common_claro_fixes:
-  css:
-    theme:
-      css/claro.overrides.css: {}

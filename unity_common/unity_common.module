@@ -60,11 +60,6 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
       $form['#attached']['library'][] = 'unity_common/unity_common_validation.ife';
     }
   }
-
-  // Add Claro fixes on entity queue page and also on all node edit forms.
-  if (($form['#id'] == 'entity-subqueue-slideshow-edit-form') || (preg_match('/-edit-form$/', $form['#id']))) {
-    $form['#attached']['library'][] = 'unity_common/unity_common_claro_fixes';
-  }
 }
 
 /**
