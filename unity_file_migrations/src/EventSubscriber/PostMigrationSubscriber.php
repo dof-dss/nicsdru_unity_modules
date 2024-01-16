@@ -8,6 +8,7 @@ use Drupal\Core\Logger\LoggerChannelFactory;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Drupal\Core\Site\Settings;
 
 /**
  * Class PostMigrationSubscriber.
@@ -56,7 +57,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
                               LoggerChannelFactory $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger->get('unity_file_migrations');
-    $this->dbConnD7 =  Database::getConnection('liofa7', 'default');
+    $this->dbConnD7 =  Database::getConnection('default', 'liofa7');
     $this->dbConnD10 = Database::getConnection('default', 'default');
   }
 
@@ -81,8 +82,12 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
 
     // If we have just migrated aliases for Liofa then we need
     // tidy them up afterwards.
+    $this->logger->notice('Checking migration');
     if ($event_id === 'upgrade_d7_url_alias') {
-      if (Settings::get('subsite_id') == 'liofa') {
+      $this->logger->notice('Checking site');
+      $site = Settings::get('subsite_id');
+      $this->logger->notice('Site is ' . $site);
+      if (Settings::get('subsite_id') == 'LIOFA') {
         $this->processAliases();
       }
     }
@@ -94,15 +99,21 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
   protected function processAliases() {
     // Loop through all aliases and their languages on the source
     // Drupal 7 database.
-    $query = $this->dbConnD7->query("SELECT PID, LANGUAGE FROM URL_ALIAS")->execute();
+    $this->logger->notice('Processing aliases');
+    $query = $this->dbConnD7->query("SELECT PID, LANGUAGE, ALIAS FROM {url_alias}");
     $d7_aliases = $query->fetchAll();
 
     foreach ($d7_aliases as $row) {
       // Update the corresponding alias on the destination (Drupal 10)
       // database with the same language code.
-      $this->dbConnd10->update('path_alias')
-        ->fields(['langcode' => $row->language])
-        ->condition('id', $row->pid)
+      $this->logger->notice('Updating alias ' . $row->PID . ', ' . $row->ALIAS . ', to ' . $row->LANGUAGE);
+      $res = $this->dbConnD10->update('path_alias')
+        ->fields(['langcode' => $row->LANGUAGE])
+        ->condition('id', $row->PID)
+        ->execute();
+      $res = $this->dbConnD10->update('path_alias_revision')
+        ->fields(['langcode' => $row->LANGUAGE])
+        ->condition('id', $row->PID)
         ->execute();
     }
   }
