@@ -99,7 +99,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
     $query = $this->dbConnD7->query("SELECT PID, LANGUAGE, ALIAS FROM {url_alias}");
     $d7_aliases = $query->fetchAll();
 
-    $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
+    $path_alias_storage = $this->entityTypeManager->getStorage('path_alias');
     foreach ($d7_aliases as $row) {
       // Load the corresponding alias from the Drupal 10 database.
       $alias_objects = $path_alias_storage->loadByProperties([
