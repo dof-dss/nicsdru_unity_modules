@@ -82,11 +82,8 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
 
     // If we have just migrated aliases for Liofa then we need
     // tidy them up afterwards.
-    $this->logger->notice('Checking migration');
     if ($event_id === 'upgrade_d7_url_alias') {
-      $this->logger->notice('Checking site');
       $site = Settings::get('subsite_id');
-      $this->logger->notice('Site is ' . $site);
       if (Settings::get('subsite_id') == 'LIOFA') {
         $this->processAliases();
       }
@@ -99,22 +96,36 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
   protected function processAliases() {
     // Loop through all aliases and their languages on the source
     // Drupal 7 database.
-    $this->logger->notice('Processing aliases');
     $query = $this->dbConnD7->query("SELECT PID, LANGUAGE, ALIAS FROM {url_alias}");
     $d7_aliases = $query->fetchAll();
 
+    $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
     foreach ($d7_aliases as $row) {
-      // Update the corresponding alias on the destination (Drupal 10)
-      // database with the same language code.
-      $this->logger->notice('Updating alias ' . $row->PID . ', ' . $row->ALIAS . ', to ' . $row->LANGUAGE);
-      $res = $this->dbConnD10->update('path_alias')
-        ->fields(['langcode' => $row->LANGUAGE])
-        ->condition('id', $row->PID)
-        ->execute();
-      $res = $this->dbConnD10->update('path_alias_revision')
-        ->fields(['langcode' => $row->LANGUAGE])
-        ->condition('id', $row->PID)
-        ->execute();
+      // Load the corresponding alias from the Drupal 10 database.
+      $alias_objects = $path_alias_storage->loadByProperties([
+        'alias' => '/' . $row->ALIAS
+      ]);
+      $first_alias = TRUE;
+      if (count($alias_objects) > 0) {
+        foreach ($alias_objects as $alias) {
+          // Check the language code.
+          if ($alias->langcode != $row->LANGUAGE) {
+            // The language code was incorrect on Drupal 10 so update the
+            // corresponding alias with the same language code.
+            $this->logger->notice('Updating alias ' . $alias->id() . ', ' . $row->ALIAS . ', to ' . $row->LANGUAGE);
+            $alias->langcode = $row->LANGUAGE;
+            $alias->save();
+          }
+          if ($first_alias) {
+            $first_alias = FALSE;
+          } else {
+            // We have already processed an alias with this path, so
+            // we must delete duplicates.
+            $this->logger->notice('Deleting alias ' . $alias->id() . ', ' . $alias->getAlias());
+            $path_alias_storage->delete([$alias]);
+          }
+        }
+      }
     }
   }
 }
