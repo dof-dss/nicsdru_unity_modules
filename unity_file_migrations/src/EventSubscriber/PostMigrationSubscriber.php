@@ -5,10 +5,10 @@ namespace Drupal\unity_file_migrations\EventSubscriber;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactory;
+use Drupal\Core\Site\Settings;
 use Drupal\migrate\Event\MigrateEvents;
 use Drupal\migrate\Event\MigrateImportEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Drupal\Core\Site\Settings;
 
 /**
  * Class PostMigrationSubscriber.
@@ -57,7 +57,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
                               LoggerChannelFactory $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger->get('unity_file_migrations');
-    $this->dbConnD7 =  Database::getConnection('default', 'liofa7');
+    $this->dbConnD7 = Database::getConnection('default', 'liofa7');
     $this->dbConnD10 = Database::getConnection('default', 'default');
   }
 
@@ -118,7 +118,8 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
           }
           if ($first_alias) {
             $first_alias = FALSE;
-          } else {
+          }
+          else {
             // We have already processed an alias with this path, so
             // we must delete duplicates.
             $this->logger->notice('Deleting alias ' . $alias->id() . ', ' . $alias->getAlias());
@@ -128,4 +129,5 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
       }
     }
   }
+
 }
