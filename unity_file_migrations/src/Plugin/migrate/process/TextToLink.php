@@ -20,7 +20,7 @@ class TextToLink extends ProcessPluginBase {
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     // Copy the 'value' element from Drupal 7 to the
-    // corresponding 'uri' element in Drupal 9 adding the https:// protocol.
+    // corresponding 'uri' element in Drupal 9 adding the https:// protocol if necessary.
     $link = [];
     // Some text values have a protocol, if so keep the protocol.
     if (preg_match('(http(s)?:\/\/)', $value['value'], $matches)) {
