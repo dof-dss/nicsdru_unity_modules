@@ -23,7 +23,7 @@ class TextToLink extends ProcessPluginBase {
     // corresponding 'uri' element in Drupal 9 adding the https:// protocol if necessary.
     $link = [];
     // Some text values have a protocol, if so keep the protocol.
-    if (preg_match('(http(s)?:\/\/)', $value['value'], $matches)) {
+    if (preg_match('(http(s)?:\/\/)', $value['value'])) {
       $link['uri'] = $value['value'];
     }
     else {
