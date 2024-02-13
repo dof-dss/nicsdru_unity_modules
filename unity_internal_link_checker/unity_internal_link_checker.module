@@ -113,7 +113,7 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '/',
     // Unity 1 platform environments.
     '.edge-uhfrady-6tlkpwbr6tndk.uk-1.platformsh.site/',
-    '.uat-nvcvooy-kamkoebtv74zm.uk-1.platformsh.site/',
+    '.uat-nvcvooy-6tlkpwbr6tndk.uk-1.platformsh.site/',
     '.main-bvxea6i-6tlkpwbr6tndk.uk-1.platformsh.site/',
     // Unity 2 platform environments.
     '.edge-uhfrady-kamkoebtv74zm.uk-1.platformsh.site/',
