@@ -61,7 +61,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
     // site and there is a connection to 'liofa7', otherwise just open
     // 'default' twice and the Liofa check will fail in onMigratePostImport().
     $legacy_db = 'default';
-    foreach (\Drupal\Core\Database\Database::getAllConnectionInfo() as $key => $targets) {
+    foreach (Database::getAllConnectionInfo() as $key => $targets) {
       if ($key == 'liofa7') {
         $legacy_db  = $key;
       }
