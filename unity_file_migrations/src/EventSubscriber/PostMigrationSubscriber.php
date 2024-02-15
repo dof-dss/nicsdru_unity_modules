@@ -57,7 +57,16 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
                               LoggerChannelFactory $logger) {
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger->get('unity_file_migrations');
-    $this->dbConnD7 = Database::getConnection('default', 'liofa7');
+    // Open the Liofa legacy database if we are running inside the Liofa
+    // site and there is a connection to 'liofa7', otherwise just open
+    // 'default' twice and the Liofa check will fail in onMigratePostImport().
+    $legacy_db = 'default';
+    foreach (Database::getAllConnectionInfo() as $key => $targets) {
+      if ($key == 'liofa7') {
+        $legacy_db = $key;
+      }
+    }
+    $this->dbConnD7 = Database::getConnection('default', $legacy_db);
     $this->dbConnD10 = Database::getConnection('default', 'default');
   }
 
