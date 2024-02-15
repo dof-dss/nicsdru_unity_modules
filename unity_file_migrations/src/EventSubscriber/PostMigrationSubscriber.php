@@ -63,7 +63,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
     $legacy_db = 'default';
     foreach (Database::getAllConnectionInfo() as $key => $targets) {
       if ($key == 'liofa7') {
-        $legacy_db  = $key;
+        $legacy_db = $key;
       }
     }
     $this->dbConnD7 = Database::getConnection('default', $legacy_db);
