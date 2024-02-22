@@ -137,7 +137,7 @@ class MigrationProcessors extends DrushCommands {
       // If node was published on D7, make sure that it is published on D8.
       $node = $this->nodeStorage->load($nid);
       if ($node instanceof NodeInterface) {
-        $node->status = 1;
+        $node->set('status', 1);
         $node->set('moderation_state', 'published');
         $node->save();
       }
