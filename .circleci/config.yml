@@ -2,7 +2,7 @@ version: 2.1
 
 default_docker_image: &docker_image
   docker:
-    - image: thecodingmachine/php:8.0-v4-apache-node12
+    - image: thecodingmachine/php:8.2-v4-apache-node12
       environment:
         PROJECT_ROOT: "/home/docker/project"
         PHP_EXTENSION_GD: 1
