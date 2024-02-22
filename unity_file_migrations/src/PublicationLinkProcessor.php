@@ -62,11 +62,6 @@ class PublicationLinkProcessor {
           $file_target_id = $file->id();
           array_push($file_target_ids, $file_target_id);
         }
-        // This is handy for debugging if the filename doesn't match.
-        else {
-          var_dump('Nid: ' . $nid . ' filename: ' . $embedded_file_name);
-        }
-
       }
     }
     // Return the file ID's and load them into the media field.
