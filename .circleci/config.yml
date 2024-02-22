@@ -38,13 +38,13 @@ jobs:
           name: Fetch latest Drupal version
           command: |
             cd $PROJECT_ROOT
-            composer create-project drupal-composer/drupal-project:9.x-dev $PROJECT_ROOT --no-interaction
+            composer create-project drupal-composer/drupal-project:10.x-dev $PROJECT_ROOT --no-interaction
       - run:
           name: Download dependent contrib modules.
           command: |
             cd $PROJECT_ROOT
             composer require --no-interaction drupal/entity_embed mglaman/drupal-check \
-              drupal/search_api_solr drupal/structure_sync mglaman/phpstan-drupal:1.1.27
+              drupal/search_api_solr drupal/structure_sync -W
       - run:
           name: Move custom code into position
           command: |
@@ -55,9 +55,30 @@ jobs:
             cd $PROJECT_ROOT/web
             ../vendor/bin/drupal-check modules/custom
 
+  disallowed_functions:
+    <<: *docker_image
+    steps:
+      - checkout:
+          path: ~/nicsdru_unity_modules
+      - run:
+          name: Fetch latest Drupal core and other misc composer tools.
+          command: |
+            cd $PROJECT_ROOT
+            composer create-project drupal/recommended-project:10.1.x-dev $PROJECT_ROOT --no-interaction
+            composer require --dev phpstan/extension-installer spaze/phpstan-disallowed-calls
+      - run:
+          name: Move custom code into position
+          command: mv ~/nicsdru_unity_modules $PROJECT_ROOT/web/modules/custom
+      - run:
+          name: Check for disallowed function calls
+          command: |
+            CHECK_DIRS="$CHECK_DIRS ${PROJECT_ROOT}/web/modules/origins"
+            vendor/bin/phpstan analyse $CHECK_DIRS -c $PROJECT_ROOT/web/modules/custom/.circleci/phpstan.neon
+
 workflows:
   version: 2
   static_analysis:
     jobs:
       - coding_standards
       - deprecated_code
+      - disallowed_functions
