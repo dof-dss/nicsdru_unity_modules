@@ -133,7 +133,7 @@ function unity_common_preprocess_image_formatter(array &$variables) {
   if ($media_entity instanceof MediaInterface && $media_entity->bundle() === 'document') {
     $file_storage = \Drupal::entityTypeManager()->getStorage('file');
     // Get the underlying file associated with this document entity.
-    $file = $file_storage->load($media_entity->field_media_file->target_id);
+    $file = $file_storage->load($media_entity->get('field_media_file')->target_id);
 
     if ($file instanceof FileInterface === FALSE) {
       return;
