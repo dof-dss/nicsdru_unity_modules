@@ -37,7 +37,7 @@ function unity_search_pages_preprocess_views_view(array &$variables) {
   ];
 
   foreach ($display_ids as $display_id) {
-    if ($variables['display_id'] == $display_id) {
+    if ($variables['display_id'] == $display_id && !empty($variables['display_id'])) {
       // Ensure the search has items in an array.
       if (!empty($variables['view']->total_rows)) {
 
@@ -109,7 +109,7 @@ function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array
   ];
 
   foreach ($search_pages as $search_page) {
-    if ($variables['view']->element['#display_id'] == $search_page) {
+    if ($variables['view']->element['#display_id'] == $search_page && !empty($variables['view']->element['#display_id'])) {
       $suggestions[] = 'views_view_unformatted__search_result_page';
     }
   }
