@@ -56,7 +56,7 @@ function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, Rout
 
   $node = \Drupal::routeMatch()->getParameter('node');
 
-  if ($node instanceof NodeInterface) {
+  if ($node instanceof NodeInterface  && $node->hasField('book')) {
     // Append the page title to the end of Book pages.
     if ($node->get('book')) {
       $request = \Drupal::request();
