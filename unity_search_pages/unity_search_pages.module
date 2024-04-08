@@ -157,6 +157,7 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Judicial decisions and directions',
     'Sentencing guidelines',
     'Members',
+    'Nuacht',
   ];
 
   $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
