@@ -205,3 +205,13 @@ function unity_common_media_source_info_alter(array &$sources) {
 function unity_common_preprocess_book_navigation(&$variables) {
   $variables['#cache']['max-age'] = 0;
 }
+
+/**
+ * Implements hook_entity_presave().
+ */
+function unity_common_entity_presave(EntityInterface $entity) {
+  // Ensure that moderation sidebar is always shown after
+  // creating or editing a node (to fix problem described in
+  // D8UN-2676).
+  \Drupal::service('cache.render')->invalidateAll();
+}
