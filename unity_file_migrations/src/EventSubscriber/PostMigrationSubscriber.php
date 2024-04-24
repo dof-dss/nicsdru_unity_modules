@@ -53,8 +53,10 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
    * @param \Drupal\Core\Logger\LoggerChannelFactory $logger
    *   Drupal logger.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager,
-    LoggerChannelFactory $logger,) {
+  public function __construct(
+    EntityTypeManagerInterface $entity_type_manager,
+    LoggerChannelFactory $logger,
+  ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger->get('unity_file_migrations');
     // Open the Liofa legacy database if we are running inside the Liofa
