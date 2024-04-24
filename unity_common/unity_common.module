@@ -62,12 +62,12 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
     }
   }
 
-  // Don't let users amend the book title in the book admin edit screen.
+  // Make book title field required to prevent WSOD.
   if ($form_id === 'book_admin_edit') {
     foreach ($form['table'] as $table_item) {
       if (is_array($table_item) && !empty($table_item['title'])) {
         $nid = $table_item['#nid'];
-        $form['table']['book-admin-' . $nid]['title']['#disabled'] = TRUE;
+        $form['table']['book-admin-' . $nid]['title']['#required'] = TRUE;
       }
     }
   }
