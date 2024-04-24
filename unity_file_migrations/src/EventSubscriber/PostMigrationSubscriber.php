@@ -54,7 +54,8 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
    *   Drupal logger.
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager,
-                              LoggerChannelFactory $logger) {
+    LoggerChannelFactory $logger
+  ) {
     $this->entityTypeManager = $entity_type_manager;
     $this->logger = $logger->get('unity_file_migrations');
     // Open the Liofa legacy database if we are running inside the Liofa
@@ -112,7 +113,7 @@ class PostMigrationSubscriber implements EventSubscriberInterface {
     foreach ($d7_aliases as $row) {
       // Load the corresponding alias from the Drupal 10 database.
       $alias_objects = $path_alias_storage->loadByProperties([
-        'alias' => '/' . $row->ALIAS
+        'alias' => '/' . $row->ALIAS,
       ]);
       $first_alias = TRUE;
       if (count($alias_objects) > 0) {

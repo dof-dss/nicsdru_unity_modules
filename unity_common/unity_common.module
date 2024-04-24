@@ -106,8 +106,10 @@ function unity_common_preprocess_media(array &$variables) {
       return;
     }
 
-    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
-    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
+    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')
+      ->getSimpleMimeTypes();
+    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')
+      ->getMimeTypes();
 
     // Replace the original image_style render element with a bespoke HTML element
     // with our custom CSS attached to render the file icon as background CSS.
@@ -118,7 +120,7 @@ function unity_common_preprocess_media(array &$variables) {
         'class' => [
           'file--media-library-preview',
           'file--ico',
-          'file--ico__' . $simple_mimetypes[$mimetype]
+          'file--ico__' . $simple_mimetypes[$mimetype],
         ],
         'aria-label' => $pretty_mimetypes[$mimetype],
       ],
@@ -151,8 +153,10 @@ function unity_common_preprocess_image_formatter(array &$variables) {
     }
 
     $mimetype = $file->getMimeType();
-    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getSimpleMimeTypes();
-    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')->getMimeTypes();
+    $simple_mimetypes = \Drupal::service('origins_media.pretty_mime_types')
+      ->getSimpleMimeTypes();
+    $pretty_mimetypes = \Drupal::service('origins_media.pretty_mime_types')
+      ->getMimeTypes();
 
     // Replace the original image_style render element with a bespoke HTML element
     // with our custom CSS attached to render the file icon as background CSS.
@@ -163,7 +167,7 @@ function unity_common_preprocess_image_formatter(array &$variables) {
         'class' => [
           'file--media-library-preview',
           'file--ico',
-          'file--ico__' . $simple_mimetypes[$mimetype]
+          'file--ico__' . $simple_mimetypes[$mimetype],
         ],
         'aria-label' => $pretty_mimetypes[$mimetype],
       ],
