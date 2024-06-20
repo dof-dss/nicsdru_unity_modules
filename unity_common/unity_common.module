@@ -74,16 +74,6 @@ function unity_common_form_alter(&$form, FormStateInterface $form_state, $form_i
 }
 
 /**
- * Implements hook_views_pre_render().
- */
-function unity_common_views_pre_render(ViewExecutable $view) {
-  // Attach origins media library styles to media library views.
-  if ($view->id() === 'media_library') {
-    $view->element['#attached']['library'][] = 'nicsdru_unity_theme/media_library_styles';
-  }
-}
-
-/**
  * Implements hook_preprocess_media().
  */
 function unity_common_preprocess_media(array &$variables) {
@@ -123,9 +113,6 @@ function unity_common_preprocess_media(array &$variables) {
           'file--ico__' . $simple_mimetypes[$mimetype],
         ],
         'aria-label' => $pretty_mimetypes[$mimetype],
-      ],
-      '#attached' => [
-        'library' => 'nicsdru_unity_theme/media_library_styles',
       ],
     ];
   }
