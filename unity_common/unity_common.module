@@ -114,6 +114,9 @@ function unity_common_preprocess_media(array &$variables) {
         ],
         'aria-label' => $pretty_mimetypes[$mimetype],
       ],
+      '#attached' => [
+        'library' => 'nicsdru_unity_theme/media_library_styles',
+      ],
     ];
   }
 }
