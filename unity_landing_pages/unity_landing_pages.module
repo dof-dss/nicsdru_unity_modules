@@ -59,7 +59,7 @@ function _unity_landing_pages_block_form_alter(array $element, FormStateInterfac
     // Remove container-inline class from the telephone plus fieldsets.
     if (!empty($element['field_telephone']) && !empty($element['field_telephone']['widget'])) {
       $classes = &$element['field_telephone']['widget'][0]['#attributes']['class'];
-      $classes = array_filter($classes, function($e) {
+      $classes = array_filter($classes, function ($e) {
         return $e != 'container-inline';
       });
     }
@@ -81,7 +81,7 @@ function _unity_landing_pages_block_form_alter(array $element, FormStateInterfac
 function unity_landing_pages_preprocess_page(&$variables) {
   // Add custom CSS to the initial layout builder page.
   if (\Drupal::routeMatch()
-      ->getRouteName() == 'layout_builder.overrides.node.view') {
+    ->getRouteName() == 'layout_builder.overrides.node.view') {
     $variables['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
     $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
   }
