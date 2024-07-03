@@ -90,10 +90,11 @@ function unity_landing_pages_preprocess_page(&$variables) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_preprocess_node().
+ * Add the Layout builder styles to the landing page content type.
  */
 function unity_landing_pages_preprocess_node(&$variables) {
- if ($variables['node']->bundle() === 'landing_page') {
-   $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
- }
+   if ($variables['node']->bundle() === 'landing_page') {
+     $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
+   }
 }

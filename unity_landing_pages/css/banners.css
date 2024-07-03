@@ -75,7 +75,7 @@
 }
 
 @media (min-width: 766px) {
- .banner__strapline {
+  .banner__strapline {
     margin-top: 3rem;
     margin-bottom: 0;
   }

@@ -201,7 +201,7 @@ a.card--plain:active .card__title,
 }
 
 @media (min-width: 641px) {
- .card-deck--x3 {
+  .card-deck--x3 {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -213,7 +213,7 @@ a.card--plain:active .card__title,
 }
 
 @media (min-width: 641px) {
- .card-deck--x4 {
+  .card-deck--x4 {
     grid-template-columns: 1fr 1fr;
   }
 }
@@ -241,7 +241,7 @@ a.card--plain:active .card__title,
 }
 
 @media (min-width: 440px) {
- .card-deck--list .card {
+  .card-deck--list .card {
     flex-flow: row nowrap;
   }
   .card-deck--list .card .card__image {
@@ -322,7 +322,7 @@ a.card--plain:active .card__title,
 }
 
 @media screen and (min-width: 641px) {
- .card-deck--search-results .card__title {
+  .card-deck--search-results .card__title {
     font-size: 2rem;
     line-height: 1.5;
   }
@@ -363,7 +363,7 @@ a.card--plain:active .card__title,
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
- .card-deck {
+  .card-deck {
     display: flex;
     flex-flow: column nowrap;
     margin-bottom: 0;
@@ -398,7 +398,7 @@ a.card--plain:active .card__title,
 }
 
 @media all and (-ms-high-contrast: none) and (min-width: 766px), (-ms-high-contrast: active) and (min-width: 766px) {
- .card-deck--x3 > * {
+  .card-deck--x3 > * {
     width: 33.3333% !important;
   }
   .card-deck--x4 > * {
@@ -417,7 +417,7 @@ a.card--plain:active .card__title,
     grid-template-rows: min-content;
     grid-gap: 1.5em 2rem;
   }
- .card-deck--list-to-x3 {
+  .card-deck--list-to-x3 {
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: min-content;
     grid-gap: 1.5em 2rem;

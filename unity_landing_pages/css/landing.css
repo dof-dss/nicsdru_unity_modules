@@ -139,7 +139,7 @@
 }
 
 @media (min-width: 766px) {
- .node-type-landing-page .card-deck--plain .card__content {
+  .node-type-landing-page .card-deck--plain .card__content {
     margin: .9rem 0 0;
   }
 }
@@ -180,7 +180,7 @@
 }
 
 @media (min-width: 766px) {
- .js .node-type-landing-page .accordion .accordion-section.expanded {
+  .js .node-type-landing-page .accordion .accordion-section.expanded {
     margin: 0 1.8rem 1em;
   }
 }
@@ -194,7 +194,7 @@
 }
 
 @media (min-width: 641px) {
- .node-type-landing-page .card-deck--x2 .card--contact .tel .title {
+  .node-type-landing-page .card-deck--x2 .card--contact .tel .title {
     font-size: 1.6rem;
     line-height: 1.5;
     margin: 1em 0 1.5em;
