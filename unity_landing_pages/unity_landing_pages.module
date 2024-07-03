@@ -12,7 +12,6 @@ use Drupal\Core\Form\FormStateInterface;
  */
 function unity_landing_pages_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   if ($form_id === 'layout_builder_add_block' || $form_id === 'layout_builder_update_block') {
-
     // Add process callback that will allow us to alter block form element rendering.
     if (!empty($form['settings']['block_form'])) {
       $form['settings']['block_form']['#process'][] = '_unity_landing_pages_block_form_alter';
@@ -41,7 +40,6 @@ function unity_landing_pages_form_alter(&$form, FormStateInterface $form_state, 
           $form['settings']['label_display']['#default_value'] = TRUE;
           $form['settings']['label_display']['#access'] = FALSE;
           break;
-
       }
     }
   }
@@ -57,12 +55,11 @@ function unity_landing_pages_form_alter(&$form, FormStateInterface $form_state, 
  * Process callback for landing page custom block forms.
  */
 function _unity_landing_pages_block_form_alter(array $element, FormStateInterface $form_state) {
-
   if (!empty($element['#block']) && $element['#block']->bundle() === 'card_contact') {
     // Remove container-inline class from the telephone plus fieldsets.
     if (!empty($element['field_telephone']) && !empty($element['field_telephone']['widget'])) {
       $classes = &$element['field_telephone']['widget'][0]['#attributes']['class'];
-      $classes = array_filter($classes, function ($e) {
+      $classes = array_filter($classes, function($e) {
         return $e != 'container-inline';
       });
     }
@@ -83,7 +80,8 @@ function _unity_landing_pages_block_form_alter(array $element, FormStateInterfac
  */
 function unity_landing_pages_preprocess_page(&$variables) {
   // Add custom CSS to the initial layout builder page.
-  if (\Drupal::routeMatch()->getRouteName() == 'layout_builder.overrides.node.view') {
+  if (\Drupal::routeMatch()
+      ->getRouteName() == 'layout_builder.overrides.node.view') {
     $variables['#attached']['library'][] = 'unity_landing_pages/landing_page_admin';
     $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
   }
@@ -94,7 +92,7 @@ function unity_landing_pages_preprocess_page(&$variables) {
  * Add the Layout builder styles to the landing page content type.
  */
 function unity_landing_pages_preprocess_node(&$variables) {
-   if ($variables['node']->bundle() === 'landing_page') {
-     $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
-   }
+  if ($variables['node']->bundle() === 'landing_page') {
+    $variables['#attached']['library'][] = 'unity_landing_pages/layout_builder';
+  }
 }
