@@ -2,3 +2,12 @@ landing_page_admin:
   css:
     theme:
       css/landing_page_admin.css: {}
+layout_builder:
+  css:
+    theme:
+      css/landing.css: {}
+      css/layout-builder.css: {}
+      css/layout-builder-form.css: {}
+      css/banners.css: {}
+      css/cards.css: {}
+      css/card-contact.css: {}
