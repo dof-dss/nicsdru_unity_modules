@@ -190,7 +190,7 @@ function unity_search_pages_preprocess_block(&$variables) {
       'events',
       'judicial-decisions',
       'members',
-      'legal-guidance'
+      'legal'
     ];
 
     $plugin_id = $variables['plugin_id'];
