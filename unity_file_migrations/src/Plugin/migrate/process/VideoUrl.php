@@ -25,16 +25,7 @@ class VideoUrl extends ProcessPluginBase {
     $url = preg_replace('|^oembed:\/\/|', '', $value);
     // Remove HTML special chars to give a user readable string.
     $url = urldecode($url);
-    // See if thumbnail is available.
-    $thumbnail_url = "https://www.youtube.com/oembed?url=" . $url;
-    try {
-      $response = \Drupal::httpClient()->get($thumbnail_url);
-    }
-    catch (RequestException $e) {
-      // No thumbnail available, so do not migrate this row.
-      $msg = 'fid ' . $row->getSourceProperty('fid') . ' - ' . $e->getMessage();
-      throw new MigrateSkipRowException($msg);
-    }
+
     return $url;
   }
 
