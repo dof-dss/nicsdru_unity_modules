@@ -1,6 +1,6 @@
 /**
  * @file
- * Custom code to push data to Google Tag Manager evry time th
+ * Custom code to push data to Google Tag Manager every time the
  * EU Cookie Compliance banner is interacted with.
  */
 (function (Drupal, drupalSettings) {
