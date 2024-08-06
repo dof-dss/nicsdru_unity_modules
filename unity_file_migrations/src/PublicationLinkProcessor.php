@@ -17,10 +17,8 @@ class PublicationLinkProcessor {
    * @param array $content
    *   Drupal content field array.
    *
-   * @return array|\Drupal\Core\Entity\EntityBase|\Drupal\Core\Entity\EntityInterface|\Drupal\media\Entity\Media
-   *   Array of Drupal Link field values..
-   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
-   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @return \Drupal\media\MediaInterface[]
+   *   An array of selected media items.
    */
   public static function publicationLinks(array $content) {
     // Obtain the nid of the publication for debugging.
@@ -67,6 +65,7 @@ class PublicationLinkProcessor {
         }
       }
       // Return the file ID's and load them into the media field.
+      /** @var \Drupal\media\MediaInterface[] $media */
       return Media::loadMultiple($file_target_ids);
     }
   }
