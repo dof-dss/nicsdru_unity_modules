@@ -65,9 +65,8 @@ class PublicationLinkProcessor {
         }
       }
       // Return the file ID's and load them into the media field.
-      /** @var \Drupal\media\MediaInterface[] $media */
       return Media::loadMultiple($file_target_ids);
     }
+    return [];
   }
-
 }
