@@ -22,6 +22,7 @@ function unity_common_preprocess_page(&$variables) {
   }
   // Apply link manager library to all non-admin pages.
   $variables['#attached']['library'][] = 'unity_common/link_manager';
+  $variables['#attached']['library'][] = 'unity_common/unity_cookie_compliance_gtag';
 }
 
 /**
