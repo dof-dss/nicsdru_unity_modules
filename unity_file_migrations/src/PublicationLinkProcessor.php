@@ -24,9 +24,9 @@ class PublicationLinkProcessor {
    */
   public static function publicationLinks(array $content) {
     // Obtain the nid of the publication for debugging.
-      $nid = $content[0];
-      // Check the body field has some content.
-      if (!empty($content[1][0]['value'])) {
+    $nid = $content[0];
+    // Check the body field has some content.
+    if (!empty($content[1][0]['value'])) {
       // Obtain the D7 body value.
       $value = $content[1][0]['value'];
       // Regex to match a string <a href="https://www.niauditoffice.gov.uk/sites/niao/files/media-files/conflicts_of_interest_good_practice_guide.pdf">Conflicts Of Interest - A Good Practice Guide <span class="meta"> (PDF&nbsp;437 KB)</span></a>.
