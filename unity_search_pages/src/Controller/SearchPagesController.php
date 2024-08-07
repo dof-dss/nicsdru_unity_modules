@@ -150,6 +150,9 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
       if ($title == 'Judicialdecisions') {
         $title = 'Judicial decisions and directions';
       }
+      if ($title == 'Legals') {
+        $title = 'Legal guidance';
+      }
     }
     return $title;
   }
