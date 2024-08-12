@@ -1,5 +1,5 @@
 .node-type-landing-page .content-sidebar-wrap {
-  width: 100%;
+  width: 100% !important;
 }
 
 .node-type-landing-page .video-and-caption__caption::before {
