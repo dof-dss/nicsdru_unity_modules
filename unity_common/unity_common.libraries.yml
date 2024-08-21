@@ -4,9 +4,6 @@ link_manager:
   dependencies:
     - core/jquery
     - core/drupal
-unity_cookie_compliance_gtag:
-  js:
-    js/unity-cookie-compliance-gtag.js: {}
 unity_common_validation.ife:
   version: VERSION
   js:
