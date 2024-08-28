@@ -241,4 +241,3 @@ function unity_common_js_alter(&$javascript, AttachedAssetsInterface $assets, La
     }
   }
 }
-
