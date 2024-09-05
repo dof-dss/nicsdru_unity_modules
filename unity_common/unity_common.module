@@ -222,22 +222,3 @@ function unity_common_entity_presave(EntityInterface $entity) {
   // D8UN-2676).
   \Drupal::service('cache.render')->invalidateAll();
 }
-
-///**
-// * Implements hook_js_alter().
-// */
-//function unity_common_js_alter(&$javascript, AttachedAssetsInterface $assets, LanguageInterface $language) {
-//  // This is a fix for the console error 'DrupalDialogEvent has
-//  // already been declared' which appeared on node edit forms after
-//  // the core 10.3 upgrade and caused the moderation sidebar dialog to
-//  // appear in the middle of the screen.
-//  // The fix prevents the dialog.js file from being included in the js aggregation
-//  // as the error only occurred when js files were aggregated.
-//  // This seems to be one of the 'rare' cases when 'aggregation causes redeclaration'
-//  // as described at https://www.drupal.org/docs/administering-a-drupal-site/managing-site-performance-and-scalability/aggregate-css-and-js-files-in-drupal-core
-//  foreach ($javascript as $index => &$item) {
-//    if ($index == 'core/misc/dialog/dialog.js') {
-//      $javascript['core/misc/dialog/dialog.js']['preprocess'] = FALSE;
-//    }
-//  }
-//}
