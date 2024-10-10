@@ -151,9 +151,12 @@ class UnityDrushCommands extends DrushCommands {
   public function disableFastlyLogging() {
     // Only disable logging if the Fastly module is installed.
     if (\Drupal::moduleHandler()->moduleExists('fastly')) {
-      \Drupal::configFactory()->getEditable('fastly.settings')
-        ->set('logging', FALSE)->save();
-      $this->io()->write("Fastly logging disabled", TRUE);
+      if (\Drupal::configFactory()->getEditable('fastly.settings')
+        ->set('logging', FALSE)->save()) {
+        $this->io()->write("Fastly logging disabled", TRUE);
+      } else {
+        $this->io()->write("** Unable to disable Fastly logging", TRUE);
+      }
     }
     else {
       $this->io()->write("Fastly module not installed", TRUE);
@@ -168,9 +171,13 @@ class UnityDrushCommands extends DrushCommands {
   public function enableFastlyLogging() {
     // Only enable logging if the Fastly module is installed.
     if (\Drupal::moduleHandler()->moduleExists('fastly')) {
-      \Drupal::configFactory()->getEditable('fastly.settings')
-        ->set('logging', TRUE)->save();
-      $this->io()->write("Fastly logging enabled", TRUE);
+      if (\Drupal::configFactory()->getEditable('fastly.settings')
+        ->set('logging', TRUE)->save()) {
+        $this->io()->write("Fastly logging enabled", TRUE);
+      } else {
+        $this->io()->write("** Unable to enable Fastly logging", TRUE);
+      }
+
     }
     else {
       $this->io()->write("Fastly module not installed", TRUE);
