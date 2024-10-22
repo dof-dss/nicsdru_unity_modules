@@ -19,74 +19,75 @@ use Solarium\Core\Query\QueryInterface;
  * @RenderElement("html_tag");
  */
 function unity_search_pages_preprocess_views_view(array &$variables) {
-  // Add view display ids to add result count to header of the search view.
-  $display_ids = [
-    'publication_search_page',
-    'news_search_page',
-    'consultations_search_page',
-    'evidence_search_page',
-    'questions_search_page',
-    'search_page',
-    'decision_search_page',
-    'documents_search_page',
-    'articles_search_page',
-    'institutions_search_page',
-    'events_search_page',
-    'judicial_decisions_search_page',
-    'sentence_guide_search_page',
-    'members_search_page',
-    'legal_search_page',
-  ];
+    // Add view display ids to add result count to header of the search view.
+    $display_ids = [
+        'publication_search_page',
+        'news_search_page',
+        'consultations_search_page',
+        'evidence_search_page',
+        'questions_search_page',
+        'search_page',
+        'decision_search_page',
+        'documents_search_page',
+        'articles_search_page',
+        'institutions_search_page',
+        'events_search_page',
+        'judicial_decisions_search_page',
+        'sentence_guide_search_page',
+        'members_search_page',
+        'legal_search_page',
+        'noticeboard_search_page',
+    ];
 
-  foreach ($display_ids as $display_id) {
-    if ($variables['display_id'] == $display_id && !empty($variables['display_id'])) {
-      // Ensure the search has items in an array.
-      if (!empty($variables['view']->total_rows)) {
+    foreach ($display_ids as $display_id) {
+        if ($variables['display_id'] == $display_id && !empty($variables['display_id'])) {
+            // Ensure the search has items in an array.
+            if (!empty($variables['view']->total_rows)) {
 
-        // Count the number of items in the array.
-        $number_of_items = $variables['view']->total_rows;
+                // Count the number of items in the array.
+                $number_of_items = $variables['view']->total_rows;
 
-        // Singular expression if only 1, if more pluralise.
-        if ($display_id == 'events_search_page') {
-          $header_text = \Drupal::translation()
-            ->formatPlural($number_of_items, 'event', 'events');
+                // Singular expression if only 1, if more pluralise.
+                if ($display_id == 'events_search_page') {
+                    $header_text = \Drupal::translation()
+                        ->formatPlural($number_of_items, 'event', 'events');
+                }
+                else {
+                    $header_text = \Drupal::translation()
+                        ->formatPlural($number_of_items, 'result', 'results');
+                }
+
+                // Output the result.
+                $variables['header']['result'] = [
+                    '#type' => 'html_tag',
+                    '#tag' => 'h2',
+                    '#attributes' => ['class' => 'current-search-item-results-count'],
+                    '#value' => t('@item_count @header_text',
+                        [
+                            '@item_count' => $number_of_items,
+                            '@header_text' => $header_text,
+                        ]),
+                ];
+            }
+            else {
+                $variables['header']['result'] = [
+                    '#type' => 'html_tag',
+                    '#tag' => 'h2',
+                    '#attributes' => ['class' => 'current-search-item-results-count'],
+                    '#value' => t('0 results'),
+                ];
+            }
         }
-        else {
-          $header_text = \Drupal::translation()
-            ->formatPlural($number_of_items, 'result', 'results');
-        }
-
-        // Output the result.
-        $variables['header']['result'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'h2',
-          '#attributes' => ['class' => 'current-search-item-results-count'],
-          '#value' => t('@item_count @header_text',
-            [
-              '@item_count' => $number_of_items,
-              '@header_text' => $header_text,
-            ]),
-        ];
-      }
-      else {
-        $variables['header']['result'] = [
-          '#type' => 'html_tag',
-          '#tag' => 'h2',
-          '#attributes' => ['class' => 'current-search-item-results-count'],
-          '#value' => t('0 results'),
-        ];
-      }
     }
-  }
 }
 
 /**
  * Implements hook_theme_suggestions_views_view_alter().
  */
 function unity_search_pages_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
-  if (!empty($variables['view']->element['#display_id'])) {
-    $suggestions[] = 'views_view__' . $variables['view']->element['#display_id'];
-  }
+    if (!empty($variables['view']->element['#display_id'])) {
+        $suggestions[] = 'views_view__' . $variables['view']->element['#display_id'];
+    }
 }
 
 /**
@@ -94,84 +95,87 @@ function unity_search_pages_theme_suggestions_views_view_alter(array &$suggestio
  */
 function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
 
-  $search_pages = [
-    'consultations_search_page',
-    'publication_search_page',
-    'news_search_page',
-    'evidence_search_page',
-    'questions_search_page',
-    'search_page',
-    'decision_search_page',
-    'documents_search_page',
-    'articles_search_page',
-    'institutions_search_page',
-    'events_search_page',
-    'judicial_decisions_search_page',
-    'sentence_guide_search_page',
-    'members_search_page',
-    'legal_search_page',
-  ];
+    $search_pages = [
+        'consultations_search_page',
+        'publication_search_page',
+        'news_search_page',
+        'evidence_search_page',
+        'questions_search_page',
+        'search_page',
+        'decision_search_page',
+        'documents_search_page',
+        'articles_search_page',
+        'institutions_search_page',
+        'events_search_page',
+        'judicial_decisions_search_page',
+        'sentence_guide_search_page',
+        'members_search_page',
+        'legal_search_page',
+        'noticeboard_search_page',
+    ];
 
-  foreach ($search_pages as $search_page) {
-    if ($variables['view']->element['#display_id'] == $search_page && !empty($variables['view']->element['#display_id'])) {
-      $suggestions[] = 'views_view_unformatted__search_result_page';
+    foreach ($search_pages as $search_page) {
+        if ($variables['view']->element['#display_id'] == $search_page && !empty($variables['view']->element['#display_id'])) {
+            $suggestions[] = 'views_view_unformatted__search_result_page';
+        }
     }
-  }
 }
 
 /**
  * Implements hook_preprocess_form().
  */
 function unity_search_pages_preprocess_form(array &$variables) {
-  switch ($variables['element']['#id']) {
-    case "views-exposed-form-publications-search-publication-search-page":
-    case "views-exposed-form-news-search-news-search-page":
-    case "views-exposed-form-consultations-search-consultations-search-page":
-    case "views-exposed-form-questions-search-questions-search-page":
-    case "views-exposed-form-evidence-search-evidence-search-page":
-    case "views-exposed-form-decision-search-decision-search-page":
-    case "views-exposed-form-documents-search-documents-search-page":
-    case "views-exposed-form-featured-search-articles-search-page":
-    case "views-exposed-form-institutions-search-institutions-search-page":
-    case "views-exposed-form-events-search-events-search-page":
-    case "views-exposed-form-judicial-decisions-search-judicial-decisions-search-page":
-    case "views-exposed-form-judicial-decisions-search-sentence-guide-search-page":
-    case "views-exposed-form-managers-search-members-search-page":
-    case "views-exposed-form-legal-search-legal-search-page":
-      $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
-      $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
-      break;
-  }
+    switch ($variables['element']['#id']) {
+        case "views-exposed-form-publications-search-publication-search-page":
+        case "views-exposed-form-news-search-news-search-page":
+        case "views-exposed-form-consultations-search-consultations-search-page":
+        case "views-exposed-form-questions-search-questions-search-page":
+        case "views-exposed-form-evidence-search-evidence-search-page":
+        case "views-exposed-form-decision-search-decision-search-page":
+        case "views-exposed-form-documents-search-documents-search-page":
+        case "views-exposed-form-featured-search-articles-search-page":
+        case "views-exposed-form-institutions-search-institutions-search-page":
+        case "views-exposed-form-events-search-events-search-page":
+        case "views-exposed-form-judicial-decisions-search-judicial-decisions-search-page":
+        case "views-exposed-form-judicial-decisions-search-sentence-guide-search-page":
+        case "views-exposed-form-managers-search-members-search-page":
+        case "views-exposed-form-legal-search-legal-search-page":
+        case "views-exposed-form-noticeboard-search-noticeboard-search-page":
+            $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
+            $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
+            break;
+    }
 }
 
 /**
  * Implements hook_preprocess_page().
  */
 function unity_search_pages_preprocess_page(&$variables) {
-  // A list of search page titles on the Unity codebase.
-  $search_pages = [
-    'News',
-    'Publications',
-    'Consultations',
-    'Questions to the Chief Constable',
-    'Evidence',
-    'Search',
-    'Decision',
-    'Institutions',
-    'Documents',
-    'Featured articles',
-    'Events',
-    'Judicial decisions and directions',
-    'Sentencing guidelines',
-    'Members',
-    'Nuacht',
-    'Legal guidance',
-  ];
+    // A list of search page titles on the Unity codebase.
+    $search_pages = [
+        'News',
+        'Publications',
+        'Consultations',
+        'Questions to the Chief Constable',
+        'Evidence',
+        'Search',
+        'Decision',
+        'Institutions',
+        'Documents',
+        'Featured articles',
+        'Events',
+        'Judicial decisions and directions',
+        'Sentencing guidelines',
+        'Members',
+        'Nuacht',
+        'Legal guidance',
+        'Noticeboard',
+    ];
 
-  $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
+    $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
 
-  // If evidence search page, set variable to TRUE.
-  $variables['evidence_search'] = $variables['page']['#title'] === 'Evidence';
+    // If evidence search page, set variable to TRUE.
+    $variables['evidence_search'] = $variables['page']['#title'] === 'Evidence';
 }
 
 /**
@@ -179,34 +183,35 @@ function unity_search_pages_preprocess_page(&$variables) {
  *
  */
 function unity_search_pages_preprocess_block(&$variables) {
-  // Check if the block is an exposed filter block.
-  if ($variables['base_plugin_id'] == 'views_exposed_filter_block') {
-    // Add search page name ensuring they are in the exposed block machine name.
-    $search_pages = [
-      'news',
-      'publications',
-      'consultations',
-      'questions',
-      'evidence',
-      'decision',
-      'documents',
-      'articles',
-      'institutions',
-      'events',
-      'judicial-decisions',
-      'members',
-      'legal'
-    ];
+    // Check if the block is an exposed filter block.
+    if ($variables['base_plugin_id'] == 'views_exposed_filter_block') {
+        // Add search page name ensuring they are in the exposed block machine name.
+        $search_pages = [
+            'news',
+            'publications',
+            'consultations',
+            'questions',
+            'evidence',
+            'decision',
+            'documents',
+            'articles',
+            'institutions',
+            'events',
+            'judicial-decisions',
+            'members',
+            'legal',
+            'noticeboard'
+        ];
 
-    $plugin_id = $variables['plugin_id'];
+        $plugin_id = $variables['plugin_id'];
 
-    foreach ($search_pages as $search_page) {
-      // Search the machine name for search page name and set variable to this.
-      if (preg_match("/{$search_page}/i", $plugin_id)) {
-        $variables['search_page_name'] = $search_page;
-      }
+        foreach ($search_pages as $search_page) {
+            // Search the machine name for search page name and set variable to this.
+            if (preg_match("/{$search_page}/i", $plugin_id)) {
+                $variables['search_page_name'] = $search_page;
+            }
+        }
     }
-  }
 }
 
 /**
@@ -215,27 +220,27 @@ function unity_search_pages_preprocess_block(&$variables) {
  * Replaces search results title with a title and subtitle to enable styling.
  */
 function unity_search_pages_preprocess_page_title(&$variables) {
-  $current_route = \Drupal::routeMatch()->getRouteName();
-  $title_raw = $variables['title'];
-  $pattern = '/view.\w*search.\w*search_page/';
+    $current_route = \Drupal::routeMatch()->getRouteName();
+    $title_raw = $variables['title'];
+    $pattern = '/view.\w*search.\w*search_page/';
 
-  if (preg_match($pattern, $current_route)) {
-    if ($title_raw instanceof TranslatableMarkup) {
-      $title_text = $title_raw->render();
-    }
-    elseif (is_array($title_raw) && isset($title_raw['#markup'])) {
-      $title_text = $title_raw['#markup'];
-    }
-    else {
-      $title_text = $title_raw;
-    }
+    if (preg_match($pattern, $current_route)) {
+        if ($title_raw instanceof TranslatableMarkup) {
+            $title_text = $title_raw->render();
+        }
+        elseif (is_array($title_raw) && isset($title_raw['#markup'])) {
+            $title_text = $title_raw['#markup'];
+        }
+        else {
+            $title_text = $title_raw;
+        }
 
-    if (preg_match('/\w*\b\s- search results/', $title_text)) {
-      $new_title = strtok($title_text, ' -');
-      $variables['title'] = t($new_title);
-      $variables['title_subtitle'] = t('search results');
+        if (preg_match('/\w*\b\s- search results/', $title_text)) {
+            $new_title = strtok($title_text, ' -');
+            $variables['title'] = t($new_title);
+            $variables['title_subtitle'] = t('search results');
+        }
     }
-  }
 }
 
 /**
@@ -246,8 +251,8 @@ function unity_search_pages_preprocess_page_title(&$variables) {
  * because it's the same as 'en' in search_api config.
  */
 function unity_search_pages_search_api_solr_query_alter(QueryInterface $solarium_query, SearchApiQueryInterface $query) {
-  // Maps to <str name="name">spelling_und</str> in solrconfig_extra.xml.
-  /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
-  $solarium_query->getSpellcheck()
-    ->setDictionary(LanguageInterface::LANGCODE_NOT_SPECIFIED);
+    // Maps to <str name="name">spelling_und</str> in solrconfig_extra.xml.
+    /** @var \Solarium\QueryType\Select\Query\Query $solarium_query */
+    $solarium_query->getSpellcheck()
+        ->setDictionary(LanguageInterface::LANGCODE_NOT_SPECIFIED);
 }
