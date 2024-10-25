@@ -154,7 +154,8 @@ class UnityDrushCommands extends DrushCommands {
       if (\Drupal::configFactory()->getEditable('fastly.settings')
         ->set('logging', FALSE)->save()) {
         $this->io()->write("Fastly logging disabled", TRUE);
-      } else {
+      }
+      else {
         $this->io()->write("** Unable to disable Fastly logging", TRUE);
       }
     }
@@ -174,7 +175,8 @@ class UnityDrushCommands extends DrushCommands {
       if (\Drupal::configFactory()->getEditable('fastly.settings')
         ->set('logging', TRUE)->save()) {
         $this->io()->write("Fastly logging enabled", TRUE);
-      } else {
+      }
+      else {
         $this->io()->write("** Unable to enable Fastly logging", TRUE);
       }
 
