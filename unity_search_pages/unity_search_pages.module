@@ -277,9 +277,6 @@ function unity_search_pages_preprocess_facets_item_list(array &$variables) {
     return;
   }
 
-  /** @var \Drupal\facets\FacetInterface $facet */
-  $facet = $variables['facet'];
-
   // Alter links so that they are not treated as self-referential links
   // and, to help prevent bots following the links, output a data-href
   // instead of href which JS will then convert to a href on page load.
