@@ -24,7 +24,7 @@
       // Trim query parameters, if any, from pathname.
       pathname = pathname.substr(0, (pathname.indexOf('?') < 0) ? pathname.length : pathname.indexOf('?'));
 
-      const elements = ['header.header', '#menu-main', '#main-content', '#footer', '#sidebar-second', '#sidebar-first'];
+      const elements = ['header.header', '#nav-main-menu', '#main-content', '#footer', '#sidebar-second', '#sidebar-first'];
 
       $.each(elements, function (index, elementRef) {
         let classes = ['active', 'link__self'];
