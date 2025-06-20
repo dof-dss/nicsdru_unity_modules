@@ -39,7 +39,9 @@ function unity_search_pages_preprocess_views_view(array &$variables) {
     'legal_search_page',
     'noticeboard_search_page',
     'blog_search_page',
-    'resources_search_page'
+    'resources_search_page',
+    'champions_search_page',
+    'videos_search_page'
   ];
 
   foreach ($display_ids as $display_id) {
@@ -116,7 +118,9 @@ function unity_search_pages_theme_suggestions_views_view_unformatted_alter(array
     'legal_search_page',
     'noticeboard_search_page',
     'blog_search_page',
-    'resources_search_page'
+    'resources_search_page',
+    'champions_search_page',
+    'videos_search_page'
   ];
 
   foreach ($search_pages as $search_page) {
@@ -148,6 +152,8 @@ function unity_search_pages_preprocess_form(array &$variables) {
     case "views-exposed-form-noticeboard-search-noticeboard-search-page":
     case "views-exposed-form-blog-search-blog-search-page":
     case "views-exposed-form-resources-search-resources-search-page":
+    case "views-exposed-form-champions-search-champions-search-page":
+    case "views-exposed-form-videos-search-videos-search-page":
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form');
       $variables['attributes']['class'][] = Html::cleanCssIdentifier('search-form--page');
       break;
@@ -179,6 +185,8 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Noticeboard',
     'Blog',
     'Resources',
+    'Champions',
+    'Videos'
   ];
 
   $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
@@ -212,6 +220,8 @@ function unity_search_pages_preprocess_block(&$variables) {
       'noticeboard',
       'blog',
       'resources',
+      'champions',
+      'videos'
     ];
 
     $plugin_id = $variables['plugin_id'];
