@@ -49,15 +49,15 @@ function unity_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb, Rout
           $breadcrumb = new Breadcrumb();
           $breadcrumb->setLinks($links);
           $breadcrumb->addCacheContexts([
-    'url.path',
-    'languages:language_url',
-    'languages:language_interface',
-    'theme',
-    'user.permissions',
-    'url.path.parent',
-    'url.path.is_front',
-    'route'
-]);
+            'url.path',
+            'languages:language_url',
+            'languages:language_interface',
+            'theme',
+            'user.permissions',
+            'url.path.parent',
+            'url.path.is_front',
+            'route'
+          ]);
         }
       }
     }
