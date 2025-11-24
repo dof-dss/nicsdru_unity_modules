@@ -115,7 +115,16 @@ class EventsBreadcrumb implements BreadcrumbBuilderInterface {
     $links[] = Link::fromTextandUrl(t('Events'), Url::fromRoute('view.events_search.events_search_page'));
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
-    $breadcrumb->addCacheContexts(['url.path']);
+    $breadcrumb->addCacheContexts([
+    'url.path',
+    'languages:language_url',
+    'languages:language_interface',
+    'theme',
+    'user.permissions',
+    'url.path.parent',
+    'url.path.is_front',
+    'route'
+]);
     return $breadcrumb;
   }
 

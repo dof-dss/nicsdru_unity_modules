@@ -111,7 +111,16 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
     $links[] = Link::createFromRoute(t('Home'), '<front>');
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
-    $breadcrumb->addCacheContexts(['url.path']);
+    $breadcrumb->addCacheContexts([
+    'url.path',
+    'languages:language_url',
+    'languages:language_interface',
+    'theme',
+    'user.permissions',
+    'url.path.parent',
+    'url.path.is_front',
+    'route'
+]);
     return $breadcrumb;
   }
 
