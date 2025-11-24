@@ -117,15 +117,15 @@ class PublicationBreadcrumb implements BreadcrumbBuilderInterface {
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
     $breadcrumb->addCacheContexts([
-    'url.path',
-    'languages:language_url',
-    'languages:language_interface',
-    'theme',
-    'user.permissions',
-    'url.path.parent',
-    'url.path.is_front',
-    'route'
-]);
+      'url.path',
+      'languages:language_url',
+      'languages:language_interface',
+      'theme',
+      'user.permissions',
+      'url.path.parent',
+      'url.path.is_front',
+      'route'
+    ]);
     return $breadcrumb;
   }
 
