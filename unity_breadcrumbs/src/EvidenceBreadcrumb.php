@@ -116,7 +116,16 @@ class EvidenceBreadcrumb implements BreadcrumbBuilderInterface {
     $links[] = Link::fromTextandUrl(t('Evidence'), Url::fromRoute('view.evidence_search.evidence_search_page'));
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
-    $breadcrumb->addCacheContexts(['url.path']);
+    $breadcrumb->addCacheContexts([
+      'url.path',
+      'languages:language_url',
+      'languages:language_interface',
+      'theme',
+      'user.permissions',
+      'url.path.parent',
+      'url.path.is_front',
+      'route'
+    ]);
     return $breadcrumb;
   }
 
