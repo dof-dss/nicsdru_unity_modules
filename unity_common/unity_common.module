@@ -27,9 +27,7 @@ function unity_common_preprocess_page(&$variables) {
 
   $moduleHandler = \Drupal::service('module_handler');
   if ($moduleHandler->moduleExists('slick')) {
-    if (isset($variables['is_front']) && $variables['is_front']) {
-      $variables['#attached']['library'][] = 'unity_common/slick_move_play_button';
-    }
+    $variables['#attached']['library'][] = 'unity_common/slick_move_play_button';
   }
 }
 
