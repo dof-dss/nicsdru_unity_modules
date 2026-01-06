@@ -24,6 +24,11 @@ function unity_common_preprocess_page(&$variables) {
   }
   // Apply link manager library to all non-admin pages.
   $variables['#attached']['library'][] = 'unity_common/link_manager';
+
+  $moduleHandler = \Drupal::service('module_handler');
+  if ($moduleHandler->moduleExists('slick')) {
+    $variables['#attached']['library'][] = 'unity_common/slick_move_play_button';
+  }
 }
 
 /**
