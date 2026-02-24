@@ -20,8 +20,14 @@ function unity_eu_cookie_compliance_install()
   if (\Drupal::request()->server->get('SCRIPT_NAME') == '/core/install.php') {
     // We are running inside the install profile,
     // retrieve module path for the Unity install profile.
-    $config_path = $module_handler->getModule('nicsdru_unity_profile')->getPath();
-    $config_path .= '/config/install';
+    $install_profiles = ['nicsdru_unity_intranet', 'nicsdru_unity_profile'];
+    foreach ($install_profiles as $install_profile) {
+      if ($module_handler->moduleExists($install_profile)) {
+        $config_path = $module_handler->getModule($install_profile)
+          ->getPath();
+        $config_path .= '/config/install';
+      }
+    }
   } else {
     // We are running as a stand alone module, use the config sync directory.
     $config_path = Settings::get('config_sync_directory', FALSE);
