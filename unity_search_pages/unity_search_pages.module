@@ -194,7 +194,7 @@ function unity_search_pages_preprocess_page(&$variables) {
     'Champions',
     'Videos',
     'Stories',
-    'Staff profiles'
+    'Staff'
   ];
 
   $variables['search_page'] = in_array($variables['page']['#title'], $search_pages);
