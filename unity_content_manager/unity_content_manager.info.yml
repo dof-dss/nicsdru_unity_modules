@@ -1,0 +1,5 @@
+name: 'Unity content manager'
+type: module
+description: 'A field to add Content manager links.'
+core_version_requirement: 8.x || ^9 || ^10
+package: 'Unity'

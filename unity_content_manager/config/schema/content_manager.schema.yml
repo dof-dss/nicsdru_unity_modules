@@ -1,0 +1,19 @@
+# Schema for the configuration files of the Link module.
+
+field.value.content_manager:
+  type: mapping
+  label: 'Default value'
+  mapping:
+    attributes:
+      type: mapping
+      label: 'Link attributes'
+      mapping:
+        title:
+          type: label
+          label: 'Link text'
+    url:
+      type: string
+      label: 'Content manager URL'
+    title:
+      type: string
+      label: 'Link text'
