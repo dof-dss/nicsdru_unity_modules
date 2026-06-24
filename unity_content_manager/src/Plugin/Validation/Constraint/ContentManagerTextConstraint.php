@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraint as SymfonyConstraint;
 )]
 class ContentManagerTextConstraint extends SymfonyConstraint {
 
+  /**
+   * The default violation message.
+   *
+   * @var string
+   */
   public $message = "You must provide link text with the content manager URL";
 
 }

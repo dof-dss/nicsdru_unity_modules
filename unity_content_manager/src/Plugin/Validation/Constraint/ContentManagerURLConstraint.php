@@ -15,6 +15,11 @@ use Symfony\Component\Validator\Constraint as SymfonyConstraint;
 )]
 class ContentManagerURLConstraint extends SymfonyConstraint {
 
+  /**
+   * The default violation message.
+   *
+   * @var string
+   */
   public $message = "The path '@url' is invalid. This link must begin with contentmanager://";
 
 }

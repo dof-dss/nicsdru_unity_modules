@@ -14,12 +14,13 @@ class ContentManagerTextConstraintValidator extends ConstraintValidator {
    * {@inheritdoc}
    *
    * phpcs:ignore Drupal.Commenting.FunctionComment.VoidReturn
+   *
    * @return void
    */
   public function validate($value, Constraint $constraint) {
     if (isset($value)) {
       $url = $value->url;
-        $link_text = $value->title;
+      $link_text = $value->title;
 
       // Ensure link text is filled out if a Content manager link is present.
       if ($url && empty($link_text)) {
