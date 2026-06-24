@@ -7,8 +7,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validates the LinkExternalProtocols constraint.
- *
- * @property string $message
  */
 class ContentManagerTextConstraintValidator extends ConstraintValidator {
 
@@ -26,6 +24,7 @@ class ContentManagerTextConstraintValidator extends ConstraintValidator {
 
       // Ensure link text is filled out if a Content manager link is present.
       if ($url && empty($link_text)) {
+        // @phpstan-ignore-next-line
         $this->context->addViolation($constraint->message, ['@title' => $link_text]);
       }
     }

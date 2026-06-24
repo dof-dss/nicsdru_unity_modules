@@ -9,8 +9,6 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Plugin implementation of the 'default' formatter.
- *
- * @property string $title
  */
 #[FieldFormatter(
   id: 'content_manager_formatter',
@@ -32,6 +30,7 @@ class ContentManagerFormatter extends FormatterBase {
         continue;
       }
       $url = $item->url;
+      // @phpstan-ignore-next-line
       $url_text = $item->title;
 
       $element[$delta] = [

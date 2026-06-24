@@ -7,8 +7,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validates the LinkExternalProtocols constraint.
- *
- * @property string $message
  */
 class ContentManagerURLConstraintValidator extends ConstraintValidator {
 
@@ -25,6 +23,7 @@ class ContentManagerURLConstraintValidator extends ConstraintValidator {
 
       // Disallow non content manager links.
       if ($url && !preg_match('/^contentmanager:\/\/.*/', $url)) {
+        // @phpstan-ignore-next-line
         $this->context->addViolation($constraint->message, ['@url' => $url]);
       }
     }
