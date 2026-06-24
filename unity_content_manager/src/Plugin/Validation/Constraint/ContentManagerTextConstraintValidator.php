@@ -7,6 +7,8 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 /**
  * Validates the LinkExternalProtocols constraint.
+ *
+ * @property string $message
  */
 class ContentManagerTextConstraintValidator extends ConstraintValidator {
 

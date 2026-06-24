@@ -9,6 +9,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
  * Plugin implementation of the 'default' formatter.
+ *
+ * @property string $title
  */
 #[FieldFormatter(
   id: 'content_manager_formatter',
