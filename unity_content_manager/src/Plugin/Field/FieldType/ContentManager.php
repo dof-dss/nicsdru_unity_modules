@@ -20,7 +20,7 @@ use Drupal\Core\TypedData\DataDefinition;
   constraints: [
     "ContentManagerURL" => [],
     "ContentManagerText" => [],
-    ]
+  ]
 )]
 class ContentManager extends FieldItemBase {
 

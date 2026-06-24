@@ -39,4 +39,5 @@ class ContentManagerWidget extends WidgetBase {
 
     return $element;
   }
+
 }

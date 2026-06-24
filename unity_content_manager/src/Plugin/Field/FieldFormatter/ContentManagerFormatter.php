@@ -19,11 +19,16 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
 )]
 class ContentManagerFormatter extends FormatterBase {
 
+  /**
+   * {@inheritdoc}
+   */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $element = [];
 
     foreach ($items as $delta => $item) {
-      if (empty($item->url)) { continue; }
+      if (empty($item->url)) {
+        continue;
+      }
       $url = $item->url;
       $url_text = $item->title;
 
@@ -33,7 +38,7 @@ class ContentManagerFormatter extends FormatterBase {
         '#url' => [
           'url' => $url,
           'link_text' => $url_text,
-          ]
+        ]
       ];
     }
 
