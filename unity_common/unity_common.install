@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for Unity Common.
+ */
+
+use Drupal\menu_link_content\MenuLinkContentInterface;
+
+/**
+ * Removes stale pending revisions of custom menu links.
+ */
+function unity_common_update_10001(): string {
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $updated_ids = [];
+  $skipped_ids = [];
+  $revision_deleted = TRUE;
+
+  while ($revision_deleted) {
+    $revision_deleted = FALSE;
+    $pending_revisions = $storage->getMenuLinkIdsWithPendingRevisions();
+
+    foreach ($pending_revisions as $revision_id => $menu_link_id) {
+      if (!empty($skipped_ids[$menu_link_id])) {
+        continue;
+      }
+
+      $pending_revision = $storage->loadRevision($revision_id);
+      $menu_link = $storage->load($menu_link_id);
+      if (
+        !$pending_revision instanceof MenuLinkContentInterface ||
+        !$menu_link instanceof MenuLinkContentInterface
+      ) {
+        continue;
+      }
+
+      foreach (['enabled', 'title', 'description', 'link'] as $field_name) {
+        if ($menu_link->get($field_name)->getValue() !== $pending_revision->get($field_name)->getValue()) {
+          $skipped_ids[$menu_link_id] = TRUE;
+          continue 2;
+        }
+      }
+
+      $storage->deleteRevision($revision_id);
+      $updated_ids[$menu_link_id] = TRUE;
+      $revision_deleted = TRUE;
+    }
+  }
+
+  return (string) t('Removed stale pending revisions for @updated menu links. Skipped @skipped menu links containing pending changes.', [
+    '@updated' => count($updated_ids),
+    '@skipped' => count($skipped_ids),
+  ]);
+}
