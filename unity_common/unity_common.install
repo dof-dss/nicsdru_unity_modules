@@ -5,8 +5,6 @@
  * Install, update, and uninstall functions for Unity Common.
  */
 
-use Drupal\menu_link_content\MenuLinkContentInterface;
-
 /**
  * Removes stale pending revisions of custom menu links.
  */
@@ -27,12 +25,6 @@ function unity_common_update_10001(): string {
 
       $pending_revision = $storage->loadRevision($revision_id);
       $menu_link = $storage->load($menu_link_id);
-      if (
-        !$pending_revision instanceof MenuLinkContentInterface ||
-        !$menu_link instanceof MenuLinkContentInterface
-      ) {
-        continue;
-      }
 
       foreach (['enabled', 'title', 'description', 'link'] as $field_name) {
         if ($menu_link->get($field_name)->getValue() !== $pending_revision->get($field_name)->getValue()) {
