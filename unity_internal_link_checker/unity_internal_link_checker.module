@@ -110,6 +110,7 @@ function unity_internal_link_checker__urls_to_replace(): string {
   $protocols = ['http://', 'http://www.', 'https://', 'https://www.'];
   $extensions = [
     '.lndo.site/',
+    '.ddev.site/',
     '/',
     // Unity 1 platform environments.
     '.edge-uhfrady-6tlkpwbr6tndk.uk-1.platformsh.site/',
@@ -123,6 +124,14 @@ function unity_internal_link_checker__urls_to_replace(): string {
     '.edge-uhfrady-vnetibjd44moa.uk-1.platformsh.site/',
     '.uat-nvcvooy-vnetibjd44moa.uk-1.platformsh.site/',
     '.main-bvxea6i-vnetibjd44moa.uk-1.platformsh.site/',
+    // Unity 4 platform environments.
+    '.edge-uhfrady-wn7gul2mjyejc.uk-1.platformsh.site/',
+    '.uat-uhfrady-wn7gul2mjyejc.uk-1.platformsh.site/',
+    '.main-uhfrady-wn7gul2mjyejc.uk-1.platformsh.site/',
+    // Unity Intranet platform environments.
+    '.edge-nvcvooy-6gl4nbwlja4u4.uk-1.platformsh.site/',
+    '.uat-nvcvooy-6gl4nbwlja4u4.uk-1.platformsh.site/',
+    '.main-nvcvooy-6gl4nbwlja4u4.uk-1.platformsh.site/',
   ];
   $urls_to_replace = '';
   // Loop through and add all protocols and extensions to the current site.
