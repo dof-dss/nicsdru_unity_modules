@@ -2,7 +2,6 @@
 
 namespace Drupal\unity_file_migrations;
 
-
 /**
  * Class ContentExtractors.
  *
@@ -44,4 +43,5 @@ class ContentManagerLinkProcessor {
       return $contentmanager_links;
     }
   }
+
 }
