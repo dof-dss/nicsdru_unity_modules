@@ -76,7 +76,7 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
     if ($route === NULL) {
       $route = $this->routeMatch->getRouteName();
     }
-    $facet = $this->request->get('facets_query');
+    $facet = $this->request->query->get('facets_query');
 
     $title = $this->getTitleFromRoute($route);
     $search = $this->request->query->all();
@@ -152,6 +152,9 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
       }
       if ($title == 'Legals') {
         $title = 'Legal guidance';
+      }
+      if ($title == 'Staffs') {
+        $title = 'Staff profiles';
       }
     }
     return $title;

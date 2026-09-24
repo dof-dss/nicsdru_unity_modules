@@ -17,7 +17,6 @@ namespace Drupal\unity_breadcrumbs;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
@@ -28,11 +27,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * {@inheritdoc}
  */
 class PageBreadcrumb implements BreadcrumbBuilderInterface {
-
-  /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * Node object, or null if on a non-node page.
@@ -58,8 +52,7 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
   /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $request) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(TitleResolverInterface $title_resolver, RequestStack $request) {
     $this->titleResolver = $title_resolver;
     $this->request = $request;
   }
@@ -69,7 +62,6 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
       $container->get('title_resolver'),
       $container->get('request_stack')
     );
@@ -89,11 +81,7 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node');
-      }
-
+    if ($this->node instanceof NodeInterface) {
       if (($this->node->bundle() == 'basic_page') || ($this->node->bundle() == 'page' || $this->node->bundle() == 'webform')) {
         $match = TRUE;
       }
@@ -111,7 +99,16 @@ class PageBreadcrumb implements BreadcrumbBuilderInterface {
     $links[] = Link::createFromRoute(t('Home'), '<front>');
     $links[] = Link::createFromRoute($title_resolver, '<none>');
     $breadcrumb->setLinks($links);
-    $breadcrumb->addCacheContexts(['url.path']);
+    $breadcrumb->addCacheContexts([
+      'url.path',
+      'languages:language_url',
+      'languages:language_interface',
+      'theme',
+      'user.permissions',
+      'url.path.parent',
+      'url.path.is_front',
+      'route'
+    ]);
     return $breadcrumb;
   }
 
