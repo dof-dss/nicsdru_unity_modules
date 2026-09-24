@@ -153,6 +153,9 @@ class SearchPagesController extends ControllerBase implements ContainerInjection
       if ($title == 'Legals') {
         $title = 'Legal guidance';
       }
+      if ($title == 'Staffs') {
+        $title = 'Staff profiles';
+      }
     }
     return $title;
   }

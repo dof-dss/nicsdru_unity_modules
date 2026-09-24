@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * Contains unity_common.module.
+ */
+
+/**
+ * Implements hook_config_schema_info_alter().
+ */
+function unity_frontpage_config_schema_info_alter(&$definitions) {
+  $definitions['system.site']['mapping']['frontpage_title'] = [
+    'type' => 'label',
+    'label' => 'Front page title',
+  ];
+  $definitions['system.site']['mapping']['frontpage_show_title'] = [
+    'type' => 'boolean',
+    'label' => 'Show front page title',
+  ];
+}
