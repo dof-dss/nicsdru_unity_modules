@@ -19,7 +19,6 @@ namespace Drupal\unity_breadcrumbs;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Controller\TitleResolverInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
@@ -31,11 +30,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * {@inheritdoc}
  */
 class EventsBreadcrumb implements BreadcrumbBuilderInterface {
-
-  /**
-   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
-   */
-  protected $entityTypeManager;
 
   /**
    * Node object, or null if on a non-node page.
@@ -61,8 +55,7 @@ class EventsBreadcrumb implements BreadcrumbBuilderInterface {
   /**
    * Class constructor.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, TitleResolverInterface $title_resolver, RequestStack $request) {
-    $this->entityTypeManager = $entity_type_manager;
+  public function __construct(TitleResolverInterface $title_resolver, RequestStack $request) {
     $this->titleResolver = $title_resolver;
     $this->request = $request;
   }
@@ -72,7 +65,6 @@ class EventsBreadcrumb implements BreadcrumbBuilderInterface {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity_type.manager'),
       $container->get('title_resolver'),
       $container->get('request_stack')
     );
@@ -92,11 +84,7 @@ class EventsBreadcrumb implements BreadcrumbBuilderInterface {
       $this->node = $route_match->getParameter('node_preview');
     }
 
-    if (!empty($this->node)) {
-      if ($this->node instanceof NodeInterface == FALSE) {
-        $this->node = $this->entityTypeManager->getStorage('node');
-      }
-
+    if ($this->node instanceof NodeInterface) {
       if ($this->node->bundle() == 'events') {
         $match = TRUE;
       }

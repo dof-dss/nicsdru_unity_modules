@@ -15,11 +15,11 @@ use Drush\Commands\DrushCommands;
 class MigrationProcessors extends DrushCommands {
 
   /**
-   * Node Storage definition.
+   * Entity type manager.
    *
-   * @var \Drupal\Core\Entity\EntityStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $nodeStorage;
+  protected $entityTypeManager;
 
   /**
    * Migration database connection (Drupal 7).
@@ -39,7 +39,7 @@ class MigrationProcessors extends DrushCommands {
    * {@inheritdoc}
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
-    $this->nodeStorage = $entity_type_manager->getStorage('node');
+    $this->entityTypeManager = $entity_type_manager;
     $this->dbConnMigrate = Database::getConnection('default', 'migrate');
     $this->dbConnDrupal8 = Database::getConnection('default', 'default');
   }
@@ -120,8 +120,9 @@ class MigrationProcessors extends DrushCommands {
     }
 
     // Make the revision current and publish if necessary.
+    $node_storage = $this->entityTypeManager->getStorage('node');
     // @phpstan-ignore-next-line
-    $revision = $this->nodeStorage->loadRevision($vid);
+    $revision = $node_storage->loadRevision($vid);
     if (!empty($revision)) {
       /** @var \Drupal\Core\Entity\EditorialContentEntityBase $revision */
       $revision->isDefaultRevision(TRUE);
@@ -135,7 +136,7 @@ class MigrationProcessors extends DrushCommands {
     // Publish node if necessary.
     if ($status == 1) {
       // If node was published on D7, make sure that it is published on D8.
-      $node = $this->nodeStorage->load($nid);
+      $node = $node_storage->load($nid);
       if ($node instanceof NodeInterface) {
         $node->set('status', 1);
         $node->set('moderation_state', 'published');
@@ -151,7 +152,7 @@ class MigrationProcessors extends DrushCommands {
 
       if ($moderation_status == 'needs_review') {
         // Make sure state is 'needs review' on D8.
-        $node = $this->nodeStorage->load($nid);
+        $node = $node_storage->load($nid);
         /** @var \Drupal\node\NodeInterface $node */
         $node->set('moderation_state', 'needs_review');
         $node->save();

@@ -6,46 +6,46 @@ services:
       - { name: breadcrumb_builder, priority: 1011 }
   unity_breadcrumbs.breadcrumb.news:
     class: Drupal\unity_breadcrumbs\NewsBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.publication:
     class: Drupal\unity_breadcrumbs\PublicationBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.evidence:
     class: Drupal\unity_breadcrumbs\EvidenceBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.page:
     class: Drupal\unity_breadcrumbs\PageBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.consultation:
     class: Drupal\unity_breadcrumbs\ConsultationBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.decision:
     class: Drupal\unity_breadcrumbs\DecisionBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.document:
     class: Drupal\unity_breadcrumbs\DocumentBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.article:
     class: Drupal\unity_breadcrumbs\FeaturedArticleBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
   unity_breadcrumbs.breadcrumb.events:
     class: Drupal\unity_breadcrumbs\EventsBreadcrumb
-    arguments: [ '@entity_type.manager', '@title_resolver', '@request_stack' ]
+    arguments: [ '@title_resolver', '@request_stack' ]
     tags:
       - { name: breadcrumb_builder, priority: 100 }
