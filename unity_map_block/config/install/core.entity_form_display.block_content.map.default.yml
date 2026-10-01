@@ -6,8 +6,6 @@ dependencies:
     - field.field.block_content.map.field_map
   module:
     - geolocation_google_maps
-_core:
-  default_config_hash: j6e2YAuifJODJHOh4oaxJd74SONb2u10TeMkZxePkMM
 id: block_content.map.default
 targetEntityType: block_content
 bundle: map

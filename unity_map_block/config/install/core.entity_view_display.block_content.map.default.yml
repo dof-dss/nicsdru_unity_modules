@@ -6,8 +6,6 @@ dependencies:
     - field.field.block_content.map.field_map
   module:
     - geolocation
-_core:
-  default_config_hash: yi9DQ4oT_bjHZ8kSymfpZBui6TYNAnN3P11ZE7S7j7E
 id: block_content.map.default
 targetEntityType: block_content
 bundle: map
