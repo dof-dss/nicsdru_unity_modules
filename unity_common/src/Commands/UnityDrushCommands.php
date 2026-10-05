@@ -26,6 +26,29 @@ class UnityDrushCommands extends DrushCommands {
   }
 
   /**
+   * Repairs logging prerequisites before running site updates.
+   *
+   * @command unity-upgrade-preflight
+   */
+  public function upgradePreflight(): void {
+    if (\Drupal::config('core.extension')->get('module.dblog') === NULL) {
+      $this->io()->text('Database logging is disabled; no repair needed.');
+      return;
+    }
+
+    $database_schema = \Drupal::database()->schema();
+    if ($database_schema->tableExists('watchdog')) {
+      $this->io()->text('Database logging table exists; no repair needed.');
+      return;
+    }
+
+    require_once \Drupal::root() . '/core/modules/dblog/dblog.install';
+    $dblog_schema = dblog_schema();
+    $database_schema->createTable('watchdog', $dblog_schema['watchdog']);
+    $this->io()->success('Created the missing watchdog table using Drupal core schema.');
+  }
+
+  /**
    * Drush command import blocks and taxonomies using structure_sync
    * (never import menus as this does not work).
    *
