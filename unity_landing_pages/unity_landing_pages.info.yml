@@ -6,7 +6,7 @@ package: 'Unity'
 dependencies:
   - drupal:layout_builder
   - drupal:block
-  - drupal:block_content_permissions
+  - drupal:block_content
   - drupal:layout_discovery
   - drupal:layout_builder_modal
   - drupal:layout_builder_restrictions
