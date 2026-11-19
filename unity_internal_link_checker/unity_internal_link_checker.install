@@ -1,0 +1,11 @@
+<?php
+
+/**
+* Implements hook_uninstall().
+*/
+function unity_internal_link_checker_uninstall() {
+$config_factory = \Drupal::configFactory();
+
+// Remove the unity internal link checker linksettings on a module uninstall.
+$config_factory->getEditable('unity_internal_link_checker.linksettings')->delete();
+}
